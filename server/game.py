@@ -254,6 +254,15 @@ class CardGame(GameBase):
             else:
                 return [entity]
 
+        if target == TARGET_MIN_HEALTH:
+            enemy = self.get_enemy_ship(entity)
+            if enemy is None:
+                return []
+            if enemy.hp < entity.hp:
+                return [enemy]
+            else:
+                return [entity]
+
         raise GameError('Unknown target: {0}'.format(target))
 
     def get_entities_at(self, position):

@@ -22,7 +22,7 @@ class EffectHandler(object):
     effect_handler = collect_handler(handlers)
 
     def __init__(self, game):
-        self.game = game
+        self.game = game  # type: CardGame
         self.logger = logging.getLogger(self.__class__.__name__)
         self._effect_handlers = {}
 
@@ -232,6 +232,29 @@ class EffectHandler(object):
             raise GameError('Now such card: {0}'.format(card_name))
 
         entity.hand.append(CardState(card_name))
+
+    @effect_handler(EFFECT_TYPE_ENERGY_TEST)
+    def effect_energy_test(self, entity, threshold):
+        if entity.energy >= threshold:
+            self.effect_edamage(entity, threshold)
+        else:
+            self.effect_damage(entity, threshold - entity.energy)
+            self.effect_edamage(entity, threshold)
+
+    @effect_handler(EFFECT_TYPE_SPECIAL_SWAP)
+    def effect_energy_test(self, entity):
+        enemy = self.game.get_enemy_ship(entity)
+        pos = entity.position
+        self.effect_move(entity, -1)
+        self.effect_move(enemy, pos - enemy.position)
+
+    @effect_handler(EFFECT_TYPE_OFFENSE_APPROACH)
+    def effect_energy_test(self, entity):
+        enemy = self.game.get_enemy_ship(entity)
+        if self.game.is_offense(entity):
+            self.effect_move(entity, enemy.position - entity.position - 1)
+        else:
+            self.effect_move(enemy, entity.position - enemy.position - 1)
 
     def _change_card_cost(self, entity, card_type, amount):
         """

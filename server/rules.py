@@ -45,6 +45,7 @@ TARGET_ALLY_SHIP = 'ally_ship'
 
 # Special
 TARGET_MAX_HEALTH = 'max_health'
+TARGET_MIN_HEALTH = 'min_health'
 TARGET_MAX_ENERGY = 'max_energy'
 
 # Directional
@@ -83,6 +84,11 @@ EFFECT_TYPE_SPAWN = 'spawn'
 EFFECT_TYPE_DESTROY = 'destroy'
 EFFECT_TYPE_APPLY_BUFF = 'apply_buff'
 EFFECT_TYPE_REMOVE_BUFF = 'remove_buff'
+EFFECT_TYPE_ENERGY_TEST = 'energy_test'
+
+# Speacial effects
+EFFECT_TYPE_SPECIAL_SWAP = 'special_swap'
+EFFECT_TYPE_OFFENSE_APPROACH = 'approach'
 
 EFFECTS_WITHOUT_VALUE = [
     EFFECT_TYPE_DRAW_CARD,
@@ -278,6 +284,7 @@ P_BUFF_DURATION = 'duration'
 P_BUFF_ON_ROUND_EFFECTS = 'turn_effects'
 P_BUFF_ON_APPLY_EFFECTS = 'apply_effects'
 P_BUFF_ON_REMOVE_EFFECTS = 'remove_effects'
+P_BUFF_CASES = 'cases'
 
 
 buffs = {
@@ -297,6 +304,25 @@ buffs = {
             }
         ],
     },
+    'lightning_rod': {
+        P_BUFF_FULL_NAME: 'Lightning Rod',
+        P_BUFF_DESCRIPTION: 'Bla bla bla',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [],
+        P_BUFF_CASES: {
+            CASE_PLAY_CARD: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: 1
+                    }
+                ]
+            }
+        }
+    }
 }
 
 
