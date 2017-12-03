@@ -80,7 +80,7 @@ class TestPlayer(object):
     def send(self, message):
         self._logger.debug('Sending: {0}'.format(message))
         if self._is_in_game:
-            message.game_id = self._game_id
+            message.body.game_id = self._game_id
         self._client.send_message(message)
 
     def do(self, cmd, *args):
