@@ -74,26 +74,24 @@ class PlayerState(EntityState):
 
         self.is_player = True
 
-        ship = prefs.get('ship')
-        if ship not in ships:
-            raise GameError('No such ship: {0}'.format(ship))
+        ship_name = prefs.get('ship')
+        weapon_name = prefs.get('weapon')
 
-        weapon = prefs.get('weapon')
-        if weapon not in weapons:
-            raise GameError('No such ship: {0}'.format(weapon))
-
-        self.ship_name = ship
-        self.weapon_name = weapon
+        self.ship_name = ship_name
+        self.weapon_name = weapon_name
         self.armed = True
         self.buffable = True
 
-        self.deck = [] # type: List[str]
-        self.hand = [] # type: List[CardState]
+        self.hp = get_ship(ship_name).get(P_SHIP_HP)
+        self.max_energy = get_ship(ship_name).get(P_SHIP_MAX_ENERGY)
+
+        self.deck = []  # type: List[str]
+        self.hand = []  # type: List[CardState]
+
+        self.build_deck()
 
         for i in range(INITIAL_CARDS):
             self.hand.append(self.draw_from_deck())
-
-        self.build_deck()
 
     def get_card_in_hand(self, card_name, default=None):
         for c in self.hand:
@@ -102,17 +100,17 @@ class PlayerState(EntityState):
         return default
 
     def build_deck(self):
-        event_cards = []
+        ship = get_ship(self.ship_name)
+        ship_cards = ship.get(P_SHIP_CARDS, [])
+        self.deck += ship_cards * SHIP_CARDS_EACH
 
-        # weapon and ship cards to deck
+        weapon = get_weapon(self.weapon_name)
+        weapon_cards = weapon.get(P_WEAPON_CARDS, [])
+        self.deck += weapon_cards * WEAPON_CARDS_EACH
+
+        event_cards = []
         for card_key, card in cards.items():
-            if hasattr(card, 'ship') and card['ship'] == self.ship_name:
-                for i in range(SHIP_CARDS_EACH):
-                    self.deck.append(card_key)
-            if hasattr(card, 'weapon') and card['weapon'] == self.weapon_name:
-                for i in range(WEAPON_CARDS_EACH):
-                    self.deck.append(card_key)
-            if card.get('deck', False) and card[P_TYPE] == CARD_TYPE_EVENT:
+            if card.get(P_CARD_DECK, False) and card[P_TYPE] == CARD_TYPE_EVENT:
                 event_cards.append(card_key)
 
         self.deck += select_cards(event_cards, EVENT_CARDS_FROM_POOL, MAX_EVENT_CARDS_OF_EACH_TYPE)

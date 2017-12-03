@@ -120,11 +120,14 @@ class EffectHandler(object):
 
         if self.game.is_player(entity):
             enemy = self.game.get_enemy_ship(entity)
-            if enemy.position == new_pos:
+            # Side check to perform swap without recursion
+            if enemy.position == new_pos and enemy.side == SIDE_A:
                 if enemy.locked:
                     self.logger.debug('Trying to move locked players')
                 else:
                     self.effect_move(enemy, -amount)
+                    self.game.invoke_case(enemy, CASE_COLLIDE, new_pos)
+                    self.game.invoke_case(entity, CASE_COLLIDE, new_pos)
         else:
             if new_pos not in range(self.game.board_size):
                 self.effect_destroy(entity)
@@ -132,7 +135,11 @@ class EffectHandler(object):
 
         new_pos = max(min(new_pos, self.game.board_size - 1), 0)
         entity.position = new_pos
-        self.game.test_case(CASE_COLLIDE, entity, entity.position)
+
+        es = self.game.get_entities_at(new_pos)
+        if len(es) > 1:
+            for e in es:
+                self.game.invoke_case(e, CASE_COLLIDE, entity.position)
 
     @effect_handler(EFFECT_TYPE_DISARM)
     def effect_disarm(self, entity):
@@ -173,9 +180,9 @@ class EffectHandler(object):
     @effect_handler(EFFECT_TYPE_DESTROY)
     def effect_destroy(self, entity):
         if self.game.is_player(entity):
-            raise GameError('Player entity can not be destroyed: {0}'.format(entity.get_state()))
+            raise GameError('Player entity can not be destroyed: {0}'.format(entity.get_state()), crucial=False)
         self.game.objects.remove(entity)
-        self.game.test_case(CASE_DESTOYED, entity, entity.name)
+        self.game.invoke_case(entity, CASE_DESTOYED, entity.name)
 
     @effect_handler(EFFECT_TYPE_DAMAGE_ADD)
     def effect_damage_add(self, entity, amount):
@@ -204,7 +211,7 @@ class EffectHandler(object):
             if len(entity.deck) > 0:
                 card_state = entity.draw_from_deck()
                 entity.hand.append(card_state)
-                self.game.test_case(CASE_DRAW_CARD, entity, card_state.name)
+                self.game.invoke_case(entity, CASE_DRAW_CARD, card_state.name)
 
     @effect_handler(EFFECT_TYPE_DROP_CARD)
     def effect_drop_card(self, entity):
@@ -212,12 +219,12 @@ class EffectHandler(object):
             @type entity: EntityState
         """
         if not self.game.is_player(entity):
-            raise GameError('Non-player entities cannot draw card: {0}'.format(effect))
+            raise GameError('Non-player entities cannot draw card: {0}'.format(entity.name), crucial=False)
         if isinstance(entity, PlayerState):
             if len(entity.hand) > 0:
                 card_to_drop = random.sample(entity.hand, 1)[0]
                 entity.hand.remove(card_to_drop)
-                self.game.test_case(CASE_DROP_CARD, entity, card_to_drop)
+                self.game.invoke_case(entity, CASE_DROP_CARD, card_to_drop)
 
     @effect_handler(EFFECT_TYPE_DROP_CARD)
     def effect_gain_card(self, entity, card_name):
@@ -226,7 +233,7 @@ class EffectHandler(object):
             @type card_name: str
         """
         if not entity.is_player:
-            raise GameError('Only players can gain cards: {0}'.format(entity.get_state()))
+            raise GameError('Only players can gain cards: {0}'.format(entity.get_state()), crucial=False)
 
         if card_name not in cards:
             raise GameError('Now such card: {0}'.format(card_name))
@@ -263,7 +270,7 @@ class EffectHandler(object):
             @type amount: int
         """
         if not isinstance(entity, PlayerState):
-            raise GameError('Non-player entities does not have cards: {0}'.format(card_type))
+            raise GameError('Non-player entities does not have cards: {0}'.format(card_type), crucial=False)
         for card_state in entity.hand:
             card_state.cost_defense += amount
             card_state.cost_offense += amount
@@ -273,9 +280,9 @@ class EffectHandler(object):
         entity.hp = max(entity.hp, 0)
         if entity.hp == 0:
             if not self.game.is_player(entity):
-                self.game._destroy_entity(entity)
+                self.effect_destroy(entity)
             else:
-                self.end()
+                self.game.end()
 
     def _entity_modify_energy(self, entity, amount):
         """

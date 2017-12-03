@@ -76,7 +76,7 @@ class CardGame(GameBase):
             raise GameError('Not enough energy: {0}'.format(card_name))
         self.effect_handler.effect_edamage(cost)
         self.effect_handler.apply_effects(card_action.get(P_CARD_EFFECTS, []), player_state)
-        self.test_case(CASE_PLAY_CARD, player_state, card_name)
+        self.invoke_case(player_state, CASE_PLAY_CARD, card_name)
 
     def fire_weapon(self, player_state):
         """
@@ -107,7 +107,7 @@ class CardGame(GameBase):
 
     def end_round(self):
         for entity_state in self.get_all_entities():
-            self.test_case(CASE_ROUND_END, entity_state)
+            self.invoke_case_global(CASE_ROUND_END)
             for buff_name, duration in entity_state.buffs:
                 d = duration - 1
                 if d <= 0:
@@ -118,22 +118,39 @@ class CardGame(GameBase):
                     raise NotImplementedError()
 
         for entity_state in self.get_all_entities():
-            self.test_case(CASE_ROUND_START, entity_state)
+            self.invoke_case_global(CASE_ROUND_START)
 
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
                 self.effect_handler.effect_damage(entity_state, 1)
-                self.test_case(CASE_OVERLOAD, entity_state, entity_state.name)
+                self.invoke_case(entity_state, CASE_OVERLOAD, entity_state.name)
 
-    def test_case(self, case, source_entity, arg=None):
-        if case == CASE_COLLIDE:
-            for entity in self.get_entities_at(arg):
-                self.proc_case(case, arg, entity)
-        raise GameError('Unknown case: {0}'.format(case))
+    def invoke_case_global(self, case, arg):
+        for e in self.get_all_entities():  # type: EntityState
+            self.invoke_case(e, case, arg)
 
-    def proc_case(self, case, arg, entity):
-        if self.is_player(entity):
-            raise GameError('Player ships doesnt proc cases')
+    def invoke_case(self, entity, case, arg):
+        # Cases in buffs
+        for b in entity.buffs:  # type: BuffState
+            buff = get_buff(b.name)
+            cases = buff.get(P_BUFF_CASES, {})
+            case = cases.get(case, None)
+            if case is None:
+                continue
+            case_arg = case.get(P_CASE_ARG, None)
+            if case_arg is None or case_arg == arg:
+                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, None))
+
+        # Cases in objects
+        if not self.is_player(entity):
+            obj = get_object(entity.name)
+            cases = obj.get(P_OBJECT_CASES, {})
+            case = cases.get(case, None)
+            if case is None:
+                return
+            case_arg = case.get(P_CASE_ARG, None)
+            if case_arg is None or case_arg == arg:
+                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, None))
 
     def is_offense(self, entity):
         if not self.is_player(entity):

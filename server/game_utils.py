@@ -1,3 +1,4 @@
+import random
 from rules import *
 from game_base import *
 
@@ -47,10 +48,17 @@ def get_buff(key):
     return buff
 
 
-def get_entity(key):
+def get_object(key):
     e = objects.get(key, None)
     if e is None:
         raise GameError('No such entity: {0}'.format(key))
+    return e
+
+
+def get_ship(key):
+    e = ships.get(key, None)
+    if e is None:
+        raise GameError('No such ship: {0}'.format(key))
     return e
 
 
