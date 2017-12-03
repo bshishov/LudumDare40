@@ -1,11 +1,11 @@
 # SETTINGS
 BOARD_SIZE = 6
 INITIAL_A_POSITION = 1
-INITIAL_B_POSITION = 5
+INITIAL_B_POSITION = 4
 INITIAL_CARDS = 4
 WEAPON_CARDS_EACH = 2
 SHIP_CARDS_EACH = 2
-EVENT_CARDS_FROM_POOL = 10
+EVENT_CARDS_FROM_POOL = 0
 
 # Sections
 SECTION_SHIPS = 'ships'
@@ -27,14 +27,21 @@ P_TARGET = 'target'
 
 # TARGETS
 TARGET_ALL = 'all'
-TARGET_ALL_EXCEPT = 'all_except'
+TARGET_ALL_EXCEPT_SELF = 'all_except'
 TARGET_SELF = 'self'
-TARGET_ENEMY = 'enemy'
+TARGET_ENEMIES = 'enemy'
+TARGET_ALLIES = 'allies'
+TARGET_ENEMY_SHIP = 'enemy_ship'
+TARGET_ALLY_SHIP = 'ally_ship'
 TARGET_MAX_HEALTH = 'max_health'
 TARGET_MAX_ENERGY = 'max_energy'
 TARGET_FORWARD = 'forward'
-TARGET_BACKWARD = 'backward'
+TARGET_FORWARD_ALLY = 'forward_ally'
+TARGET_FORWARD_ENEMY = 'forward_enemy'
 TARGET_FORWARD_PIERCE = 'forward_pierce'
+TARGET_BACKWARD = 'backward'
+TARGET_BACKWARD_ALLY = 'backward_ally'
+TARGET_BACKWARD_ENEMY = 'backward_enemy'
 TARGET_BACKWARD_PIERCE = 'backward_pierce'
 
 # EFFECTS
@@ -42,7 +49,7 @@ EFFECT_TYPE_DAMAGE = 'damage'
 EFFECT_TYPE_EDAMAGE = 'edamage'
 EFFECT_TYPE_HEAL = 'heal'
 EFFECT_TYPE_EHEAL = 'eheal'
-EFFECT_TYPE_POSITION = 'position'
+EFFECT_TYPE_MOVE = 'position'
 EFFECT_TYPE_DISARM = 'disarm'
 EFFECT_TYPE_ARM = 'arm'
 EFFECT_TYPE_MUTE = 'mute'
@@ -63,6 +70,18 @@ EFFECT_TYPE_DESTROY = 'destroy'
 EFFECT_TYPE_APPLY_BUFF = 'apply_buff'
 EFFECT_TYPE_REMOVE_BUFF = 'remove_buff'
 
+EFFECTS_WITHOUT_VALUE = [
+    EFFECT_TYPE_DRAW_CARD,
+    EFFECT_TYPE_DROP_CARD,
+    EFFECT_TYPE_LOCK_POSITION,
+    EFFECT_TYPE_UNLOCK_POSITION,
+    EFFECT_TYPE_MUTE,
+    EFFECT_TYPE_UNMUTE,
+    EFFECT_TYPE_ARM,
+    EFFECT_TYPE_DISARM,
+    EFFECT_TYPE_DESTROY,
+]
+
 # Effect properties
 P_EFFECT_TYPE = P_TYPE
 P_EFFECT_VALUE = P_VALUE
@@ -70,12 +89,18 @@ P_EFFECT_TARGET = P_TARGET
 P_EFFECT_RANGE = 'range'
 P_EFFECT_RANGE_MOD = 'range_mod'
 P_EFFECT_SPAWN_POSITION = 'spawn_position'
+P_EFFECT_CARD_TYPE = 'card_type'
 
 
 # Cases
 CASE_COLLIDE = 'collide'
 CASE_DRAW_CARD = 'draw_card'
 CASE_PLAY_CARD = 'play_card'
+CASE_DROP_CARD = 'drop_card'
+CASE_DESTOYED = 'entity_destroyed'
+CASE_OVERLOAD = 'entity_overload'
+CASE_ROUND_END = 'turn_end'
+CASE_ROUND_START = 'turn_start'
 
 # Event properties
 P_CASE_ARG = 'arg'
@@ -146,34 +171,40 @@ weapons = {
 
 
 # Entities properties
-P_ENTITY_FULL_NAME = 'full_name'
-P_ENTITY_DESCRIPTION = 'description'
-P_ENTITY_EVENTS = 'events'
-P_ENTITY_SPEED = 'speed'
+P_OBJECT_FULL_NAME = 'full_name'
+P_OBJECT_DESCRIPTION = 'description'
+P_OBJECT_CASES = 'cases'
 
 
-entities = {
+objects = {
     'c4': {
-        P_ENTITY_FULL_NAME: 'Flying c4',
-        P_ENTITY_SPEED: -1,
-        P_ENTITY_EVENTS: {
+        P_OBJECT_FULL_NAME: 'Flying c4',
+        P_OBJECT_DESCRIPTION: 'Just a flying c4',
+        P_OBJECT_CASES: {
             CASE_PLAY_CARD: {
                 P_CASE_ARG: 'detonate',
                 P_CASE_EFFECTS: [
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
                         P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_RANGE: 0,
                         P_EFFECT_VALUE: 5
+                    }
+                ]
+            },
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: -1
                     }
                 ]
             }
         },
     },
     'mine': {
-        P_ENTITY_FULL_NAME: 'Flying mine',
-        P_ENTITY_SPEED: -1,
-        P_ENTITY_EVENTS: {
+        P_OBJECT_FULL_NAME: 'Flying mine',
+        P_OBJECT_CASES: {
             CASE_COLLIDE: {
                 P_CASE_EFFECTS: [
                     {
@@ -182,6 +213,29 @@ entities = {
                         P_EFFECT_RANGE: 0,
                         P_EFFECT_VALUE: 5
                     }
+                ]
+            },
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: -1
+                    },
+                ]
+            }
+        },
+    },
+    'drone': {
+        P_OBJECT_FULL_NAME: 'Drone',
+        P_OBJECT_CASES: {
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                        P_EFFECT_TARGET: TARGET_ENEMIES,
+                        P_EFFECT_VALUE: 3
+                    },
                 ]
             }
         },
@@ -193,7 +247,7 @@ entities = {
 P_BUFF_FULL_NAME = 'full_name'
 P_BUFF_DESCRIPTION = 'description'
 P_BUFF_DURATION = 'duration'
-P_BUFF_ON_TURN_EFFECTS = 'turn_effects'
+P_BUFF_ON_ROUND_EFFECTS = 'turn_effects'
 P_BUFF_ON_APPLY_EFFECTS = 'apply_effects'
 P_BUFF_ON_REMOVE_EFFECTS = 'remove_effects'
 
@@ -208,7 +262,7 @@ buffs = {
                 P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
             }
         ],
-        P_BUFF_ON_TURN_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [],
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
@@ -229,7 +283,6 @@ P_CARD_ACTION_DEFENSE = 'defense'
 P_CARD_ACTION_SAME = 'same'
 P_CARD_DECK = 'deck'
 P_CARD_TYPE = P_TYPE
-P_CARD_TARGET = P_TARGET
 P_CARD_COST = 'cost'
 P_CARD_FULL_NAME = 'full_name'
 P_CARD_DESCRIPTION = 'description'
@@ -244,9 +297,12 @@ cards = {
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Some card description',
             P_CARD_COST: 5,
-            P_CARD_TARGET: TARGET_ENEMY,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 5,
+                }
             ]
         },
         P_CARD_ACTION_DEFENSE: {

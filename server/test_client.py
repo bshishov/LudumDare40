@@ -9,6 +9,7 @@ import time
 from main import DEFAULT_HOST, DEFAULT_PORT
 from utils import EventSubscription
 from protocol import *
+from rules import *
 
 
 class TestClient(asyncore.dispatcher):
@@ -73,14 +74,46 @@ class TestPlayer(object):
                 self._logger.info('Game finished')
 
     def send(self, message):
+        if self._is_in_game:
+            message.game_id = self._game_id
         self._client.send_message(message)
 
     def do(self, cmd, *args):
         if cmd == 'queue' or cmd == 'q':
             if not self._is_queue:
+                if len(args) < 2:
+                    logging.warning('Specify <SHIP> <WEAPON>')
+                    return
                 self.start_queue(*args)
             else:
                 self.stop_queue()
+
+        if cmd in ['play', 'card', 'p', 'c']:
+            if len(args) < 1:
+                logging.warning('Specify <CARD>')
+                return
+            self.play_card(*args)
+
+        if cmd in ['fire', 'f', 'shoot']:
+            self.fire()
+
+        if cmd in ['end', '\r\n', 'turn', 'skip']:
+            self.end_turn()
+
+    def play_card(self, card):
+        if self._is_in_game:
+            self.send(GameMessage(MESSAGE_HEAD_ACTION, status='action',
+                                  action={'type': ACTION_PLAY_CARD, 'card': card}))
+
+    def fire(self):
+        if self._is_in_game:
+            self.send(GameMessage(MESSAGE_HEAD_ACTION, status='action',
+                                  action={'type': ACTION_FIRE_WEAPON}))
+
+    def end_turn(self):
+        if self._is_in_game:
+            self.send(GameMessage(MESSAGE_HEAD_ACTION, status='action',
+                                  action={'type': ACTION_END_TURN}))
 
     def start_queue(self, ship, weapon):
         self._is_queue = True
@@ -89,8 +122,6 @@ class TestPlayer(object):
     def stop_queue(self):
         self.send(LobbyMessage(MESSAGE_HEAD_STOP_QUEUE, status='stop'))
         self._is_queue = False
-
-
 
 
 def main(args):
