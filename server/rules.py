@@ -249,8 +249,7 @@ weapons = {
         P_WEAPON_FULL_NAME: 'Harpoon',
         P_WEAPON_CARDS: ['Grapple', 'Lighting rod', 'Impale', 'Electrocute', 'Still', 'Grab', 'Fix', 'Spare'],
         P_WEAPON_ACTION_OFFENSE: {
-            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures,'
-                                  ' but now it seeks a different prey',
+            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures, but now it seeks a different prey',
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {

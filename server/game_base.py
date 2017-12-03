@@ -13,9 +13,9 @@ class GameError(RuntimeError):
     """
         Game logic error
     """
-    def __init__(self, message, crucial=True, *args, **kwargs):
+    def __init__(self, message, crucial=True, *args):
         self.crucial = crucial
-        super().__init__(message, *args, **kwargs)
+        super().__init__(message, *args)
 
 
 class Player(object):

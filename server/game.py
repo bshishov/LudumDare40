@@ -290,8 +290,8 @@ class CardGame(GameBase):
 
     def get_state(self, only_for=None):
         state = {
-            SIDE_A: self.get_player_state(self.player_a).__dict__,
-            SIDE_B: self.get_player_state(self.player_b).__dict__,
+            SIDE_A: self.get_player_state(self.player_a),
+            SIDE_B: self.get_player_state(self.player_b),
         }
         if only_for == SIDE_A:
             del state[SIDE_B]
@@ -301,9 +301,9 @@ class CardGame(GameBase):
 
     def get_player_state(self, player):
         if player == self.player_a:
-            return self.player_a_entity
+            return self.player_a_entity.get_state()
         if player == self.player_b:
-            return self.player_b_entity
+            return self.player_b_entity.get_state()
         return None
 
     def is_player(self, entity):

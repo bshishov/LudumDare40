@@ -3,12 +3,15 @@ import random
 from game_base import *
 from rules import *
 from game_utils import *
-
+from typing import List, Dict
 
 class BuffState(object):
     def __init__(self, name, duration):
         self.name = name
         self.duration = duration
+
+    def get_state(self):
+        return self.__dict__
 
 
 class CardState(object):
@@ -28,6 +31,9 @@ class CardState(object):
     def type(self):
         card = get_card(self.name)
         return card.get(P_CARD_TYPE)
+
+    def get_state(self):
+        return self.__dict__
 
 
 class EntityState(object):
@@ -55,7 +61,7 @@ class EntityState(object):
         return default
 
     def get_state(self):
-        return self.__dict__
+        return todict(self)
 
 
 class PlayerState(EntityState):
@@ -120,3 +126,6 @@ class PlayerState(EntityState):
             card_name = random.sample(self.deck, 1)[0]
             self.deck.remove(card_name)
             return CardState(card_name)
+
+    def get_state(self):
+        return todict(self)
