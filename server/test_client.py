@@ -86,6 +86,7 @@ class TestPlayer(object):
                     return
                 self.start_queue(*args)
             else:
+                logging.info('Stopping search')
                 self.stop_queue()
 
         if cmd in ['play', 'card', 'p', 'c']:

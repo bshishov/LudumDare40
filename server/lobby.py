@@ -54,10 +54,14 @@ class Lobby(object):
                     self.init_game(queued_players[0], queued_players[1])
 
     def init_game(self, player_a, player_b):
-        self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
-        self._games.append(game.create(player_a, player_b))
-        player_a.in_queue = False
-        player_b.in_queue = False
+        try:
+            player_a.stop_queue()
+            player_b.stop_queue()
+            self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
+            self._games.append(game.create(player_a, player_b))
+        except Exception as err:
+            player_a.send(LobbyMessage(MESSAGE_HEAD_ERROR, status='Failed to create a game', err=str(err)))
+            player_b.send(LobbyMessage(MESSAGE_HEAD_ERROR, status='Failed to create a game', err=str(err)))
 
     def game_worker(self):
         while True:
