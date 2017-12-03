@@ -117,7 +117,7 @@ CASE_COLLIDE = 'collide'
 CASE_DRAW_CARD = 'draw_card'
 CASE_PLAY_CARD = 'play_card'
 CASE_DROP_CARD = 'drop_card'
-CASE_DESTOYED = 'entity_destroyed'
+CASE_DESTROYED = 'entity_destroyed'
 CASE_OVERLOAD = 'entity_overload'
 CASE_ROUND_END = 'turn_end'
 CASE_ROUND_START = 'turn_start'
@@ -135,14 +135,25 @@ P_SHIP_CARDS = 'cards'
 
 
 ships = {
-    'ship1': {
+    'tank': {
+        P_SHIP_HP: 30,
+        P_SHIP_MAX_ENERGY: 12,
+        P_SHIP_ENERGY_PER_TURN: 4,
+        P_SHIP_CARDS: ['Power', 'Ram', 'EBoost', 'Stop'],
+    },
+    'fighter': {
         P_SHIP_HP: 20,
-        P_SHIP_MAX_ENERGY: 20,
-        P_SHIP_ENERGY_PER_TURN: 1,
-        P_SHIP_CARDS: ['card1', 'card2', 'card3'],
+        P_SHIP_MAX_ENERGY: 17,
+        P_SHIP_ENERGY_PER_TURN: 3,
+        P_SHIP_CARDS: ['TaB', 'Barrel', 'missile', 'Wingdrone'],
+    },
+    'scout': {
+        P_SHIP_HP: 25,
+        P_SHIP_MAX_ENERGY: 15,
+        P_SHIP_ENERGY_PER_TURN: 5,
+        P_SHIP_CARDS: ['Mine', 'Healdrone', 'Reactor', 'Core'],
     },
 }
-
 
 # Weapon properties
 P_WEAPON_DESCRIPTION = 'description'
@@ -159,28 +170,107 @@ P_WEAPON_EFFECTS = 'effects'
 weapons = {
     'mg': {
         P_WEAPON_FULL_NAME: 'Machine gun',
-        P_WEAPON_CARDS: ['card1', 'card2', 'card3'],
+        P_WEAPON_CARDS: ['Fire all', 'Hamstring', 'IRrounds', 'Leak', 'Bomb', 'Detonate', 'Cool'],
         P_WEAPON_ACTION_OFFENSE: {
-            P_WEAPON_DESCRIPTION: 'Just a machine gun attack',
+            P_WEAPON_DESCRIPTION: 'This sturdy machine gun has seen thousands of '
+                                  'battles and you are more than likely not her first',
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                    P_EFFECT_VALUE: 3,
+                    P_EFFECT_VALUE: 2,
                     P_EFFECT_RANGE: 3,
                     P_EFFECT_RANGE_MOD: 1,
                 },
             ]
         },
         P_WEAPON_ACTION_DEFENSE: {
-            P_WEAPON_DESCRIPTION: 'Just a machine gun attack shooting backwards',
+            P_WEAPON_DESCRIPTION: '',
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                    P_EFFECT_VALUE: 2,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                },
+            ]
+        }
+    },
+    'laser': {
+        P_WEAPON_FULL_NAME: 'Laser',
+        P_WEAPON_CARDS: ['Snipe', 'Scorch', 'Redirect', 'EMP', 'Detonate EMP', 'Charging', 'Fire!', 'Hold fire'],
+        P_WEAPON_ACTION_OFFENSE: {
+            P_WEAPON_DESCRIPTION: 'This revolutionary invention brings glory'
+                                  ' to its makers and death for all the infidels. In style',
+            P_WEAPON_COST: 2,
+            P_WEAPON_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                }
+            ]
+        },
+        P_WEAPON_ACTION_DEFENSE: {
+            P_WEAPON_DESCRIPTION: 'This revolutionary invention brings glory'
+                                  ' to its makers and death for all the infidels. In style',
+            P_WEAPON_COST: 2,
+            P_WEAPON_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                }
+            ]
+        }
+    },
+    'harpoon': {
+        P_WEAPON_FULL_NAME: 'Harpoon',
+        P_WEAPON_CARDS: ['Grapple', 'Lighting rod', 'Impale', 'Electrocute', 'Still', 'Grab', 'Fix', 'Spare'],
+        P_WEAPON_ACTION_OFFENSE: {
+            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures,'
+                                  ' but now it seeks a different prey',
+            P_WEAPON_COST: 2,
+            P_WEAPON_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_RANGE: 3,
+                    P_EFFECT_RANGE_MOD: 1,
+                },
+            ]
+        },
+        P_WEAPON_ACTION_DEFENSE: {
+            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures,'
+                                  ' but now it seeks a different prey',
+            P_WEAPON_COST: 2,
+            P_WEAPON_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1,
                     P_EFFECT_RANGE: 3,
                     P_EFFECT_RANGE_MOD: 1,
                 },
@@ -195,7 +285,6 @@ P_OBJECT_FULL_NAME = 'full_name'
 P_OBJECT_DESCRIPTION = 'description'
 P_OBJECT_CASES = 'cases'
 
-
 objects = {
     'Bomb': {
         P_OBJECT_FULL_NAME: 'Bomb',
@@ -208,6 +297,40 @@ objects = {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
                         P_EFFECT_TARGET: TARGET_ALL,
                         P_EFFECT_VALUE: 5
+                    }
+                ]
+            },
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: -1
+                    }
+                ]
+            }
+        },
+    },
+    'EMP': {
+        P_OBJECT_FULL_NAME: 'EMP',
+        P_OBJECT_DESCRIPTION: 'A flying electromagnetic grenade',
+        P_OBJECT_CASES: {
+            CASE_PLAY_CARD: {
+                P_CASE_ARG: 'detonate EMP',
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                        P_EFFECT_TARGET: TARGET_ALL,
+                        P_EFFECT_VALUE: 2
+                    },
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                        P_EFFECT_TARGET: TARGET_ALL,
+                        P_EFFECT_VALUE: 6
+                    },
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                        P_EFFECT_TARGET: TARGET_ALL
                     }
                 ]
             },
@@ -254,7 +377,7 @@ objects = {
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
                         P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
-                        P_EFFECT_VALUE: 3
+                        P_EFFECT_VALUE: 2
                     },
                 ]
             }
@@ -268,7 +391,7 @@ objects = {
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
                         P_EFFECT_TARGET: TARGET_ALLY_SHIP,
-                        P_EFFECT_VALUE: 3
+                        P_EFFECT_VALUE: 2
                     },
                 ]
             }
@@ -288,9 +411,9 @@ P_BUFF_CASES = 'cases'
 
 
 buffs = {
-    'mute': {
+    'mute1': {
         P_BUFF_FULL_NAME: 'Mute',
-        P_BUFF_DESCRIPTION: 'Mutes a target for 1 turn',
+        P_BUFF_DESCRIPTION: 'Target cannot use ship cards for 1 round',
         P_BUFF_DURATION: 1,
         P_BUFF_ON_APPLY_EFFECTS: [
             {
@@ -301,6 +424,356 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
+            }
+        ],
+    },
+    'mute2': {
+        P_BUFF_FULL_NAME: 'Mute',
+        P_BUFF_DESCRIPTION: 'Target cannot use ship cards for 2 rounds',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
+            }
+        ],
+    },
+    'Disarm1': {
+        P_BUFF_FULL_NAME: 'Mute',
+        P_BUFF_DESCRIPTION: 'Target cannot use weapon cards for 1 round',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ARM,
+            }
+        ],
+    },
+    'Disarm2': {
+        P_BUFF_FULL_NAME: 'Mute',
+        P_BUFF_DESCRIPTION: 'Target cannot use weapon cards for 2 rounds',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ARM,
+            }
+        ],
+    },
+    'lock_position1': {
+        P_BUFF_FULL_NAME: 'Lock position',
+        P_BUFF_DESCRIPTION: 'Target cannot move or be moved for 1 round',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_UNLOCK_POSITION,
+            }
+        ],
+    },
+    'lock_position2': {
+        P_BUFF_FULL_NAME: 'Lock position',
+        P_BUFF_DESCRIPTION: 'Target cannot move or be moved for 2 rounds',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_UNLOCK_POSITION,
+            }
+        ],
+    },
+    'energygain1_reduce1': {
+        P_BUFF_FULL_NAME: 'Reduce energy gain',
+        P_BUFF_DESCRIPTION: 'Energy gain reduced by 1 for 1 turn',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'energygain2_reduce1': {
+        P_BUFF_FULL_NAME: 'Reduce energy gain',
+        P_BUFF_DESCRIPTION: 'Energy gain reduced by 1 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'energygain1_add1': {
+        P_BUFF_FULL_NAME: 'Increase energy gain',
+        P_BUFF_DESCRIPTION: 'Energy gain increased by 1 for 1 turn',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'energygain2_add1': {
+        P_BUFF_FULL_NAME: 'Increase energy gain',
+        P_BUFF_DESCRIPTION: 'Energy gain increased by 1 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'cardcost_reduce1': {
+        P_BUFF_FULL_NAME: 'Reduce card cost',
+        P_BUFF_DESCRIPTION: 'Card cost reduced by 1 for 1 turn',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'cardcost_reduce2': {
+        P_BUFF_FULL_NAME: 'Reduce card cost',
+        P_BUFF_DESCRIPTION: 'Card cost reduced by 1 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'damage1_reduce1': {
+        P_BUFF_FULL_NAME: 'Reduce damage',
+        P_BUFF_DESCRIPTION: 'Damage output reduced by 1 for 1 turn',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'damage2_reduce1': {
+        P_BUFF_FULL_NAME: 'Reduce damage',
+        P_BUFF_DESCRIPTION: 'Damage output reduced by 1 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ]
+    },
+    'damage1_reduce2': {
+        P_BUFF_FULL_NAME: 'Reduce damage',
+        P_BUFF_DESCRIPTION: 'Damage output reduced by 2 for 1 turn',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+    },
+    'damage2_reduce2': {
+        P_BUFF_FULL_NAME: 'Reduce damage',
+        P_BUFF_DESCRIPTION: 'Damage output reduced by 2 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+    },
+    'damage1_add1': {
+        P_BUFF_FULL_NAME: 'Increase damage',
+        P_BUFF_DESCRIPTION: 'Damage output increased by 1 for 1 turns',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'damage2_add1': {
+        P_BUFF_FULL_NAME: 'Increase damage',
+        P_BUFF_DESCRIPTION: 'Damage output increased by 1 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+    },
+    'damage1_add2': {
+        P_BUFF_FULL_NAME: 'Increase damage',
+        P_BUFF_DESCRIPTION: 'Damage output increased by 2 for 1 turns',
+        P_BUFF_DURATION: 1,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+    },
+    'damage2_add2': {
+        P_BUFF_FULL_NAME: 'Increase damage',
+        P_BUFF_DESCRIPTION: 'Damage output increased by 2 for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+    },
+    'on fire': {
+        P_BUFF_FULL_NAME: 'You are burning!',
+        P_BUFF_DESCRIPTION: 'You lose 2 HP per turn for 2 turns',
+        P_BUFF_DURATION: 2,
+        P_BUFF_ON_APPLY_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: 2
+            }
+        ],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
             }
         ],
     },
@@ -396,7 +869,8 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'lockposition2'
                 }
             ]
         },
@@ -443,8 +917,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_reduce2'
                 }
             ]
         }
@@ -469,8 +943,8 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_reduce1'
                 }
             ]
         },
@@ -479,9 +953,9 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_reduce1'
                 }
             ]
         }
@@ -556,7 +1030,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -570,7 +1045,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -600,7 +1076,8 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute2'
                 }
             ]
         },
@@ -615,9 +1092,9 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 1
-                },
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_reduce1'
+                }
             ]
         }
 
@@ -658,28 +1135,29 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm 1'
                 },
             ]
         }
 
     },
     'Redirect': {
-        P_CARD_FULL_NAME: 'Redirect energy this feathers',
+        P_CARD_FULL_NAME: 'Redirect energy',
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_DESCRIPTION: 'Redirect energy card description',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -688,7 +1166,7 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_DESCRIPTION: 'Redirect energy card description',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
@@ -698,7 +1176,8 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -723,8 +1202,9 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -772,7 +1252,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -787,7 +1268,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -856,7 +1338,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -875,7 +1358,8 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -953,9 +1437,9 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_BACKWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
@@ -985,10 +1469,10 @@ cards = {
                     P_EFFECT_VALUE: 1
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1049,14 +1533,14 @@ cards = {
                     P_EFFECT_VALUE: 3
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_BACKWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_BACKWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -1080,9 +1564,9 @@ cards = {
                     P_EFFECT_VALUE: 3
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'lockposition1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
@@ -1101,9 +1585,9 @@ cards = {
                     P_EFFECT_VALUE: 3
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_BACKWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'lockposition1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
@@ -1133,15 +1617,15 @@ cards = {
                     P_EFFECT_VALUE: 'Fix it!'
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 2
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm2'
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute2'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1227,9 +1711,9 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_add1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1237,10 +1721,10 @@ cards = {
             P_CARD_COST: 1,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage2_reduce1'
+                },
             ]
         }
 
@@ -1350,13 +1834,13 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
-                    P_EFFECT_VALUE: 4
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_add2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -1381,13 +1865,13 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
-                    P_EFFECT_VALUE: 4
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_add2'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -1417,9 +1901,9 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'cardcost1_reduce1'
+                },
 
             ]
         },
@@ -1438,8 +1922,8 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'cardcost1_reduce1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
@@ -1523,10 +2007,10 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
+                },
             ]
         }
 
@@ -1636,9 +2120,9 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_reduce2'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1655,9 +2139,9 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'energygain2_reduce2'
+                },
             ]
         }
 
@@ -1672,14 +2156,14 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'cardcost2_reduce1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage2_reduce1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1688,14 +2172,14 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'cardcost2_reduce1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 1
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage2_reduce1'
+                },
             ]
         }
 
@@ -1719,7 +2203,15 @@ cards = {
             P_CARD_DESCRIPTION: 'Sandstorm card description',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPECIAL_SWAP
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
             ]
         }
 
@@ -1732,14 +2224,22 @@ cards = {
             P_CARD_DESCRIPTION: 'Thunder card description',
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_MAX_ENERGY,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Thunder card description',
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_MAX_ENERGY,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
             ]
         }
 
@@ -1752,14 +2252,42 @@ cards = {
             P_CARD_DESCRIPTION: 'Tornado card description',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_MIN_HEALTH,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ALLIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -3
+                }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Tornado card description',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
-
+                {
+                    P_EFFECT_TARGET: TARGET_MIN_HEALTH,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ALLIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -3
+                }
             ]
         }
 
@@ -1773,19 +2301,21 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Sidewind card description',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
-                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
-                 }
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
+                },
             ]
         }
     },
@@ -1799,9 +2329,9 @@ cards = {
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_add2'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1825,10 +2355,10 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_reduce2'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1836,34 +2366,36 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
-                    P_EFFECT_VALUE: 2
-                }
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'damage1_reduce2'
+                },
             ]
         }
     },
-    'Meteor shower': {
-        P_CARD_FULL_NAME: 'Solar flare',
+    'Meteor': {
+        P_CARD_FULL_NAME: 'Meteor shower',
         P_CARD_TYPE: CARD_TYPE_EVENT,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_DESCRIPTION: 'Meteor card description',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_MAX_HEALTH,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
                 }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_DESCRIPTION: 'Meteor card description',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_MAX_HEALTH,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
                 }
             ]
         }
@@ -1877,8 +2409,8 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_ALL_SHIPS,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGY_TEST
                 }
             ]
         },
@@ -1887,8 +2419,8 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_ALL_SHIPS,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGY_TEST
                 }
             ]
         }
@@ -1902,8 +2434,8 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_OFFENSE_APPROACH
                 }
             ]
         },
@@ -1912,8 +2444,8 @@ cards = {
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
-
-
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_OFFENSE_APPROACH
                 }
             ]
         }
@@ -1933,12 +2465,14 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute1'
+                },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
@@ -1952,12 +2486,14 @@ cards = {
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm1'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
-                }
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute1'
+                },
             ]
         }
     },
