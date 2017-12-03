@@ -59,13 +59,17 @@ class TestPlayer(object):
         self._side = None
 
     def on_message(self, message):
+        if message.domain == MESSAGE_DOMAIN_GAME and message.head == MESSAGE_HEAD_HELLO:
+            self._is_queue = False
+            self._is_in_game = True
+            self._game_id = message.body['id']
+            self._side = message.body['side']
+            self._logger.info('Game started: id={0} side={1}'.format(self._game_id, self._side))
+
         if self._is_queue:
-            if message.domain == MESSAGE_DOMAIN_GAME and message.head == MESSAGE_HEAD_HELLO:
+            if message.status == 'queue stopped':
                 self._is_queue = False
-                self._is_in_game = True
-                self._game_id = message.body['id']
-                self._side = message.body['side']
-                self._logger.info('Game started: id={0} side={1}'.format(self._game_id, self._side))
+                self._logger.info('Queue stopped')
 
         if self._is_in_game:
             if message.domain == MESSAGE_DOMAIN_GAME and message.head == MESSAGE_HEAD_ENDED:
@@ -74,6 +78,7 @@ class TestPlayer(object):
                 self._logger.info('Game finished')
 
     def send(self, message):
+        self._logger.debug('Sending: {0}'.format(message))
         if self._is_in_game:
             message.game_id = self._game_id
         self._client.send_message(message)

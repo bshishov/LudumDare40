@@ -28,7 +28,7 @@ class Lobby(object):
         player = game.Player(channel)  # type: game.Player
         with self._players_lock:
             self._players[channel] = player
-            player.send(LobbyMessage(MESSAGE_HEAD_HELLO, status='welcome'))
+            player.send(LobbyMessage(MESSAGE_HEAD_HELLO, status='welcome', version=VERSION))
         self._logger.info('Player connected')
 
     def on_client_disconnect(self, channel):
@@ -54,25 +54,37 @@ class Lobby(object):
                     self.init_game(queued_players[0], queued_players[1])
 
     def init_game(self, player_a, player_b):
+        g = None
         try:
             player_a.stop_queue()
             player_b.stop_queue()
             self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
-            self._games.append(game.create(player_a, player_b))
+            g = game.create(player_a, player_b)
         except Exception as err:
             player_a.send(LobbyMessage(MESSAGE_HEAD_ERROR, status='Failed to create a game', err=str(err)))
             player_b.send(LobbyMessage(MESSAGE_HEAD_ERROR, status='Failed to create a game', err=str(err)))
+            self._logger.debug('Failed to create a game: {0}'.format(str(err)))
+            if g is not None:
+                g.close()
+                self._logger.debug('Closing game')
+                del g
+        if g is not None and g.is_active:
+            g.begin()
+            self._games.append(g)
+            self._logger.debug('Game started')
 
     def game_worker(self):
         while True:
             time.sleep(GAME_CHECK_DELAY)
             games_to_remove = []
             # Collect non-active games
-            for game in self._games:
-                if not game.is_active:
-                    games_to_remove.append(game)
+            for g in self._games:
+                if not g.is_active:
+                    games_to_remove.append(g)
 
             # Remove non-active games
-            for game in games_to_remove:
-                self._games.remove(game)
-                self._logger.debug('Removed game: {0}'.format(game))
+            for g in games_to_remove:
+                g.close()
+                self._games.remove(g)
+                self._logger.debug('Removed game: {0}'.format(g))
+                del g

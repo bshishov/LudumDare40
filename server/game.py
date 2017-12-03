@@ -19,8 +19,6 @@ class CardGame(GameBase):
         self.effect_handler = EffectHandler(self)
         self._last_entity_id = 1
 
-        self.begin()
-
     def on_player_a_message(self, message):
         self._on_game_message(message, self.player_a_entity)
 

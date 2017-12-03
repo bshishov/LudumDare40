@@ -1,5 +1,7 @@
 import json
 
+VERSION = '0.0.0.0.0.0.0.0.1'
+
 MESSAGE_DOMAIN_GAME = 'game'
 MESSAGE_DOMAIN_LOBBY = 'lobby'
 
@@ -19,6 +21,9 @@ MESSAGE_HEAD_ACTION = 'action'
 MESSAGE_HEAD_TURN = 'turn'
 MESSAGE_HEAD_PLAYER_LEFT = 'player_left'
 MESSAGE_HEAD_ENDED = 'ended'
+
+
+P_GAME_ID = 'game_id'
 
 
 ENCODING = 'utf-8'

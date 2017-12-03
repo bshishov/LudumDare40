@@ -71,10 +71,12 @@ class GameBase(object):
         self.logger = logging.getLogger('Game:{0}'.format(self.id))
         self.player_a = player_a  # type: Player
         self.player_b = player_b  # type: Player
-        self.player_a.in_game = True
-        self.player_b.in_game = True
 
         self.turn = SIDE_A
+
+    def begin(self):
+        self.player_a.in_game = True
+        self.player_b.in_game = True
 
         # Subscribe to player messages
         self.player_a.on_message.append(self._on_player_a_message)
@@ -82,16 +84,15 @@ class GameBase(object):
         self.player_a.on_disconnect.append(self._on_player_a_disconnect)
         self.player_b.on_disconnect.append(self._on_player_b_disconnect)
 
-    def begin(self):
         # Send that the game is started
         self.player_a.send(GameMessage(MESSAGE_HEAD_HELLO,
                                        status='started',
-                                       id=self.id,
+                                       game_id=self.id,
                                        side=SIDE_A,
                                        state=self.get_state(SIDE_A)))
         self.player_b.send(GameMessage(MESSAGE_HEAD_HELLO,
                                        status='started',
-                                       id=self.id,
+                                       game_id=self.id,
                                        side=SIDE_B,
                                        state=self.get_state(SIDE_B)))
 
@@ -103,7 +104,7 @@ class GameBase(object):
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
-        if message.game_id != self.id:
+        if message.body.get(P_GAME_ID) != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
             player.send(GameMessage(MESSAGE_HEAD_ERROR, status='wrong game id'))
             return False
@@ -153,14 +154,20 @@ class GameBase(object):
         return {}
 
     def end(self, interrupted=False):
-        self.logger.info('Finished interrupted={0}'.format(interrupted))
-
+        self.logger.info('Game finished, interrupted={0}'.format(interrupted))
         try:
             self.player_a.send(GameMessage(MESSAGE_HEAD_ENDED, status='finished', interrupted=interrupted))
+        except Exception as err:
+            self.logger.error(err)
+
+        try:
             self.player_b.send(GameMessage(MESSAGE_HEAD_ENDED, status='finished', interrupted=interrupted))
         except Exception as err:
             self.logger.error(err)
 
+        self.is_active = False
+
+    def close(self):
         self.player_a.in_game = False
         self.player_b.in_game = False
 
@@ -169,5 +176,3 @@ class GameBase(object):
         self.player_b.on_message.remove(self._on_player_b_message)
         self.player_a.on_disconnect.remove(self._on_player_a_disconnect)
         self.player_b.on_disconnect.remove(self._on_player_b_disconnect)
-
-        self.is_active = False
