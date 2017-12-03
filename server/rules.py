@@ -191,8 +191,8 @@ P_OBJECT_CASES = 'cases'
 
 
 objects = {
-    'c4': {
-        P_OBJECT_FULL_NAME: 'Flying c4',
+    'Bomb': {
+        P_OBJECT_FULL_NAME: 'Bomb',
         P_OBJECT_DESCRIPTION: 'Just a flying c4',
         P_OBJECT_CASES: {
             CASE_PLAY_CARD: {
@@ -240,14 +240,28 @@ objects = {
             }
         },
     },
-    'drone': {
-        P_OBJECT_FULL_NAME: 'Drone',
+    'ADrone': {
+        P_OBJECT_FULL_NAME: 'Simple attacking drone',
         P_OBJECT_CASES: {
             CASE_ROUND_END: {
                 P_CASE_EFFECTS: [
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
                         P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                        P_EFFECT_VALUE: 3
+                    },
+                ]
+            }
+        },
+    },
+    'HDrone': {
+        P_OBJECT_FULL_NAME: 'Simple healing drone',
+        P_OBJECT_CASES: {
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
+                        P_EFFECT_TARGET: TARGET_ALLY_SHIP,
                         P_EFFECT_VALUE: 3
                     },
                 ]
@@ -304,23 +318,1703 @@ P_CARD_EFFECTS = 'effects'
 
 
 cards = {
-    'some': {
-        P_CARD_FULL_NAME: 'IMBA Card',
-        P_CARD_TYPE: CARD_TYPE_SHIP,
+    'Fire all': {
+        P_CARD_FULL_NAME: 'Fire all weapons',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Fire all offense description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 6,
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Fire all defense description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3,
+                }
+            ]
+        }
+    },
+    'Hamstring': {
+        P_CARD_FULL_NAME: 'Hamstring',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Hamstring card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Some card description',
-            P_CARD_COST: 5,
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        }
+    },
+    'IRrounds': {
+        P_CARD_FULL_NAME: 'Incendiary rounds',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Incendiary card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'on fire'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Incendiary card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'Leak': {
+        P_CARD_FULL_NAME: 'Cause a leak',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Leak  card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Leak card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'Bomb': {
+        P_CARD_FULL_NAME: 'Bomb',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Bomb  card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2,
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Bomb card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'Bomb'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Detonate'
+                }
+            ]
+        }
+
+    },
+    'Detonate': {
+        P_CARD_FULL_NAME: 'Detonate Bomb',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Detonate Bomb card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Bomb card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                            ]
+        }
+    },
+    'Cool': {
+        P_CARD_FULL_NAME: 'Cool the gun',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Cool card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Cool card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        }
+
+    },
+    'Snipe': {
+        P_CARD_FULL_NAME: 'Precise shot',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Cool card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Cool card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 1
+                },
+            ]
+        }
+
+    },
+    'Scorch': {
+        P_CARD_FULL_NAME: 'Scorch this feathers',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'on fire'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                    P_EFFECT_VALUE: 5,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+            ]
+        }
+
+    },
+    'Redirect': {
+        P_CARD_FULL_NAME: 'Redirect energy this feathers',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        }
+
+    },
+    'EMP': {
+        P_CARD_FULL_NAME: 'EMP',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'EMP card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 10
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Scorch card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'EMP'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Detonate EMP'
+                }
+            ]
+        }
+
+    },
+    'Detonate EMP': {
+        P_CARD_FULL_NAME: 'Detonate EMP',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Detonate EMP card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Detonate EMP card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                            ]
+        }
+    },
+    'Charging': {
+        P_CARD_FULL_NAME: 'Charging my laser',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'laser card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Fire!'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'laser card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Fire!'
+                }
+            ]
+        }
+
+    },
+    'Fire!': {
+        P_CARD_FULL_NAME: 'Fire!',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Fire! card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 8
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Fire! card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 6
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'Hold fire': {
+        P_CARD_FULL_NAME: 'Hold fire',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Hold fire card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Hold fire card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        }
+
+    },
+    'Grapple': {
+        P_CARD_FULL_NAME: 'Grapple',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Grapple card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Grapple card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'Lighting rod': {
+        P_CARD_FULL_NAME: 'Lighting rod',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Lighting rod card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'Lightning rod'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Lighting rod card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        }
+
+    },
+    'Impale': {
+        P_CARD_FULL_NAME: 'Impale',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Impale card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Impale card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+            ]
+        }
+
+    },
+    'Electrocute': {
+        P_CARD_FULL_NAME: 'Electrocute',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Electrocute card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Electrocute card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        }
+
+    },
+    'Still': {
+        P_CARD_FULL_NAME: 'Hold still',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Hold still card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Hold still card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        }
+
+    },
+    'Grab': {
+        P_CARD_FULL_NAME: 'That\'s mine',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'That\'s mine card description',
+            P_CARD_COST: 8,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 5
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Fix it!'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'That\'s mine card description',
+            P_CARD_COST: 8,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
+                    P_EFFECT_VALUE: 'Spare part'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                }
+            ]
+        }
+
+    },
+    'Fix': {
+        P_CARD_FULL_NAME: 'Fix it!',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Fix it! card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE
                 }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
 
         }
+
+    },
+    'Spare': {
+        P_CARD_FULL_NAME: 'Spare part!',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Spare card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
+                    P_EFFECT_VALUE: 4
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Spare card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
+                    P_EFFECT_VALUE: 4
+                }
+            ]
+        }
+
+    },
+    'Power': {
+        P_CARD_FULL_NAME: 'Power up',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Power card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Power card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'Ram': {
+        P_CARD_FULL_NAME: 'Ram',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Ram card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 4
+                },
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Ram card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 4
+                },
+            ]
+        }
+
+    },
+    'EBoost': {
+        P_CARD_FULL_NAME: 'Energy boost',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'EBoost card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'EBoost card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        }
+
+    },
+    'Stop': {
+        P_CARD_FULL_NAME: 'Full stop',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Stop card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                    P_EFFECT_VALUE: 1
+                },
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Stop card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'TaB': {
+        P_CARD_FULL_NAME: 'Turn and burn',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'TaB card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                    P_EFFECT_VALUE: 1
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'TaB card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        }
+
+    },
+    'Barrel': {
+        P_CARD_FULL_NAME: 'Barrel roll',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Barrel card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Barrel card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'missile': {
+        P_CARD_FULL_NAME: 'Hardpoint missile',
+        P_CARD_TYPE: CARD_TYPE_WEAPON,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'missile card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'missile card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'Wingdrone': {
+        P_CARD_FULL_NAME: 'Wingdrone',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Wingdrone card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'ADrone'
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Wingdrone card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'ADrone'
+                }
+            ]
+        }
+
+    },
+    'Mine': {
+        P_CARD_FULL_NAME: 'Floating mine',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Mine card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'Mine'
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Mine card description',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'Mine'
+                }
+            ]
+        }
+
+    },
+    'Healdrone': {
+        P_CARD_FULL_NAME: 'Little Drone Helper',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Healdrone card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'HDrone'
+                }
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Healdrone card description',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'HDrone'
+                }
+            ]
+        }
+
+    },
+    'Reactor': {
+        P_CARD_FULL_NAME: 'Cool the reactor',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Reactor card description',
+            P_CARD_COST: 6,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Reactor card description',
+            P_CARD_COST: 6,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        }
+
+    },
+    'Core': {
+        P_CARD_FULL_NAME: 'Power to the core',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Core card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Core card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+
+    },
+    'Sandstorm': {
+        P_CARD_FULL_NAME: 'Sandstorm',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Sandstorm card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Sandstorm card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+
+            ]
+        }
+
+    },
+    'Thunder': {
+        P_CARD_FULL_NAME: 'Thunder and Lightning',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Thunder card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Thunder card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+
+            ]
+        }
+
+    },
+    'Tornado': {
+        P_CARD_FULL_NAME: 'Tornado',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Tornado card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Tornado card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+
+            ]
+        }
+
+    },
+    'Sidewind': {
+        P_CARD_FULL_NAME: 'Sidewind',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Sidewind card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Sidewind card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                 {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                 }
+            ]
+        }
+    },
+    'Wingman': {
+        P_CARD_FULL_NAME: 'Wingman\'s help',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Sidewind card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Sidewind card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD_ENEMY,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 3
+                }
+            ]
+        }
+    },
+    'Flare': {
+        P_CARD_FULL_NAME: 'Solar flare',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                    P_EFFECT_VALUE: 2
+                }
+            ]
+        }
+    },
+    'Meteor shower': {
+        P_CARD_FULL_NAME: 'Solar flare',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'flare card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        }
+    },
+    'Geomagnetic': {
+        P_CARD_FULL_NAME: 'Geomagnetic storm',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Geomagnetic card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Geomagnetic card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        }
+    },
+    'Fog': {
+        P_CARD_FULL_NAME: 'Fog',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Fog card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Fog card description',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+
+
+                }
+            ]
+        }
+    },
+    'Bursts': {
+        P_CARD_FULL_NAME: 'Energy microbursts',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Bursts card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Bursts card description',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 4
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DISARM
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE
+                }
+            ]
+        }
+    },
+    'Birds': {
+        P_CARD_FULL_NAME: 'Bird flock',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Birds card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'birds'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Birds card description',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'birds'
+                }
+            ]
+        }
+    },
+    'Headwind': {
+        P_CARD_FULL_NAME: 'Headwind',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Headwind card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Headwind card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        }
+    },
+    'Tailwind': {
+        P_CARD_FULL_NAME: 'Tailwind',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Tailwind card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Tailwind card description',
+            P_CARD_COST: 1,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
     }
+
 }
