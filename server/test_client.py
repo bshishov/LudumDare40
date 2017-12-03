@@ -62,7 +62,7 @@ class TestPlayer(object):
         if message.domain == MESSAGE_DOMAIN_GAME and message.head == MESSAGE_HEAD_HELLO:
             self._is_queue = False
             self._is_in_game = True
-            self._game_id = message.body['id']
+            self._game_id = message.body[P_GAME_ID]
             self._side = message.body['side']
             self._logger.info('Game started: id={0} side={1}'.format(self._game_id, self._side))
 
