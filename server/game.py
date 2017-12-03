@@ -486,7 +486,7 @@ class CardGame(GameBase):
 
         # Swap players
         if self.is_player(old_pos):
-            enemy = self.get_enemy(entity)
+            enemy = self.get_enemy_ship(entity)
             if enemy.position == entity.position:
                 self.entity_move(enemy, -amount)
 
@@ -524,28 +524,27 @@ class CardGame(GameBase):
             return self.player_b_entity.position < \
                    self.player_a_entity.position
 
-    def get_enemy(self, entity):
-        if not self.is_player(entity):
-            return None
-        if entity == self.player_a_entity:
+    def get_enemy_ship(self, entity):
+        if entity.side == SIDE_A:
             return self.player_b_entity
-        else:
+        if entity.side == SIDE_B:
             return self.player_a_entity
+        return None
 
     def get_targets(self, target, entity):
         if target == TARGET_SELF:
             return [entity]
-        if target == TARGET_ENEMIES:
-            enemy = self.get_enemy(entity)
+        if target == TARGET_ALL_ENEMIES:
+            enemy = self.get_enemy_ship(entity)
             if enemy is not None:
                 return [enemy]
             return [enemy]
         if target == TARGET_ALL:
             return [self.player_a_entity, self.player_b_entity] + self.objects
         if target == TARGET_ALL_EXCEPT_SELF:
-            return [self.get_enemy(entity)] + self.objects
+            return [self.get_enemy_ship(entity)] + self.objects
         if target == TARGET_MAX_ENERGY:
-            enemy = self.get_enemy(entity)
+            enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
             if enemy.energy > entity.erengy:
@@ -553,7 +552,7 @@ class CardGame(GameBase):
             else:
                 return [entity]
         if target == TARGET_MAX_HEALTH:
-            enemy = self.get_enemy(entity)
+            enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
             if enemy.hp > entity.hp:
@@ -610,6 +609,14 @@ class CardGame(GameBase):
 
 def create(player_a, player_b):
     return CardGame(player_a, player_b)
+
+
+def is_ally(e1, e2):
+    return e1.side == e2.side
+
+
+def is_enemy(e1, e2):
+    return e1.side != e2.side
 
 
 def get_card(key):

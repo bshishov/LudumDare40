@@ -25,16 +25,28 @@ P_TYPE = 'type'
 P_VALUE = 'value'
 P_TARGET = 'target'
 
-# TARGETS
+""" 
+    ===============================================  
+                        TARGETS 
+    ===============================================
+"""
+TARGET_SELF = 'self'
+# All
 TARGET_ALL = 'all'
 TARGET_ALL_EXCEPT_SELF = 'all_except'
-TARGET_SELF = 'self'
-TARGET_ENEMIES = 'enemy'
-TARGET_ALLIES = 'allies'
+TARGET_ALL_ENEMIES = 'all_enemies'
+TARGET_ALL_ALLIES = 'all_allies'
+TARGET_ALL_SHIPS = 'all_ships'
+
+# Separate ships and objects
 TARGET_ENEMY_SHIP = 'enemy_ship'
 TARGET_ALLY_SHIP = 'ally_ship'
+
+# Special
 TARGET_MAX_HEALTH = 'max_health'
 TARGET_MAX_ENERGY = 'max_energy'
+
+# Directional
 TARGET_FORWARD = 'forward'
 TARGET_FORWARD_ALLY = 'forward_ally'
 TARGET_FORWARD_ENEMY = 'forward_enemy'
@@ -43,6 +55,7 @@ TARGET_BACKWARD = 'backward'
 TARGET_BACKWARD_ALLY = 'backward_ally'
 TARGET_BACKWARD_ENEMY = 'backward_enemy'
 TARGET_BACKWARD_PIERCE = 'backward_pierce'
+""" ===============================================  """
 
 # EFFECTS
 EFFECT_TYPE_DAMAGE = 'damage'
@@ -233,7 +246,7 @@ objects = {
                 P_CASE_EFFECTS: [
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ENEMIES,
+                        P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
                         P_EFFECT_VALUE: 3
                     },
                 ]
