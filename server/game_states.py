@@ -5,6 +5,7 @@ from rules import *
 from game_utils import *
 from typing import List, Dict
 
+
 class BuffState(object):
     def __init__(self, name, duration):
         self.name = name
@@ -107,11 +108,20 @@ class PlayerState(EntityState):
     def build_deck(self):
         ship = get_ship(self.ship_name)
         ship_cards = ship.get(P_SHIP_CARDS, [])
-        self.deck += ship_cards * SHIP_CARDS_EACH
+        for c_name in ship_cards:
+            card = get_card(c_name)
+            in_deck = card.get(P_CARD_DECK, True)
+            if in_deck:
+                self.deck += [c_name, ] * SHIP_CARDS_EACH
 
         weapon = get_weapon(self.weapon_name)
         weapon_cards = weapon.get(P_WEAPON_CARDS, [])
-        self.deck += weapon_cards * WEAPON_CARDS_EACH
+
+        for c_name in weapon_cards:
+            card = get_card(c_name)
+            in_deck = card.get(P_CARD_DECK, True)
+            if in_deck:
+                self.deck += [c_name, ] * WEAPON_CARDS_EACH
 
         event_cards = []
         for card_key, card in cards.items():
