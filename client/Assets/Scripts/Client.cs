@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Assets.Scripts.Utils;
 using UnityEngine;
-using Newtonsoft.Json;
 
 namespace Assets.Scripts
 {
     public class Client : Singleton<Client>
     {
-        public class Message
-        {
-            
-        }
-
         public bool IsActive
         {
             get { return _tcpClient != null && _tcpClient.Connected && _tcpStream != null; }
@@ -49,31 +42,23 @@ namespace Assets.Scripts
         {
             while (true)
             {
+                if (_tcpClient != null && !_tcpClient.Connected) return;
+                
                 try
                 {
                     var bytesReceived = _tcpStream.Read(_readBuffer, 0, _readBuffer.Length);
                     var messageRaw = Encoding.UTF8.GetString(_readBuffer, 0, bytesReceived);
                     Debug.LogFormat("Received: {0}", messageRaw);
-                    var msg = JsonConvert.DeserializeObject<Message>(messageRaw);
+                    var msg = new Message(messageRaw);
                     Debug.LogFormat("Received: {0}", msg);
                     if(OnReceive != null)
                         Dispatch(() => OnReceive.Invoke(msg));
                 }
-                catch (Exception e)
+                catch (SocketException e)
                 {
-                    Debug.LogWarning("Failed to recognize message: {0}", e);
-                    throw;
+                    return;
                 }
                 
-            }
-        }
-
-        public void Send(Message message)
-        {
-            if (_tcpClient != null && _tcpClient.Connected && _tcpStream != null)
-            {
-                var buffer = new byte[8192];
-                _tcpStream.BeginWrite(buffer, 0, 100, OnSend, _tcpClient);
             }
         }
 
@@ -159,8 +144,14 @@ namespace Assets.Scripts
 
         void OnGUI()
         {
+            // { 'body': { 'ship': 'tank', 'weapon': 'mg'}, 'head': 'start_queue', 'domain': 'lobby', 'status': 'start'}
             if (GUI.Button(new Rect(10, 10, 150, 100), "QUEUE"))
-                Send("{\"type\":\"queue\", \"status\":\"start\", \"body\": {}}");
+            {
+                var m = new Message("lobby", "start_queue", "start");
+                m.Body["ship"] = "tank";
+                m.Body["weapon"] = "mg";
+                Send(m.ToString());
+            }
         }
     }
 }
