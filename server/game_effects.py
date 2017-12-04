@@ -37,11 +37,17 @@ class EffectHandler(object):
             targets = self.game.get_targets(source_entity, effect.get(P_EFFECT_TARGET), e_range)
             for e in targets:
                 # e type: Entity
-                self.apply_effect(e, effect)
+                self._apply_effect(source_entity, e, effect)
 
-    def apply_effect(self, entity, effect):
+    def _apply_effect(self, source_entity, entity, effect):
         ef_type = effect.get(P_EFFECT_TYPE, None)
         ef_value = effect.get(P_EFFECT_VALUE, None)
+        ef_range_mod = effect.get(P_EFFECT_RANGE_MOD, 0)
+        ef_range = effect.get(P_EFFECT_RANGE, None)
+
+        # Modify effect value by range modifier
+        if isinstance(ef_value, int) and isinstance(ef_range, int):
+            ef_value = max(0, ef_value + ef_range_mod * (ef_range - abs(source_entity.position - entity.position)))
 
         if ef_type is None:
             raise GameError('Effect has no type: {0}'.format(effect))
