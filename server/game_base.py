@@ -137,17 +137,17 @@ class GameBase(object):
 
     def end_turn(self):
         if self.turn == SIDE_A:
-            new_turn = SIDE_B
+            self.turn = SIDE_B
         else:
-            new_turn = SIDE_A
+            self.turn = SIDE_A
 
         self.player_a.send(GameMessage(MESSAGE_HEAD_TURN,
                                        status='turn',
-                                       turn=new_turn,
+                                       turn=self.turn,
                                        state=self.get_state(SIDE_A)))
         self.player_b.send(GameMessage(MESSAGE_HEAD_TURN,
                                        status='turn',
-                                       turn=new_turn,
+                                       turn=self.turn,
                                        state=self.get_state(SIDE_B)))
 
     def get_state(self, only_for=None):

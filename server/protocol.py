@@ -2,6 +2,8 @@ import json
 
 VERSION = '0.0.0.0.0.0.0.0.1'
 
+MESSAGE_SEPARATOR = b'\x00\x01\x00\x01\x00\x01'
+
 MESSAGE_DOMAIN_GAME = 'game'
 MESSAGE_DOMAIN_LOBBY = 'lobby'
 
@@ -59,7 +61,7 @@ def serialize(obj):
         data = json.dumps(obj.__dict__)
     else:
         data = json.dumps(obj)
-    return bytes(data, ENCODING)
+    return bytes(data, ENCODING) + MESSAGE_SEPARATOR
 
 
 def deserialize(data):
