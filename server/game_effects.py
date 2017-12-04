@@ -2,16 +2,18 @@ from game import *
 
 
 def collect_handler(handlers):
-    def effect_handler(effect_name):
+    def effect_handler(effect_type):
         def decorator(fn):
-            handlers[effect_name] = decorator
-
-            def wrapper(self, entity, effect, *args, **kwargs):
-                fn(self, entity, effect, *args, **kwargs)
+            def wrapper(self, entity, *args, **kwargs):
+                fn(self, entity, *args, **kwargs)
                 self.game.notify(GameMessage(MESSAGE_HEAD_ACTION,
                                              status='effect',
                                              entity=entity.get_state(),
-                                             effect=effect))
+                                             effect=effect_type,
+                                             args=args,
+                                             kwargs=kwargs))
+            print('Added handler: {0}'.format(effect_type))
+            handlers[effect_type] = wrapper
             return wrapper
         return decorator
     return effect_handler
@@ -24,40 +26,53 @@ class EffectHandler(object):
     def __init__(self, game):
         self.game = game  # type: CardGame
         self.logger = logging.getLogger(self.__class__.__name__)
-        self._effect_handlers = {}
 
     def apply_effects(self, source_entity, effects):
         """
-                    @type source_entity: EntityState
-                    @type effects: List[Dict]
-                """
+            @type source_entity: EntityState
+            @type effects: List[Dict]
+        """
         for effect in effects:
             e_range = effect.get(P_EFFECT_RANGE, 10)
             targets = self.game.get_targets(source_entity, effect.get(P_EFFECT_TARGET), e_range)
             for e in targets:
                 # e type: Entity
-                self.apply_effect(e, effect)
+                self._apply_effect(source_entity, e, effect)
 
-    def apply_effect(self, entity, effect):
+    def _apply_effect(self, source_entity, entity, effect):
         ef_type = effect.get(P_EFFECT_TYPE, None)
         ef_value = effect.get(P_EFFECT_VALUE, None)
+        ef_range_mod = effect.get(P_EFFECT_RANGE_MOD, 0)
+        ef_range = effect.get(P_EFFECT_RANGE, None)
+
+        # Modify effect value by range modifier
+        if isinstance(ef_value, int) and isinstance(ef_range, int):
+            ef_value = max(0, ef_value + ef_range_mod * (ef_range - abs(source_entity.position - entity.position)))
 
         if ef_type is None:
             raise GameError('Effect has no type: {0}'.format(effect))
 
-        if ef_type in self._effect_handlers:
-            kwargs = effect.__dict__
-            del kwargs[P_EFFECT_TYPE]
-            if P_EFFECT_VALUE in kwargs:
-                del kwargs[P_EFFECT_VALUE]
-            self.logger.debug('effect {0} kwargs: {1}'.format(ef_type, ef_value))
-            handler = self._effect_handlers[ef_type]
-            handler(entity, ef_value, **kwargs)
-        raise GameError('No handler for effect: 0'.format(ef_type))
+        if ef_type not in self.handlers:
+            raise GameError('No handler for effect: {0}'.format(ef_type))
+
+        # TODO: PASS ARGUMENTS WISELY
+        kwargs = effect.copy()
+        del kwargs[P_EFFECT_TYPE]
+        if P_EFFECT_VALUE in kwargs:
+            del kwargs[P_EFFECT_VALUE]
+        if P_EFFECT_TARGET in kwargs:
+            del kwargs[P_EFFECT_TARGET]
+        self.logger.debug('effect: {0} val: {1}'.format(ef_type, ef_value))
+        self.handlers[ef_type](self, entity, ef_value, **kwargs)
 
     @effect_handler(EFFECT_TYPE_DAMAGE)
     def effect_damage(self, entity, amount):
-        self._entity_modify_hp(entity, -amount)
+        """
+            @type entity: EntityState
+            @type amount: int
+        """
+        damage = amount + entity.damage_mod
+        self._entity_modify_hp(entity, -damage)
 
     @effect_handler(EFFECT_TYPE_EDAMAGE)
     def effect_edamage(self, entity, amount):
@@ -81,7 +96,7 @@ class EffectHandler(object):
             if buff_state is None:
                 # If no such buff - apply new
                 entity.buffs.append(BuffState(buff_name, duration))
-                self.apply_effects(buff.get(P_BUFF_ON_APPLY_EFFECTS, []), entity)
+                self.apply_effects(entity, buff.get(P_BUFF_ON_APPLY_EFFECTS, []))
             else:
                 # If buff is not applied - update duration
                 buff_state.duration = duration
@@ -96,7 +111,7 @@ class EffectHandler(object):
         if buff_state is not None:
             buff = get_buff(buff_name)
             entity.buffs.remove(buff_state)
-            self.apply_effects(buff.get(P_BUFF_ON_REMOVE_EFFECTS, []), entity)
+            self.apply_effects(buff.get(entity, P_BUFF_ON_REMOVE_EFFECTS, []))
 
     @effect_handler(EFFECT_TYPE_ADD_CARDCOST)
     def effect_add_card_cost(self, entity, amount, card_type):
@@ -209,24 +224,25 @@ class EffectHandler(object):
             raise GameError('Non-player entities cannot draw card')
         if isinstance(entity, PlayerState):
             if len(entity.deck) > 0:
-                card_state = entity.draw_from_deck()
-                entity.hand.append(card_state)
-                self.game.invoke_case(entity, CASE_DRAW_CARD, card_state.name)
+                card = random.sample(entity.deck, 1)[0]
+                entity.deck.remove(card)
+                self.effect_gain_card(entity, card)
+                return
 
-    @effect_handler(EFFECT_TYPE_DROP_CARD)
+    @effect_handler(EFFECT_TYPE_DROP_CARD_OF_TYPE)
     def effect_drop_card(self, entity):
         """
             @type entity: EntityState
         """
         if not self.game.is_player(entity):
-            raise GameError('Non-player entities cannot draw card: {0}'.format(entity.name), crucial=False)
+            raise GameError('Non-player entities cannot have cards: {0}'.format(entity.name), crucial=False)
         if isinstance(entity, PlayerState):
             if len(entity.hand) > 0:
                 card_to_drop = random.sample(entity.hand, 1)[0]
                 entity.hand.remove(card_to_drop)
                 self.game.invoke_case(entity, CASE_DROP_CARD, card_to_drop)
 
-    @effect_handler(EFFECT_TYPE_DROP_CARD)
+    @effect_handler(EFFECT_TYPE_GAIN_CARD)
     def effect_gain_card(self, entity, card_name):
         """
             @type entity: PlayerState
@@ -239,6 +255,22 @@ class EffectHandler(object):
             raise GameError('Now such card: {0}'.format(card_name))
 
         entity.hand.append(CardState(card_name))
+
+    @effect_handler(EFFECT_TYPE_REMOVE_CARD)
+    def effect_remove_card(self, entity, card_name):
+        """
+            @type entity: PlayerState
+            @type card_name: str
+        """
+        if not entity.is_player:
+            raise GameError('Only players can gain cards: {0}'.format(entity.get_state()), crucial=False)
+
+        if card_name not in cards:
+            raise GameError('Now such card: {0}'.format(card_name))
+
+        for card_state in entity.hand:
+            if card_state.name == card_name:
+                entity.hand.remove(card_state)
 
     @effect_handler(EFFECT_TYPE_ENERGY_TEST)
     def effect_energy_test(self, entity, threshold):
@@ -291,3 +323,5 @@ class EffectHandler(object):
         """
         entity.energy += amount
         entity.energy = max(entity.energy, 0)
+
+

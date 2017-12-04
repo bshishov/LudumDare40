@@ -88,16 +88,15 @@ class PlayerState(EntityState):
         self.armed = True
         self.buffable = True
 
-        self.hp = get_ship(ship_name).get(P_SHIP_HP)
-        self.max_energy = get_ship(ship_name).get(P_SHIP_MAX_ENERGY)
+        ship = get_ship(ship_name)
+        self.hp = ship.get(P_SHIP_HP)
+        self.max_energy = ship.get(P_SHIP_MAX_ENERGY)
+        self.energy_gain = ship.get(P_SHIP_ENERGY_PER_TURN)
 
         self.deck = []  # type: List[str]
         self.hand = []  # type: List[CardState]
 
         self.build_deck()
-
-        for i in range(INITIAL_CARDS):
-            self.hand.append(self.draw_from_deck())
 
     def get_card_in_hand(self, card_name, default=None):
         for c in self.hand:
@@ -120,6 +119,7 @@ class PlayerState(EntityState):
                 event_cards.append(card_key)
 
         self.deck += select_cards(event_cards, EVENT_CARDS_FROM_POOL, MAX_EVENT_CARDS_OF_EACH_TYPE)
+        random.shuffle(self.deck)
 
     def draw_from_deck(self):
         if len(self.deck) > 0:

@@ -6,6 +6,8 @@ from game_base import *
 from game_states import *
 from game_effects import EffectHandler
 
+from utils import set_interval
+
 
 class CardGame(GameBase):
     def __init__(self, *args, **kwargs):
@@ -18,6 +20,16 @@ class CardGame(GameBase):
         self.board_size = BOARD_SIZE
         self.effect_handler = EffectHandler(self)
         self._last_entity_id = 1
+
+    def begin(self):
+        super().begin()
+        set_interval(1, self.draw_initial_cards)
+        set_interval(4, self.start_round)
+
+    def draw_initial_cards(self):
+        for i in range(INITIAL_CARDS):
+            self.effect_handler.effect_draw_card(self.player_a_entity)
+            self.effect_handler.effect_draw_card(self.player_b_entity)
 
     def on_player_a_message(self, message):
         self._on_game_message(message, self.player_a_entity)
@@ -72,8 +84,11 @@ class CardGame(GameBase):
             raise GameError('Card does not have any actions: {0}'.format(card_name))
         if cost > player_state.energy:
             raise GameError('Not enough energy: {0}'.format(card_name))
-        self.effect_handler.effect_edamage(cost)
-        self.effect_handler.apply_effects(card_action.get(P_CARD_EFFECTS, []), player_state)
+
+        # Play card
+        self.effect_handler.effect_remove_card(player_state, card_name)
+        self.effect_handler.effect_edamage(player_state, cost)
+        self.effect_handler.apply_effects(player_state, card_action.get(P_CARD_EFFECTS, []))
         self.invoke_case(player_state, CASE_PLAY_CARD, card_name)
 
     def fire_weapon(self, player_state):
@@ -93,37 +108,41 @@ class CardGame(GameBase):
         if cost > player_state.energy:
             raise GameError('Not enough energy to shoot: {0}'.format(player_state.weapon_name))
         self.effect_handler.effect_edamage(player_state, cost)
-        self.effect_handler.apply_effects(w_action.get(P_WEAPON_EFFECTS, []), player_state)
+        self.effect_handler.apply_effects(player_state, w_action.get(P_WEAPON_EFFECTS, []))
 
     def player_end_turn(self, player_state):
         """
             @type player_state: PlayerState
         """
+        if self.turn == SIDE_B:
+            self.end_round()
         self.end_turn()
         if self.turn == SIDE_A:
-            self.end_round()
+            self.start_round()
 
     def end_round(self):
+        # Process buffs
         for entity_state in self.get_all_entities():
             self.invoke_case_global(CASE_ROUND_END)
-            for buff_name, duration in entity_state.buffs:
-                d = duration - 1
+            for buff in entity_state.buffs:
+                d = buff.duration - 1
                 if d <= 0:
-                    self.effect_handler.effect_remove_buff(entity_state, buff_name)
+                    self.effect_handler.effect_remove_buff(entity_state, buff.name)
                 else:
-                    buff = get_buff(buff_name)
-                    self.effect_handler.apply_effects(buff.get(P_BUFF_ON_ROUND_EFFECTS, []), entity_state)
-                    raise NotImplementedError()
+                    buff = get_buff(buff.name)
+                    self.effect_handler.apply_effects(entity_state, buff.get(P_BUFF_ON_ROUND_EFFECTS, []))
 
+    def start_round(self):
+        # Process energy
         for entity_state in self.get_all_entities():
             self.invoke_case_global(CASE_ROUND_START)
-
+            self.effect_handler.effect_eheal(entity_state, entity_state.energy_gain)
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
                 self.effect_handler.effect_damage(entity_state, 1)
                 self.invoke_case(entity_state, CASE_OVERLOAD, entity_state.name)
 
-    def invoke_case_global(self, case, arg):
+    def invoke_case_global(self, case, arg=None):
         for e in self.get_all_entities():  # type: EntityState
             self.invoke_case(e, case, arg)
 
@@ -137,7 +156,7 @@ class CardGame(GameBase):
                 continue
             case_arg = case.get(P_CASE_ARG, None)
             if case_arg is None or case_arg == arg:
-                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, None))
+                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, []))
 
         # Cases in objects
         if not self.is_player(entity):
@@ -148,7 +167,7 @@ class CardGame(GameBase):
                 return
             case_arg = case.get(P_CASE_ARG, None)
             if case_arg is None or case_arg == arg:
-                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, None))
+                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, []))
 
     def is_offense(self, entity):
         if not self.is_player(entity):
@@ -188,7 +207,7 @@ class CardGame(GameBase):
 
     def get_targets_no_range(self, entity, target):
         if target == TARGET_SELF:
-            return [entity]
+            return [entity, ]
 
         if target == TARGET_ALL:
             return self.get_all_entities()
@@ -256,27 +275,27 @@ class CardGame(GameBase):
             if enemy is None:
                 return []
             if enemy.energy > entity.erengy:
-                return [enemy]
+                return [enemy, ]
             else:
-                return [entity]
+                return [entity, ]
 
         if target == TARGET_MAX_HEALTH:
             enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
             if enemy.hp > entity.hp:
-                return [enemy]
+                return [enemy, ]
             else:
-                return [entity]
+                return [entity, ]
 
         if target == TARGET_MIN_HEALTH:
             enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
             if enemy.hp < entity.hp:
-                return [enemy]
+                return [enemy, ]
             else:
-                return [entity]
+                return [entity, ]
 
         raise GameError('Unknown target: {0}'.format(target))
 
@@ -284,6 +303,9 @@ class CardGame(GameBase):
         return filter_position(self.get_all_entities(), position)
 
     def get_all_entities(self):
+        """
+            :rtype: list[EntityState]
+        """
         return [self.player_a_entity, self.player_b_entity] + self.objects  # type: List[EntityState]
 
     def get_state(self, only_for=None):

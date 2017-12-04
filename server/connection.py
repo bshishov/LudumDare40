@@ -3,7 +3,7 @@ import socket
 import logging
 
 from utils import EventSubscription
-from protocol import serialize, deserialize
+from protocol import serialize, deserialize, MESSAGE_SEPARATOR
 
 
 RECV_BUFFER_SIZE = 8192
@@ -51,16 +51,31 @@ class ClientChannel(asyncore.dispatcher):
         self.on_disconnect = EventSubscription()
         self.on_message = EventSubscription()
         self.is_active = True
+        self.buffer = b''
 
     def handle_read(self):
-        data = self.recv(RECV_BUFFER_SIZE)
-        if data is not None and len(data) > 0:
-            try:
-                msg = deserialize(data)
-                self.logger.debug('Got a message: {0}'.format(msg))
-                self.on_message(msg)
-            except Exception as err:
-                self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
+        recv_buffer = self.recv(8192)
+        if recv_buffer is None or len(recv_buffer) <= 0:
+            return
+
+        self.buffer += recv_buffer
+        while len(self.buffer) > 0:
+            sep_index = self.buffer.find(MESSAGE_SEPARATOR, 0)
+            data = self.buffer[:sep_index]
+
+            # if separator not found
+            if sep_index < 0:
+                return
+
+            # remove message data from buffer
+            self.buffer = self.buffer[sep_index + len(MESSAGE_SEPARATOR):]
+            if len(data) > 0:
+                try:
+                    msg = deserialize(data)
+                    self.logger.debug('Got a message: {0}'.format(msg))
+                    self.on_message(msg)
+                except Exception as err:
+                    self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
 
     def send_message(self, message):
         try:

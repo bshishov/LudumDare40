@@ -7,7 +7,7 @@ import sys
 import time
 
 from main import DEFAULT_HOST, DEFAULT_PORT
-from utils import EventSubscription
+from utils import EventSubscription, set_interval
 from protocol import *
 from rules import *
 
@@ -22,16 +22,31 @@ class TestClient(asyncore.dispatcher):
         self.connect((host, port))
         self.logger.info('Connected to {0}:{1}'.format(host, port))
         self.on_message = EventSubscription()
+        self.buffer = b''
 
     def handle_read(self):
-        data = self.recv(8192)
-        if data is not None and len(data) > 0:
-            try:
-                msg = deserialize(data)
-                self.logger.debug('Got a message: {0}'.format(msg))
-                self.on_message(msg)
-            except Exception as err:
-                self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
+        recv_buffer = self.recv(8192)
+        if recv_buffer is None or len(recv_buffer) <= 0:
+            return
+
+        self.buffer += recv_buffer
+        while len(self.buffer) > 0:
+            sep_index = self.buffer.find(MESSAGE_SEPARATOR, 0)
+            data = self.buffer[:sep_index]
+
+            # if separator not found
+            if sep_index < 0:
+                return
+
+            # remove message data from buffer
+            self.buffer = self.buffer[sep_index + len(MESSAGE_SEPARATOR):]
+            if len(data) > 0:
+                try:
+                    msg = deserialize(data)
+                    self.logger.debug('Got a message: {0}'.format(msg))
+                    self.on_message(msg)
+                except Exception as err:
+                    self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
 
     def send_message(self, message):
         try:
@@ -66,6 +81,15 @@ class TestPlayer(object):
             self._side = message.body['side']
             self._logger.info('Game started: id={0} side={1}'.format(self._game_id, self._side))
 
+        if message.domain == MESSAGE_DOMAIN_GAME:
+            e = message.body.get('entity', None)
+            if e is not None:
+                deck = e.get('deck', [])
+                hand_raw = e.get('hand', [])
+                hand = ['{0}'.format(c.get('name', None)) for c in hand_raw]
+                print('Deck: \t{0}'.format(deck))
+                print('Hand: \t{0}'.format(hand))
+
         if self._is_queue:
             if message.status == 'queue stopped':
                 self._is_queue = False
@@ -80,7 +104,7 @@ class TestPlayer(object):
     def send(self, message):
         self._logger.debug('Sending: {0}'.format(message))
         if self._is_in_game:
-            message.body.game_id = self._game_id
+            message.body[P_GAME_ID] = self._game_id
         self._client.send_message(message)
 
     def do(self, cmd, *args):
@@ -136,6 +160,9 @@ def main(args):
 
     loop_thread = threading.Thread(target=asyncore.loop, name="Asyncore Loop")
     loop_thread.start()
+
+    # TODO: move to args
+    set_interval(1, player.do('q', 'tank', 'laser'))
 
     stop_requested = False
 
