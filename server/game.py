@@ -24,7 +24,7 @@ class CardGame(GameBase):
     def begin(self):
         super().begin()
         set_interval(1, self.draw_initial_cards)
-        set_interval(4, self.start_round)
+        set_interval(3, self.start_round)
 
     def draw_initial_cards(self):
         for i in range(INITIAL_CARDS):
@@ -39,7 +39,7 @@ class CardGame(GameBase):
 
     def _on_game_message(self, message, entity):
         try:
-            if message.head == MESSAGE_HEAD_ACTION:
+            if message.head == MSG_CLI_GAME_ACTION:
                 if self.turn != entity.side:
                     raise GameError('Not your turn')
 
@@ -52,7 +52,7 @@ class CardGame(GameBase):
         except GameError as err:
             msg = 'Game error: {0}'.format(err)
             self.logger.warning(msg)
-            self.notify(GameMessage(MESSAGE_HEAD_ERROR, status=msg), entity)
+            self.notify_entity(entity, MSG_SRV_ERROR, status=msg)
 
     def _do_player_action(self, action, entity):
         action_type = action['type']
@@ -308,22 +308,27 @@ class CardGame(GameBase):
         """
         return [self.player_a_entity, self.player_b_entity] + self.objects  # type: List[EntityState]
 
-    def get_state(self, only_for=None):
+    def get_state(self, perspective_player=None):
+        """
+            @:type perspective_player: Player
+        """
+
+        hide_hand_a = perspective_player != self.player_a
+        hide_hand_b = perspective_player != self.player_b
+
         state = {
-            SIDE_A: self.get_player_state(self.player_a),
-            SIDE_B: self.get_player_state(self.player_b),
+            SIDE_A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
+            SIDE_B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
+            'objects': todict(self.objects),
+            'turn': self.turn,
         }
-        if only_for == SIDE_A:
-            del state[SIDE_B]
-        if only_for == SIDE_B:
-            del state[SIDE_A]
         return state
 
-    def get_player_state(self, player):
+    def get_player_state(self, player, hide_hand=False):
         if player == self.player_a:
-            return self.player_a_entity.get_state()
+            return self.player_a_entity.get_state(hide_hand=hide_hand)
         if player == self.player_b:
-            return self.player_b_entity.get_state()
+            return self.player_b_entity.get_state(hide_hand=hide_hand)
         return None
 
     def is_player(self, entity):
@@ -333,11 +338,16 @@ class CardGame(GameBase):
             return True
         return False
 
-    def notify(self, message, entity=None):
-        if entity is None or entity == self.player_a_entity:
-            self.player_a.send(message)
-        if entity is None or entity == self.player_b_entity:
-            self.player_b.send(message)
+    def notify_entity(self, entity, *args, **kwargs):
+        if entity is None:
+            self.notify_players(*args, **kwargs)
+            return
+
+        if entity == self.player_a_entity:
+            self.notify_player(self.player_a, *args, **kwargs)
+
+        if entity == self.player_b_entity:
+            self.notify_player(self.player_b, *args, **kwargs)
 
 
 def create(player_a, player_b):

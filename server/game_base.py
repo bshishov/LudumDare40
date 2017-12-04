@@ -4,7 +4,6 @@ import logging
 
 from protocol import *
 
-
 SIDE_A = 'a'
 SIDE_B = 'b'
 
@@ -13,6 +12,7 @@ class GameError(RuntimeError):
     """
         Game logic error
     """
+
     def __init__(self, message, crucial=True, *args):
         self.crucial = crucial
         super().__init__(message, *args)
@@ -39,11 +39,11 @@ class Player(object):
             return
 
         if not self.in_game:
-            if message.domain == MESSAGE_DOMAIN_LOBBY:
-                if message.head == MESSAGE_HEAD_START_QUEUE and not self.in_queue:
+            if message.domain == MSG_DOMAIN_LOBBY:
+                if message.head == MSG_CLI_QUEUE_START and not self.in_queue:
                     self.args = message.body
                     self.start_queue()
-                elif message.head == MESSAGE_HEAD_STOP_QUEUE and self.in_queue:
+                elif message.head == MSG_CLI_QUEUE_STOP and self.in_queue:
                     self.stop_queue()
 
     def send(self, message):
@@ -54,13 +54,13 @@ class Player(object):
         if self.in_game:
             return
         self.in_queue = True
-        self.send(LobbyMessage(MESSAGE_HEAD_ACK, status='queue started'))
+        self.send(LobbyMessage(MSG_SRV_QUEUE_STARTED, status='queue started'))
 
     def stop_queue(self):
         if self.in_game:
             return
         self.in_queue = False
-        self.send(LobbyMessage(MESSAGE_HEAD_ACK, status='queue stopped'))
+        self.send(LobbyMessage(MSG_SRV_QUEUE_STOPPED, status='queue stopped'))
 
 
 class GameBase(object):
@@ -85,28 +85,21 @@ class GameBase(object):
         self.player_b.on_disconnect.append(self._on_player_b_disconnect)
 
         # Send that the game is started
-        self.player_a.send(GameMessage(MESSAGE_HEAD_HELLO,
-                                       status='started',
-                                       game_id=self.id,
-                                       side=SIDE_A,
-                                       state=self.get_state(SIDE_A)))
-        self.player_b.send(GameMessage(MESSAGE_HEAD_HELLO,
-                                       status='started',
-                                       game_id=self.id,
-                                       side=SIDE_B,
-                                       state=self.get_state(SIDE_B)))
+        self.notify_player(self.player_a, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_A)
+        self.notify_player(self.player_b, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_B)
+
 
     def _validate_message(self, player, message):
         if message is None:
             return False
 
-        if message.domain != MESSAGE_DOMAIN_GAME:
+        if message.domain != MSG_DOMAIN_GAME:
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
-        if message.body.get(P_GAME_ID) != self.id:
+        if message.body.get(P_MSG_GAME_ID) != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
-            player.send(GameMessage(MESSAGE_HEAD_ERROR, status='wrong game id'))
+            self.notify_player(player, MSG_SRV_ERROR, status='wrong game id')
             return False
         return True
 
@@ -125,11 +118,11 @@ class GameBase(object):
         raise NotImplementedError
 
     def _on_player_a_disconnect(self, channel):
-        self.player_b.send(GameMessage(MESSAGE_HEAD_PLAYER_LEFT, status='opponent disconnected'))
+        self.notify_player(self.player_b, MSG_SRV_GAME_PLAYER_LEFT, status='opponent disconnected')
         self.end(interrupted=True)
 
     def _on_player_b_disconnect(self, channel):
-        self.player_a.send(GameMessage(MESSAGE_HEAD_PLAYER_LEFT, status='opponent disconnected'))
+        self.notify_player(self.player_a, MSG_SRV_GAME_PLAYER_LEFT, status='opponent disconnected')
         self.end(interrupted=True)
 
     def _on_game_message(self, message, entity):
@@ -141,27 +134,34 @@ class GameBase(object):
         else:
             self.turn = SIDE_A
 
-        self.player_a.send(GameMessage(MESSAGE_HEAD_TURN,
-                                       status='turn',
-                                       turn=self.turn,
-                                       state=self.get_state(SIDE_A)))
-        self.player_b.send(GameMessage(MESSAGE_HEAD_TURN,
-                                       status='turn',
-                                       turn=self.turn,
-                                       state=self.get_state(SIDE_B)))
+        self.notify_players(MSG_SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
-    def get_state(self, only_for=None):
+    def get_state(self, perspective=None):
         return {}
+
+    def notify_players(self, head, status='', *args, **kwargs):
+        self.notify_player(self.player_a, head, status=status, *args, **kwargs)
+        self.notify_player(self.player_b, head, status=status, *args, **kwargs)
+
+    def notify_player(self, player, head, status='', *args, **kwargs):
+        msg = GameMessage(head,
+                          game_id=self.id,
+                          status=status,
+                          state=self.get_state(perspective_player=player),
+                          *args, **kwargs)
+        player.send(msg)
 
     def end(self, interrupted=False):
         self.logger.info('Game finished, interrupted={0}'.format(interrupted))
         try:
-            self.player_a.send(GameMessage(MESSAGE_HEAD_ENDED, status='finished', interrupted=interrupted))
+            self.notify_player(self.player_a, MSG_SRV_GAME_END,
+                               status='finished', interrupted=interrupted)
         except Exception as err:
             self.logger.error(err)
 
         try:
-            self.player_b.send(GameMessage(MESSAGE_HEAD_ENDED, status='finished', interrupted=interrupted))
+            self.notify_player(self.player_b, MSG_SRV_GAME_END,
+                               status='finished', interrupted=interrupted)
         except Exception as err:
             self.logger.error(err)
 

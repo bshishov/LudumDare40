@@ -127,5 +127,14 @@ class PlayerState(EntityState):
             self.deck.remove(card_name)
             return CardState(card_name)
 
-    def get_state(self):
-        return todict(self)
+    def get_state(self, hide_hand=False):
+        state = todict(self)
+        if 'deck' in state:
+            del state['deck']
+            state['deck_cards'] = len(self.deck)
+        if hide_hand and 'hand' in state:
+            del state['hand']
+            state['hand_cards'] = len(self.hand)
+        return state
+
+

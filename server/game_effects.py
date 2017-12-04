@@ -6,16 +6,17 @@ def collect_handler(handlers):
         def decorator(fn):
             def wrapper(self, entity, *args, **kwargs):
                 fn(self, entity, *args, **kwargs)
-                self.game.notify(GameMessage(MESSAGE_HEAD_ACTION,
-                                             status='effect',
-                                             entity=entity.get_state(),
-                                             effect=effect_type,
-                                             args=args,
-                                             kwargs=kwargs))
-            print('Added handler: {0}'.format(effect_type))
+                self.game.notify_players(MSG_SRV_GAME_EFFECT,
+                                         status='effect',
+                                         entity=entity.id,
+                                         effect=effect_type,
+                                         args=args,
+                                         kwargs=kwargs)
             handlers[effect_type] = wrapper
             return wrapper
+
         return decorator
+
     return effect_handler
 
 
@@ -195,9 +196,9 @@ class EffectHandler(object):
     @effect_handler(EFFECT_TYPE_DESTROY)
     def effect_destroy(self, entity):
         if self.game.is_player(entity):
-            raise GameError('Player entity can not be destroyed: {0}'.format(entity.get_state()), crucial=False)
+            raise GameError('Player entity can not be destroyed: {0}'.format(entity.id), crucial=False)
         self.game.objects.remove(entity)
-        self.game.invoke_case(entity, CASE_DESTOYED, entity.name)
+        self.game.invoke_case(entity, CASE_DESTROYED, entity.name)
 
     @effect_handler(EFFECT_TYPE_DAMAGE_ADD)
     def effect_damage_add(self, entity, amount):
@@ -323,5 +324,3 @@ class EffectHandler(object):
         """
         entity.energy += amount
         entity.energy = max(entity.energy, 0)
-
-
