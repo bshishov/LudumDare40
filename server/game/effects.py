@@ -83,12 +83,14 @@ class EffectHandler(object):
     def energy_heal(self, entity, amount):
         self._entity_modify_energy(entity, amount)
 
-    @effect_handler(EFFECT_TYPE_APPLY_BUFF, (P_EFFECT_VALUE, None))
-    def apply_buff(self, entity, buff_name):
+    @effect_handler(EFFECT_TYPE_APPLY_BUFF, (P_EFFECT_VALUE, None), (P_EFFECT_BUFF_DURATION, None))
+    def apply_buff(self, entity, buff_name, buff_duration=None):
         if entity.buffable:
             buff = get_buff(buff_name)
-            duration = buff.get(P_BUFF_DURATION)
-
+            if buff_duration is None:
+                duration = buff.get(P_BUFF_DURATION)
+            else:
+                duration = buff_duration
             buff_state = entity.get_buff(buff_name)
             if buff_state is None:
                 # If no such buff - apply new

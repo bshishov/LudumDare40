@@ -109,6 +109,7 @@ P_EFFECT_RANGE = 'range'
 P_EFFECT_RANGE_MOD = 'range_mod'
 P_EFFECT_SPAWN_POSITION = 'spawn_position'
 P_EFFECT_CARD_TYPE = 'card_type'
+P_EFFECT_BUFF_DURATION = 'buff_duration'
 
 # Cases
 CASE_COLLIDE = 'collide'
