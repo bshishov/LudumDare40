@@ -6,7 +6,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Fire all weapons and deal 6 damage + range modifier',
+            P_CARD_DESCRIPTION: 'Fire all weapons and deal 6 base dmg',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
@@ -19,8 +19,8 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Fire all weapons in blank and move yourself back by 1 position, '
-                                'dealing 1 damage to yourself and 3 to opponent + range modifier',
+            P_CARD_DESCRIPTION: 'Fire all weapons in blank. Move yourself backwards by 1, '
+                                'take 1 dmg and deal 3 base dmg.',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
@@ -48,7 +48,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Aim for the wings and deal 3 damage + range modifier,'
+            P_CARD_DESCRIPTION: 'Aim for the wings and deal 3 base dmg.,'
                                 ' also restricting the enemy movement for 2 turns',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -91,7 +91,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Fire incendiary bullets, dealing 3 damage + range modifier and'
+            P_CARD_DESCRIPTION: 'Fire incendiary bullets, dealing 3 base dmg. and'
                                 'put the enemy on fire, dealing 1 damage per turn for 2 turns',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
@@ -117,7 +117,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage1_reduce2'
+                    P_EFFECT_VALUE: 'damage_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         }
@@ -127,7 +128,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Shoot the enemies tanks, dealing 2 damage + range modifier'
+            P_CARD_DESCRIPTION: 'Shoot the enemies tanks, dealing 2 base dmg.'
                                 'moving them back by 1 position and causing them to get 1 less energy for 2 turns',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
@@ -146,7 +147,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_reduce1'
+                    P_EFFECT_VALUE: 'energygain_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         },
@@ -157,7 +159,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_reduce1'
+                    P_EFFECT_VALUE: 'energygain_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         }
@@ -194,7 +197,7 @@ cards = {
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'Bomb'
                 },
@@ -236,7 +239,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -252,7 +256,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -267,7 +272,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Aim for a weak spot and deal 3 damage + range modifier, 2 energy damage'
+            P_CARD_DESCRIPTION: 'Aim for a weak spot and deal 3 base dmg., 2 energy damage'
                                 ' and forbid enemy to use ship cards for 2 turns',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -286,7 +291,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute2'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         },
@@ -317,7 +323,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Scorch the inflammable parts of the ship, dealing 1 damage + range modifier'
+            P_CARD_DESCRIPTION: 'Scorch the inflammable parts of the ship, dealing 1 base dmg.'
                                 ', 2 energy damage and make it burn, dealing 1 damage for 2 turns',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
@@ -353,7 +359,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm'
                 },
             ]
         }
@@ -375,7 +381,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -395,7 +401,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -422,7 +428,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm'
                 },
             ]
         },
@@ -432,7 +438,7 @@ cards = {
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'EMP'
                 },
@@ -476,7 +482,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -493,7 +500,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -509,7 +517,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: False,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'You release the charge and deal 8 damage + range modifier, 4 energy damage to everyone'
+            P_CARD_DESCRIPTION: 'You release the charge and deal 8 base dmg., 4 energy damage to everyone'
                                 ' in front of you and move by 1 position backwards',
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
@@ -533,7 +541,7 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'You release the charge and deal 6 damage + range modifier, 2 energy damage to everyone'
+            P_CARD_DESCRIPTION: 'You release the charge and deal 6 base dmg., 2 energy damage to everyone'
                                 ' behind you and move by 1 position forward',
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
@@ -570,7 +578,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -591,7 +600,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -611,7 +621,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Deal 1 damage + range modifier, pooling your enemy closer',
+            P_CARD_DESCRIPTION: 'Deal 1 base dmg., pooling your enemy closer',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
@@ -629,7 +639,7 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Deal 1 damage + range modifier, pooling your enemy closer',
+            P_CARD_DESCRIPTION: 'Deal 1 base dmg., pooling your enemy closer',
             P_CARD_COST: 1,
             P_CARD_EFFECTS: [
                 {
@@ -654,7 +664,7 @@ cards = {
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Shoot your enemy in the reactor, causing them to take 1 damage for every attempt to '
-                                'play ship or weapon card. Deal 2 damage + range modifier',
+                                'play ship or weapon card. Deal 2 base dmg.',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
@@ -673,7 +683,7 @@ cards = {
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Shoot your enemy in the reactor, causing them to take 1 damage for every attempt to '
-                                'play ship or weapon card. Deal 2 damage + range modifier',
+                                'play ship or weapon card. Deal 2 base dmg.',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
@@ -697,7 +707,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Impale all enemies in front of you, dealing 3 damage + range modifier'
+            P_CARD_DESCRIPTION: 'Impale all enemies in front of you, dealing 3 base dmg.'
                                 ', move them forward by 1 position and forbid to use ship cards for 1 turn',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
@@ -716,12 +726,13 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute1'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Impale all enemies behind of you, dealing 2 damage + range modifier'
+            P_CARD_DESCRIPTION: 'Impale all enemies behind of you, dealing 2 base dmg.'
                                 ' and move them backwards by 1 position',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -747,7 +758,7 @@ cards = {
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Shoot the enemy with electrified harpoon, decrease their energy gain by 2 for 2 turns '
-                                'and increase yours equally. Deal 1 damage + range modifiers and 3 energy damage.',
+                                'and increase yours equally. Deal 1 base dmg.s and 3 energy damage.',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
@@ -765,18 +776,20 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_reduce2'
+                    P_EFFECT_VALUE: 'energygain_reduce2',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_add2'
+                    P_EFFECT_VALUE: 'energygain_add2',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Electrocute the enemy\'s reactor, forbidding them to use ship and weapon cards for 1 '
-                                'turn. Deal 3 damage + range modifier and draw a card.',
+                                'turn. Deal 3 base dmg. and draw a card.',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
@@ -789,12 +802,13 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm'
                 },
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute1'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -810,7 +824,7 @@ cards = {
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Shoot a harpoon with a rope, moving enemy further and '
-                                'forbidding both of you from moving for 1 turn. Deal 3 damage + range modifier',
+                                'forbidding both of you from moving for 1 turn. Deal 3 base dmg.',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
@@ -828,13 +842,14 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL_SHIPS,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'lock_position1'
+                    P_EFFECT_VALUE: 'lock_position',
+                    P_EFFECT_BUFF_DURATION: 1
                 }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Shoot a harpoon with a rope, moving enemy further and '
-                                'forbidding both of you from moving for 1 turn. Deal 3 damage + range modifier',
+                                'forbidding both of you from moving for 1 turn. Deal 3 base dmg.',
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
@@ -852,7 +867,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL_SHIPS,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'lock_position1'
+                    P_EFFECT_VALUE: 'lock_position',
+                    P_EFFECT_BUFF_DURATION: 1
                 }
             ]
         }
@@ -863,7 +879,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'You tear off a vital part of enemy ship, dealing 5 damage + range modifier and '
+            P_CARD_DESCRIPTION: 'You tear off a vital part of enemy ship, dealing 5 base dmg. and '
                                 'forbidding them to play weapon and ship cards. Enemy gets a "Fix it!" card '
                                 'to handle this situation',
             P_CARD_COST: 8,
@@ -883,17 +899,19 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm2'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute2'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'You tear off a "Spare part" from enemy ship, dealing 4 damage + range modifier and'
+            P_CARD_DESCRIPTION: 'You tear off a "Spare part" from enemy ship, dealing 4 base dmg. and'
                                 ' draw a card. You can use "Spare part" card to heal yourself',
             P_CARD_COST: 8,
             P_CARD_EFFECTS: [
@@ -991,7 +1009,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage1_add1'
+                    P_EFFECT_VALUE: 'damage_add1',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
@@ -1003,7 +1022,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage2_reduce1'
+                    P_EFFECT_VALUE: 'damage_reduce2',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         }
@@ -1014,7 +1034,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_SHIP,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Ram yourself into everything in front of you. Deal 4 damage + range modifier,'
+            P_CARD_DESCRIPTION: 'Ram yourself into everything in front of you. Deal 4 base dmg.,'
                                 ' take 2 damage and move forward by 1 position',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -1038,7 +1058,7 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Ram yourself into everything behind you. Deal 4 damage + range modifier,'
+            P_CARD_DESCRIPTION: 'Ram yourself into everything behind you. Deal 4 base dmg.,'
                                 ' take 2 damage and move backwards by 1 position',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -1122,24 +1142,27 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_add2'
+                    P_EFFECT_VALUE: 'energygain_add2',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
 
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Turn off all the ship systems. You can\'t play ship and weapon cards, move back by 2 positions'
-                                ', but also draw a card and increase energy gain by 2 for 2 rounds',
+            P_CARD_DESCRIPTION: 'Turn off all the ship systems. Disarm and mute, move back by 2'
+                                '. Draw a card and increase energy gain by 2 for 2 rounds',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
@@ -1154,17 +1177,20 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_add2'
+                    P_EFFECT_VALUE: 'energygain_add2',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
-                    P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                    P_EFFECT_VALUE: 1
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 }
             ]
         }
@@ -1175,7 +1201,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_SHIP,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'You take a vantage point. Move 1 forward, regain the ability to play weapon cards and '
+            P_CARD_DESCRIPTION: 'You take a vantage point. Move 1 forward, rearm and '
                                 'reduce card cost for 1 turn',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
@@ -1191,14 +1217,15 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'cardcost_reduce1'
+                    P_EFFECT_VALUE: 'cardcost_reduce1',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
 
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'You take a sudden turn, regain the ability to play weapon cards, move backwards,'
-                                ' reduce card cost for 1 turn and deal 2 damage + range modifier to anyone behind',
+            P_CARD_DESCRIPTION: 'You take a sudden turn, rearm, move back,'
+                                ' reduce card cost for 1 turn and deal 2 base dmg. to anyone behind',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
@@ -1213,7 +1240,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'cardcost1_reduce1'
+                    P_EFFECT_VALUE: 'cardcost_reduce1',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
@@ -1231,7 +1259,7 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_SHIP,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'You do a barrel roll and safely move 1 forward, deal 1 damage + range modifier'
+            P_CARD_DESCRIPTION: 'You do a barrel roll and safely move 1 forward, deal 1 base dmg.'
                                 ' and draw a card',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
@@ -1255,7 +1283,7 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'You do a barrel roll and safely move 1 forward, deal 1 damage + range modifier'
+            P_CARD_DESCRIPTION: 'You do a barrel roll and safely move 1 forward, deal 1 base dmg.'
                                 ' and draw a card',
             P_CARD_COST: 2,
             P_CARD_EFFECTS: [
@@ -1309,7 +1337,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         }
@@ -1324,7 +1353,7 @@ cards = {
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'ADrone'
                 }
@@ -1336,7 +1365,7 @@ cards = {
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'ADrone'
                 }
@@ -1354,7 +1383,7 @@ cards = {
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'mine'
                 }
@@ -1367,7 +1396,7 @@ cards = {
             P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'mine'
                 }
@@ -1384,7 +1413,7 @@ cards = {
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'HDrone'
                 }
@@ -1396,7 +1425,7 @@ cards = {
             P_CARD_COST: 5,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'HDrone'
                 }
@@ -1424,7 +1453,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_reduce2'
+                    P_EFFECT_VALUE: 'energygain_reduce2',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
             ]
         },
@@ -1444,7 +1474,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'energygain2_reduce2'
+                    P_EFFECT_VALUE: 'energygain_reduce2',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
             ]
         }
@@ -1462,12 +1493,14 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'cardcost_reduce2'
+                    P_EFFECT_VALUE: 'cardcost_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage2_reduce1'
+                    P_EFFECT_VALUE: 'damage_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
             ]
         },
@@ -1479,12 +1512,14 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'cardcost_reduce2'
+                    P_EFFECT_VALUE: 'cardcost_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage2_reduce1'
+                    P_EFFECT_VALUE: 'damage_reduce1',
+                    P_EFFECT_BUFF_DURATION: 2
                 },
             ]
         }
@@ -1613,7 +1648,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
@@ -1625,7 +1661,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         }
@@ -1641,7 +1678,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage1_add2'
+                    P_EFFECT_VALUE: 'damage_add2',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
@@ -1669,7 +1707,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL_EXCEPT_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage1_reduce2'
+                    P_EFFECT_VALUE: 'damage_reduce2',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
@@ -1681,7 +1720,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL_EXCEPT_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'damage1_reduce2'
+                    P_EFFECT_VALUE: 'damage_reduce2',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         }
@@ -1786,12 +1826,14 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute1'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         },
@@ -1808,12 +1850,14 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'Disarm1'
+                    P_EFFECT_VALUE: 'Disarm',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'mute1'
+                    P_EFFECT_VALUE: 'mute',
+                    P_EFFECT_BUFF_DURATION: 1
                 },
             ]
         }
@@ -1823,22 +1867,22 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_EVENT,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Birds move from the north and deal 2 damage to everyone on the same position as them',
+            P_CARD_DESCRIPTION: 'Birds move from the north and deal 2 dmg. to everyone on the same position as them',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'Birds'
                 }
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Birds move from the north and deal 2 damage to everyone on the same position as them',
+            P_CARD_DESCRIPTION: 'Birds move from the south and deal 2 dmg. to everyone on the same position as them',
             P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ALL,
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
                     P_EFFECT_VALUE: 'Birds'
                 }
