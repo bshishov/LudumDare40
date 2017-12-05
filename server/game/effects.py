@@ -1,11 +1,14 @@
-from game.game import *
+from game.card_game import *
+from game.rules import *
+from game.states import *
 
 
 def collect_handler(handlers):
     def effect_handler(effect_type, *args_def):
         def decorator(fn):
             def wrapper(self, entity, *args, **kwargs):
-                self.logger.debug('Applying effect to {0} {1} {2}'.format(entity.id, args, kwargs))
+                self.logger.debug('Applying effect [{0}] to entity:{1} {2} {3}'.format(
+                    effect_type, entity.id, args, kwargs))
                 fn(self, entity, *args, **kwargs)
                 self.game.notify_players(MSG_SRV_GAME_EFFECT,
                                          status='effect',

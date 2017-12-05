@@ -4,7 +4,7 @@ import time
 
 from protocol import *
 import game.base
-import game.game
+import game.card_game
 
 
 MATCHMAKING_DELAY = 10  # seconds
@@ -64,7 +64,7 @@ class Lobby(object):
             player_b.stop_queue()
 
             self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
-            g = game.game.create(player_a, player_b)
+            g = game.card_game.create(player_a, player_b)
 
             # Send that the game is started
             player_a.send(LobbyMessage(MSG_SRV_QUEUE_GAME_CREATED,
