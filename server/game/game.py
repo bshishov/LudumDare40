@@ -1,11 +1,7 @@
-from typing import List, Dict
-
-from protocol import *
-from rules import *
-from game_base import *
-from game_states import *
-from game_effects import EffectHandler
-
+from game.base import *
+from game.effects import EffectHandler
+from game.rules import *
+from game.states import *
 from utils import set_interval
 
 
@@ -28,8 +24,8 @@ class CardGame(GameBase):
 
     def draw_initial_cards(self):
         for i in range(INITIAL_CARDS):
-            self.effect_handler.effect_draw_card(self.player_a_entity)
-            self.effect_handler.effect_draw_card(self.player_b_entity)
+            self.effect_handler.draw_card(self.player_a_entity)
+            self.effect_handler.draw_card(self.player_b_entity)
 
     def on_player_a_message(self, message):
         self._on_game_message(message, self.player_a_entity)
@@ -86,8 +82,8 @@ class CardGame(GameBase):
             raise GameError('Not enough energy: {0}'.format(card_name))
 
         # Play card
-        self.effect_handler.effect_remove_card(player_state, card_name)
-        self.effect_handler.effect_edamage(player_state, cost)
+        self.effect_handler.remove_card(player_state, card_name)
+        self.effect_handler.energy_damage(player_state, cost)
         self.effect_handler.apply_effects(player_state, card_action.get(P_CARD_EFFECTS, []))
         self.invoke_case(player_state, CASE_PLAY_CARD, card_name)
 
@@ -107,7 +103,7 @@ class CardGame(GameBase):
         cost = w_action.get(P_WEAPON_COST, 0)
         if cost > player_state.energy:
             raise GameError('Not enough energy to shoot: {0}'.format(player_state.weapon_name))
-        self.effect_handler.effect_edamage(player_state, cost)
+        self.effect_handler.energy_damage(player_state, cost)
         self.effect_handler.apply_effects(player_state, w_action.get(P_WEAPON_EFFECTS, []))
 
     def player_end_turn(self, player_state):
@@ -127,7 +123,7 @@ class CardGame(GameBase):
             for buff in entity_state.buffs:
                 d = buff.duration - 1
                 if d <= 0:
-                    self.effect_handler.effect_remove_buff(entity_state, buff.name)
+                    self.effect_handler.remove_buff(entity_state, buff.name)
                 else:
                     buff = get_buff(buff.name)
                     self.effect_handler.apply_effects(entity_state, buff.get(P_BUFF_ON_ROUND_EFFECTS, []))
@@ -136,10 +132,10 @@ class CardGame(GameBase):
         # Process energy
         for entity_state in self.get_all_entities():
             self.invoke_case_global(CASE_ROUND_START)
-            self.effect_handler.effect_eheal(entity_state, entity_state.energy_gain)
+            self.effect_handler.energy_heal(entity_state, entity_state.energy_gain)
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
-                self.effect_handler.effect_damage(entity_state, 1)
+                self.effect_handler.damage(entity_state, 1)
                 self.invoke_case(entity_state, CASE_OVERLOAD, entity_state.name)
 
     def invoke_case_global(self, case, arg=None):
@@ -352,6 +348,3 @@ class CardGame(GameBase):
 
 def create(player_a, player_b):
     return CardGame(player_a, player_b)
-
-
-

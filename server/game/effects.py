@@ -1,4 +1,4 @@
-from game import *
+from game.game import *
 
 
 def collect_handler(handlers):
@@ -50,6 +50,7 @@ class EffectHandler(object):
         # Modify effect value by range modifier
         if isinstance(ef_value, int) and isinstance(ef_range, int):
             ef_value = max(0, ef_value + ef_range_mod * (ef_range - abs(source_entity.position - entity.position)))
+            effect[P_EFFECT_VALUE] = ef_value
 
         if ef_type is None:
             raise GameError('Effect has no type: {0}'.format(effect))
@@ -62,7 +63,7 @@ class EffectHandler(object):
         handler(self, entity, *args)
 
     @effect_handler(EFFECT_TYPE_DAMAGE, (P_EFFECT_VALUE, 0))
-    def effect_damage(self, entity, amount):
+    def damage(self, entity, amount):
         """
             @type entity: EntityState
             @type amount: int
@@ -71,19 +72,19 @@ class EffectHandler(object):
         self._entity_modify_hp(entity, -damage)
 
     @effect_handler(EFFECT_TYPE_EDAMAGE, (P_EFFECT_VALUE, 0))
-    def effect_edamage(self, entity, amount):
+    def energy_damage(self, entity, amount):
         self._entity_modify_energy(entity, -amount)
 
     @effect_handler(EFFECT_TYPE_HEAL, (P_EFFECT_VALUE, 0))
-    def effect_heal(self, entity, amount):
+    def heal(self, entity, amount):
         self._entity_modify_hp(entity, amount)
 
     @effect_handler(EFFECT_TYPE_EHEAL, (P_EFFECT_VALUE, 0))
-    def effect_eheal(self, entity, amount):
+    def energy_heal(self, entity, amount):
         self._entity_modify_energy(entity, amount)
 
     @effect_handler(EFFECT_TYPE_APPLY_BUFF, (P_EFFECT_VALUE, None))
-    def effect_apply_buff(self, entity, buff_name):
+    def apply_buff(self, entity, buff_name):
         if entity.buffable:
             buff = get_buff(buff_name)
             duration = buff.get(P_BUFF_DURATION)
@@ -98,7 +99,7 @@ class EffectHandler(object):
                 buff_state.duration = duration
 
     @effect_handler(EFFECT_TYPE_REMOVE_BUFF, (P_EFFECT_VALUE, None))
-    def effect_remove_buff(self, entity, buff_name):
+    def remove_buff(self, entity, buff_name):
         """
             @type entity: EntityState
             @type buff_name: str
@@ -107,18 +108,18 @@ class EffectHandler(object):
         if buff_state is not None:
             buff = get_buff(buff_name)
             entity.buffs.remove(buff_state)
-            self.apply_effects(buff.get(entity, P_BUFF_ON_REMOVE_EFFECTS, []))
+            self.apply_effects(entity, buff.get(entity, P_BUFF_ON_REMOVE_EFFECTS, []))
 
     @effect_handler(EFFECT_TYPE_ADD_CARDCOST, (P_EFFECT_VALUE, 0), (P_EFFECT_CARD_TYPE, None))
-    def effect_add_card_cost(self, entity, amount, card_type):
+    def add_card_cost(self, entity, amount, card_type):
         self._change_card_cost(entity, card_type, amount)
 
     @effect_handler(EFFECT_TYPE_REDUCE_CARDCOST, (P_EFFECT_VALUE, 0), (P_EFFECT_CARD_TYPE, None))
-    def effect_add_card_cost(self, entity, amount, card_type):
+    def reduce_card_cost(self, entity, amount, card_type):
         self._change_card_cost(entity, card_type, -amount)
 
     @effect_handler(EFFECT_TYPE_MOVE, (P_EFFECT_VALUE, 0))
-    def effect_move(self, entity, amount):
+    def move(self, entity, amount):
         """
             @type entity: EntityState
             @type amount: int
@@ -136,12 +137,12 @@ class EffectHandler(object):
                 if enemy.locked:
                     self.logger.debug('Trying to move locked players')
                 else:
-                    self.effect_move(enemy, -amount)
+                    self.move(enemy, -amount)
                     self.game.invoke_case(enemy, CASE_COLLIDE, new_pos)
                     self.game.invoke_case(entity, CASE_COLLIDE, new_pos)
         else:
             if new_pos not in range(self.game.board_size):
-                self.effect_destroy(entity)
+                self.destroy(entity)
                 return
 
         new_pos = max(min(new_pos, self.game.board_size - 1), 0)
@@ -153,31 +154,31 @@ class EffectHandler(object):
                 self.game.invoke_case(e, CASE_COLLIDE, entity.position)
 
     @effect_handler(EFFECT_TYPE_DISARM)
-    def effect_disarm(self, entity):
+    def disarm(self, entity):
         entity.armed = False
 
     @effect_handler(EFFECT_TYPE_ARM)
-    def effect_arm(self, entity):
+    def arm(self, entity):
         entity.armed = True
 
     @effect_handler(EFFECT_TYPE_MUTE)
-    def effect_mute(self, entity):
+    def mute(self, entity):
         entity.muted = True
 
     @effect_handler(EFFECT_TYPE_UNMUTE)
-    def effect_unmute(self, entity):
+    def un_mute(self, entity):
         entity.muted = False
 
     @effect_handler(EFFECT_TYPE_LOCK_POSITION)
-    def effect_lock_position(self, entity):
+    def lock_position(self, entity):
         entity.locked = True
 
     @effect_handler(EFFECT_TYPE_UNLOCK_POSITION)
-    def effect_unlock_position(self, entity):
+    def unlock_position(self, entity):
         entity.locked = False
 
     @effect_handler(EFFECT_TYPE_SPAWN, (P_EFFECT_VALUE, None), (P_EFFECT_SPAWN_POSITION, 0))
-    def effect_spawn(self, entity, name, spawn_position):
+    def spawn(self, entity, name, spawn_position):
         if name not in objects:
             raise GameError('No such entity: {0}'.format(name))
         e = EntityState()
@@ -189,30 +190,30 @@ class EffectHandler(object):
         self.game.objects.append(e)
 
     @effect_handler(EFFECT_TYPE_DESTROY)
-    def effect_destroy(self, entity):
+    def destroy(self, entity):
         if self.game.is_player(entity):
             raise GameError('Player entity can not be destroyed: {0}'.format(entity.id), crucial=False)
         self.game.objects.remove(entity)
         self.game.invoke_case(entity, CASE_DESTROYED, entity.name)
 
     @effect_handler(EFFECT_TYPE_DAMAGE_ADD, (P_EFFECT_VALUE, 0))
-    def effect_damage_add(self, entity, amount):
+    def damage_mod_add(self, entity, amount):
         entity.damage_mod += amount
 
     @effect_handler(EFFECT_TYPE_DAMAGE_REDUCE, (P_EFFECT_VALUE, 0))
-    def effect_damage_reduce(self, entity, amount):
+    def damage_mod_reduce(self, entity, amount):
         entity.damage_mod -= amount
 
     @effect_handler(EFFECT_TYPE_ENERGYGAIN_ADD, (P_EFFECT_VALUE, 0))
-    def effect_egain_add(self, entity, amount):
+    def energy_gain_add(self, entity, amount):
         entity.energy_gain += amount
 
     @effect_handler(EFFECT_TYPE_ENERGYGAIN_REDUCE, (P_EFFECT_VALUE, 0))
-    def effect_egain_reduce(self, entity, amount):
+    def energy_gain_reduce(self, entity, amount):
         entity.energy_gain += max(entity.energy_gain - amount, 0)
 
     @effect_handler(EFFECT_TYPE_DRAW_CARD)
-    def effect_draw_card(self, entity):
+    def draw_card(self, entity):
         """
             @type entity: EntityState
         """
@@ -222,11 +223,11 @@ class EffectHandler(object):
             if len(entity.deck) > 0:
                 card = random.sample(entity.deck, 1)[0]
                 entity.deck.remove(card)
-                self.effect_gain_card(entity, card)
+                self.gain_card(entity, card)
                 return
 
     @effect_handler(EFFECT_TYPE_DROP_CARD_OF_TYPE)
-    def effect_drop_card(self, entity):
+    def drop_card(self, entity):
         """
             @type entity: EntityState
         """
@@ -239,7 +240,7 @@ class EffectHandler(object):
                 self.game.invoke_case(entity, CASE_DROP_CARD, card_to_drop)
 
     @effect_handler(EFFECT_TYPE_GAIN_CARD, (P_EFFECT_VALUE, None))
-    def effect_gain_card(self, entity, card_name):
+    def gain_card(self, entity, card_name):
         """
             @type entity: PlayerState
             @type card_name: str
@@ -253,7 +254,7 @@ class EffectHandler(object):
         entity.hand.append(CardState(card_name))
 
     @effect_handler(EFFECT_TYPE_REMOVE_CARD, (P_EFFECT_VALUE, None))
-    def effect_remove_card(self, entity, card_name):
+    def remove_card(self, entity, card_name):
         """
             @type entity: PlayerState
             @type card_name: str
@@ -269,27 +270,27 @@ class EffectHandler(object):
                 entity.hand.remove(card_state)
 
     @effect_handler(EFFECT_TYPE_ENERGY_TEST, (P_EFFECT_VALUE, 0))
-    def effect_energy_test(self, entity, threshold):
+    def energy_test(self, entity, threshold):
         if entity.energy >= threshold:
-            self.effect_edamage(entity, threshold)
+            self.energy_damage(entity, threshold)
         else:
-            self.effect_damage(entity, threshold - entity.energy)
-            self.effect_edamage(entity, threshold)
+            self.damage(entity, threshold - entity.energy)
+            self.energy_damage(entity, threshold)
 
     @effect_handler(EFFECT_TYPE_SPECIAL_SWAP)
-    def effect_special_swap(self, entity):
+    def special_swap(self, entity):
         enemy = self.game.get_enemy_ship(entity)
         pos = entity.position
-        self.effect_move(entity, -1)
-        self.effect_move(enemy, pos - enemy.position)
+        self.move(entity, -1)
+        self.move(enemy, pos - enemy.position)
 
     @effect_handler(EFFECT_TYPE_OFFENSE_APPROACH)
-    def effect_offense_approach(self, entity):
+    def offense_approach(self, entity):
         enemy = self.game.get_enemy_ship(entity)
         if self.game.is_offense(entity):
-            self.effect_move(entity, enemy.position - entity.position - 1)
+            self.move(entity, enemy.position - entity.position - 1)
         else:
-            self.effect_move(enemy, entity.position - enemy.position - 1)
+            self.move(enemy, entity.position - enemy.position - 1)
 
     def _change_card_cost(self, entity, card_type, amount):
         """
@@ -308,7 +309,7 @@ class EffectHandler(object):
         entity.hp = max(entity.hp, 0)
         if entity.hp == 0:
             if not self.game.is_player(entity):
-                self.effect_destroy(entity)
+                self.destroy(entity)
             else:
                 self.game.end()
 

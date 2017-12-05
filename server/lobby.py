@@ -3,7 +3,8 @@ import logging
 import time
 
 from protocol import *
-import game
+import game.base
+import game.game
 
 
 MATCHMAKING_DELAY = 10  # seconds
@@ -25,7 +26,7 @@ class Lobby(object):
 
     def on_client_connect(self, channel):
         # channel:type
-        player = game.Player(channel)  # type: game.Player
+        player = game.base.Player(channel)  # type: game.base.Player
         with self._players_lock:
             self._players[channel] = player
             player.send(LobbyMessage(MSG_SRV_HELLO, status='Welcome',
@@ -63,7 +64,7 @@ class Lobby(object):
             player_b.stop_queue()
 
             self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
-            g = game.create(player_a, player_b)
+            g = game.game.create(player_a, player_b)
 
             # Send that the game is started
             player_a.send(LobbyMessage(MSG_SRV_QUEUE_GAME_CREATED,

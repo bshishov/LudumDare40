@@ -88,7 +88,6 @@ class GameBase(object):
         self.notify_player(self.player_a, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_A)
         self.notify_player(self.player_b, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_B)
 
-
     def _validate_message(self, player, message):
         if message is None:
             return False
@@ -136,7 +135,7 @@ class GameBase(object):
 
         self.notify_players(MSG_SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
-    def get_state(self, perspective=None):
+    def get_state(self, perspective_player=None):
         return {}
 
     def notify_players(self, head, status='', *args, **kwargs):

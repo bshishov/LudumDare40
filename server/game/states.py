@@ -1,9 +1,8 @@
-import random
+from typing import List
 
-from game_base import *
-from rules import *
-from game_utils import *
-from typing import List, Dict
+from game.base import *
+from game.rules import *
+from game.utils import *
 
 
 class BuffState(object):

@@ -1,16 +1,16 @@
 import argparse
 import asyncore
 import logging
-import socket
-import threading
-import sys
-import time
 import pprint
+import socket
+import sys
+import threading
+import time
 
+from game.rules import *
 from main import DEFAULT_HOST, DEFAULT_PORT
-from utils import EventSubscription, set_interval
 from protocol import *
-from rules import *
+from utils import EventSubscription, set_interval
 
 
 class TestClient(asyncore.dispatcher):
@@ -247,7 +247,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", help="Host to bind the socket to", type=str, default=DEFAULT_HOST)
     parser.add_argument("--port", help="Port to run the server on", type=int, default=DEFAULT_PORT)
-    parser.add_argument("--auto", help="Use auto queue",action='store_true')
+    parser.add_argument("--auto", help="Use auto queue", action='store_true')
     parser.add_argument("--ship", help="Default ship", type=str, default='tank')
     parser.add_argument("--weapon", help="Default weapon", type=str, default='laser')
 
