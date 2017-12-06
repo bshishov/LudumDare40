@@ -72,7 +72,8 @@ CASES = [
 ]
 
 DESCRIPTION_MAX_LEN = 90
-ID_PATTERN = '[a-z0-9_]+'
+FLAVOR_MAX_LEN = 150
+ID_PATTERN = '^[a-z0-9_]+$'
 
 
 effect_schema = {
@@ -88,7 +89,13 @@ effect_schema = {
         },
         P_EFFECT_VALUE: {
             SCHEMA_REQUIRED: False,
-            SCHEMA_VALIDATORS: [Type(str, int)]
+            SCHEMA_VALIDATORS: [
+                Type(str, int),
+                IfConditionValid(ParamValid(P_EFFECT_TYPE, In([EFFECT_TYPE_APPLY_BUFF, EFFECT_TYPE_REMOVE_BUFF])), In(buffs)),
+                IfConditionValid(ParamValid(P_EFFECT_TYPE, Exact(EFFECT_TYPE_SPAWN)), In(objects)),
+                IfConditionValid(ParamValid(P_EFFECT_TYPE, In([EFFECT_TYPE_GAIN_CARD, EFFECT_TYPE_REMOVE_CARD])), In(cards)),
+                IfConditionValid(ParamValid(P_EFFECT_TYPE, Exact(EFFECT_TYPE_DROP_CARD_OF_TYPE)), In(CARD_TYPES)),
+            ]
         },
         P_EFFECT_RANGE: {
             SCHEMA_REQUIRED: False,
@@ -100,18 +107,18 @@ effect_schema = {
         },
         P_EFFECT_SPAWN_POSITION: {
             SCHEMA_REQUIRED: False,
-            SCHEMA_VALIDATORS: [Type(int), ParamIs(P_EFFECT_TYPE, In([EFFECT_TYPE_SPAWN]))]
+            SCHEMA_VALIDATORS: [Type(int), ParamValid(P_EFFECT_TYPE, In([EFFECT_TYPE_SPAWN]))]
         },
         P_EFFECT_CARD_TYPE: {
             SCHEMA_REQUIRED: False,
             SCHEMA_VALIDATORS: [Type(str),
                                 In(cards),
-                                ParamIs(P_EFFECT_TYPE, In([EFFECT_TYPE_REDUCE_CARDCOST, EFFECT_TYPE_ADD_CARDCOST])),
+                                ParamValid(P_EFFECT_TYPE, In([EFFECT_TYPE_REDUCE_CARDCOST, EFFECT_TYPE_ADD_CARDCOST])),
                                 StrMatchRe('[a-z0-9]+')]
         },
         P_EFFECT_BUFF_DURATION: {
             SCHEMA_REQUIRED: False,
-            SCHEMA_VALIDATORS: [Type(int), ParamIs(P_EFFECT_TYPE, Exact(EFFECT_TYPE_APPLY_BUFF))]
+            SCHEMA_VALIDATORS: [Type(int), ParamValid(P_EFFECT_TYPE, Exact(EFFECT_TYPE_APPLY_BUFF))]
         },
     }
 }
@@ -122,6 +129,10 @@ card_action_schema = {
         P_CARD_DESCRIPTION: {
             SCHEMA_REQUIRED: False,
             SCHEMA_VALIDATORS: [Type(str), StrNotEmpty(), StrShortenThan(DESCRIPTION_MAX_LEN)]
+        },
+        P_CARD_FLAVOR: {
+            SCHEMA_REQUIRED: False,
+            SCHEMA_VALIDATORS: [Type(str), StrNotEmpty(), StrShortenThan(FLAVOR_MAX_LEN)]
         },
         P_CARD_COST: {
             SCHEMA_REQUIRED: True,

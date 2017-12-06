@@ -1,5 +1,4 @@
 import re
-import inspect
 
 SCHEMA_FIELDS = 'fields'
 SCHEMA_VALIDATORS = 'validators'
@@ -69,6 +68,8 @@ class ValidationResult(object):
 
 
 class Validator(object):
+    endpoint = True
+
     def validate(self, obj, param, val):
         raise NotImplementedError
 
@@ -78,13 +79,25 @@ class Exact(Validator):
         self.value = value
 
     def validate(self, obj, param, val):
-        res = val == self.value
-        if not res:
-            print(res, val, self.value)
-
         return ValidationResult(val == self.value,
                                 'Value should be set to: {0}'.format(self.value),
                                 obj, param, val)
+
+
+class IfConditionValid(Validator):
+    endpoint = False
+
+    def __init__(self, cond_validator, validator):
+        self.cond_validator = cond_validator
+        self.validator = validator
+
+    def validate(self, obj, param, val):
+        cond_val = self.cond_validator.validate(obj, param, val)
+        if cond_val.is_valid:
+            res = self.validator.validate(obj, param, val)
+            res.message += ' (because: {0})'.format(cond_val.message)
+            return res
+        return ValidationResult(True, 'Conditional validation', obj, param, val)
 
 
 class In(Validator):
@@ -92,8 +105,11 @@ class In(Validator):
         self.values = values
 
     def validate(self, obj, param, val):
-        return ValidationResult(val in self.values,
-                                'Value should be one of these: {0}'.format(self.values),
+        vals = self.values
+        if isinstance(self.values, dict):
+            vals = list(self.values.keys())
+        return ValidationResult(val in vals,
+                                'Value should be one of these: {0}'.format(vals),
                                 obj, param, val)
 
 
@@ -168,7 +184,9 @@ class Type(Validator):
                                 obj, param, val)
 
 
-class ParamIs(Validator):
+class ParamValid(Validator):
+    endpoint = False
+
     def __init__(self, param, validator):
         self.param = param
         self.validator = validator
@@ -180,6 +198,8 @@ class ParamIs(Validator):
 
 
 class ValidListItems(Validator):
+    endpoint = False
+
     def __init__(self, validator):
         self.validator = validator
 
@@ -202,6 +222,8 @@ class SchemaForEachElementInList(ValidListItems):
 
 
 class ValidDictKeys(Validator):
+    endpoint = False
+
     def __init__(self, validator):
         self.validator = validator
 
@@ -220,6 +242,8 @@ class ValidDictKeys(Validator):
 
 
 class ValidateDictItems(Validator):
+    endpoint = False
+
     def __init__(self, validator):
         self.validator = validator
 
@@ -243,6 +267,8 @@ class ValidSchemaDictValues(ValidateDictItems):
 
 
 class Schema(Validator):
+    endpoint = False
+
     def __init__(self, schema):
         self.schema = schema
 

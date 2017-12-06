@@ -231,13 +231,16 @@ class EffectHandler(object):
                 self.gain_card(entity, card)
                 return
 
-    @effect_handler(EFFECT_TYPE_DROP_CARD_OF_TYPE)
-    def drop_card(self, entity):
+    @effect_handler(EFFECT_TYPE_DROP_CARD_OF_TYPE, (P_EFFECT_VALUE, None))
+    def drop_card(self, entity, card_type):
         """
             @type entity: EntityState
         """
         if not self.game.is_player(entity):
             raise GameError('Non-player entities cannot have cards: {0}'.format(entity.name), crucial=False)
+
+        raise NotImplementedError()
+        
         if isinstance(entity, PlayerState):
             if len(entity.hand) > 0:
                 card_to_drop = random.sample(entity.hand, 1)[0]

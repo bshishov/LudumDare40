@@ -172,4 +172,5 @@ P_CARD_TYPE = P_TYPE
 P_CARD_COST = 'cost'
 P_CARD_FULL_NAME = 'full_name'
 P_CARD_DESCRIPTION = 'description'
+P_CARD_FLAVOR = 'flavor'
 P_CARD_EFFECTS = 'effects'
