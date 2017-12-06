@@ -9,7 +9,6 @@ buffs = {
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
                 P_EFFECT_TARGET: TARGET_SELF,
-                P_EFFECT_VALUE: 1
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
@@ -27,8 +26,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
-                P_EFFECT_TARGET: TARGET_SELF,
-                P_EFFECT_VALUE: 1
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
@@ -46,8 +44,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
-                P_EFFECT_TARGET: TARGET_SELF,
-                P_EFFECT_VALUE: 1
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
