@@ -329,50 +329,55 @@ weapon_schema = {
     }
 }
 
+db_schema = {
+    SCHEMA_ONLY_THESE_FIELDS: True,
+    SCHEMA_FIELDS: {
+        SECTION_CARDS: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [
+                Type(dict),
+                ValidDictKeys(StrMatchRe(ID_PATTERN)),
+                ValidSchemaDictValues(card_schema)
+            ]
+        },
+        SECTION_SHIPS: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [
+                Type(dict),
+                ValidDictKeys(StrMatchRe(ID_PATTERN)),
+                ValidSchemaDictValues(ship_schema)
+            ]
+        },
+        SECTION_OBJECTS: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [
+                Type(dict),
+                ValidDictKeys(StrMatchRe(ID_PATTERN)),
+                ValidSchemaDictValues(object_schema)
+            ]
+        },
+        SECTION_BUFFS: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [
+                Type(dict),
+                ValidDictKeys(StrMatchRe(ID_PATTERN)),
+                ValidSchemaDictValues(buff_schema)
+            ]
+        },
+        SECTION_WEAPONS: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [
+                Type(dict),
+                ValidDictKeys(StrMatchRe(ID_PATTERN)),
+                ValidSchemaDictValues(weapon_schema)
+            ]
+        },
+    }
+}
 
 if __name__ == '__main__':
-    print('Checking cards...')
-    v = ValidDictKeys(StrMatchRe(ID_PATTERN)).validate(None, SECTION_CARDS, cards)
-    v.print_endpoint()
-
-    v = ValidSchemaDictValues(card_schema).validate(None, SECTION_CARDS, cards)
-    v.print_endpoint()
-    if v.is_valid:
+    print('Checking db...')
+    res = Schema(db_schema).validate(None, None, get_gb())
+    res.print_endpoint()
+    if res.is_valid:
         print(PrintColors.OKGREEN + 'No errors, cool!' + PrintColors.ENDC)
-
-    print('Checking buffs...')
-    v = ValidDictKeys(StrMatchRe(ID_PATTERN)).validate(None, SECTION_BUFFS, buffs)
-    v.print_endpoint()
-
-    v = ValidSchemaDictValues(buff_schema).validate(None, SECTION_BUFFS, buffs)
-    v.print_endpoint()
-    if v.is_valid:
-        print(PrintColors.OKGREEN + 'No errors, cool!' + PrintColors.ENDC)
-
-    print('Checking objects...')
-    v = ValidDictKeys(StrMatchRe(ID_PATTERN)).validate(None, SECTION_OBJECTS, objects)
-    v.print_endpoint()
-
-    v = ValidSchemaDictValues(object_schema).validate(None, SECTION_OBJECTS, objects)
-    v.print_endpoint()
-    if v.is_valid:
-        print(PrintColors.OKGREEN + 'No errors, cool!' + PrintColors.ENDC)
-
-    print('Checking ships...')
-    v = ValidDictKeys(StrMatchRe(ID_PATTERN)).validate(None, SECTION_SHIPS, ships)
-    v.print_endpoint()
-
-    v = ValidSchemaDictValues(ship_schema).validate(None, SECTION_SHIPS, ships)
-    v.print_endpoint()
-    if v.is_valid:
-        print(PrintColors.OKGREEN + 'No errors, cool!' + PrintColors.ENDC)
-
-    print('Checking weapons...')
-    v = ValidDictKeys(StrMatchRe(ID_PATTERN)).validate(None, SECTION_WEAPONS, weapons)
-    v.print_endpoint()
-
-    v = ValidSchemaDictValues(weapon_schema).validate(None, SECTION_WEAPONS, weapons)
-    v.print_endpoint()
-    if v.is_valid:
-        print(PrintColors.OKGREEN + 'No errors, cool!' + PrintColors.ENDC)
-
