@@ -70,6 +70,19 @@ CASES = [
     CASE_ROUND_END,
     CASE_ROUND_START,
 ]
+EFFECTS_WITHOUT_VALUE = [
+    EFFECT_TYPE_DISARM,
+    EFFECT_TYPE_ARM,
+    EFFECT_TYPE_MUTE,
+    EFFECT_TYPE_UNMUTE,
+    EFFECT_TYPE_LOCK_POSITION,
+    EFFECT_TYPE_UNLOCK_POSITION,
+    EFFECT_TYPE_DESTROY,
+    EFFECT_TYPE_DRAW_CARD,
+    EFFECT_TYPE_SPECIAL_SWAP,
+    EFFECT_TYPE_OFFENSE_APPROACH,
+]
+
 
 DESCRIPTION_MAX_LEN = 90
 FLAVOR_MAX_LEN = 150
@@ -95,6 +108,7 @@ effect_schema = {
                 IfConditionValid(ParamValid(P_EFFECT_TYPE, Exact(EFFECT_TYPE_SPAWN)), In(objects)),
                 IfConditionValid(ParamValid(P_EFFECT_TYPE, In([EFFECT_TYPE_GAIN_CARD, EFFECT_TYPE_REMOVE_CARD])), In(cards)),
                 IfConditionValid(ParamValid(P_EFFECT_TYPE, Exact(EFFECT_TYPE_DROP_CARD_OF_TYPE)), In(CARD_TYPES)),
+                IfConditionValid(ParamValid(P_EFFECT_TYPE, In(EFFECTS_WITHOUT_VALUE)), NoParam(P_EFFECT_VALUE)),
             ]
         },
         P_EFFECT_RANGE: {
