@@ -13,6 +13,7 @@ SECTION_SHIPS = 'ships'
 SECTION_BUFFS = 'buffs'
 SECTION_WEAPONS = 'weapons'
 SECTION_CARDS = 'cards'
+SECTION_OBJECTS = 'objects'
 
 # Player actions
 ACTION_PLAY_CARD = 'play_card'
