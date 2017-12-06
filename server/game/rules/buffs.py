@@ -8,28 +8,34 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: 1
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE,
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
     },
-    'Disarm': {
+    'disarm': {
         P_BUFF_FULL_NAME: 'Mute',
         P_BUFF_DESCRIPTION: 'Target cannot use weapon cards',
         P_BUFF_DURATION: 1,
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DISARM,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: 1
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ARM,
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
     },
@@ -40,12 +46,15 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_LOCK_POSITION,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: 1
             }
         ],
         P_BUFF_ON_ROUND_EFFECTS: [],
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_UNLOCK_POSITION,
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
     },
@@ -56,6 +65,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -63,6 +73,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -74,6 +85,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -81,6 +93,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -92,6 +105,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -99,6 +113,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -110,6 +125,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -117,6 +133,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ENERGYGAIN_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -128,6 +145,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -135,6 +153,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -146,6 +165,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_REDUCE_CARDCOST,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -153,6 +173,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -164,6 +185,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -171,6 +193,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -182,6 +205,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -189,6 +213,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -200,6 +225,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -207,6 +233,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 1
             }
         ],
@@ -218,6 +245,7 @@ buffs = {
         P_BUFF_ON_APPLY_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_ADD,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
@@ -225,11 +253,12 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE_REDUCE,
+                P_EFFECT_TARGET: TARGET_SELF,
                 P_EFFECT_VALUE: 2
             }
         ],
     },
-    'on fire': {
+    'on_fire': {
         P_BUFF_FULL_NAME: 'You are burning!',
         P_BUFF_DESCRIPTION: 'You lose 2 HP per turn',
         P_BUFF_DURATION: 1,
@@ -244,6 +273,7 @@ buffs = {
         P_BUFF_ON_REMOVE_EFFECTS: [
             {
                 P_EFFECT_TYPE: EFFECT_TYPE_ADD_CARDCOST,
+                P_EFFECT_TARGET: TARGET_SELF
             }
         ],
     },

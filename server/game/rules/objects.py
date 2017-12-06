@@ -1,7 +1,7 @@
 from game.rules.settings import *
 
 objects = {
-    'Bomb': {
+    'bomb': {
         P_OBJECT_FULL_NAME: 'Bomb',
         P_OBJECT_DESCRIPTION: 'Just a flying c4',
         P_OBJECT_CASES: {
@@ -26,7 +26,7 @@ objects = {
             }
         },
     },
-    'EMP': {
+    'emp': {
         P_OBJECT_FULL_NAME: 'EMP',
         P_OBJECT_DESCRIPTION: 'A flying electromagnetic grenade',
         P_OBJECT_CASES: {
@@ -62,6 +62,7 @@ objects = {
     },
     'mine': {
         P_OBJECT_FULL_NAME: 'Flying mine',
+        P_OBJECT_DESCRIPTION: 'A flying landmine',
         P_OBJECT_CASES: {
             CASE_COLLIDE: {
                 P_CASE_EFFECTS: [
@@ -84,8 +85,9 @@ objects = {
             }
         },
     },
-    'ADrone': {
-        P_OBJECT_FULL_NAME: 'Simple attacking drone',
+    'adrone': {
+        P_OBJECT_FULL_NAME: 'Wingdrone',
+        P_OBJECT_DESCRIPTION: 'Simple attacking drone',
         P_OBJECT_CASES: {
             CASE_ROUND_END: {
                 P_CASE_EFFECTS: [
@@ -98,8 +100,9 @@ objects = {
             }
         },
     },
-    'HDrone': {
-        P_OBJECT_FULL_NAME: 'Simple healing drone',
+    'hdrone': {
+        P_OBJECT_FULL_NAME: 'Helper drone',
+        P_OBJECT_DESCRIPTION: 'Simple healing drone',
         P_OBJECT_CASES: {
             CASE_ROUND_END: {
                 P_CASE_EFFECTS: [
@@ -112,8 +115,9 @@ objects = {
             }
         },
     },
-    'Birds': {
-        P_OBJECT_FULL_NAME: 'A flock of birds',
+    'birds': {
+        P_OBJECT_FULL_NAME: 'Birds!',
+        P_OBJECT_DESCRIPTION: 'A flock of birds',
         P_OBJECT_CASES: {
             CASE_COLLIDE: {
                 P_CASE_EFFECTS: [

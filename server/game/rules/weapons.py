@@ -3,10 +3,11 @@ from game.rules.settings import *
 weapons = {
     'mg': {
         P_WEAPON_FULL_NAME: 'Machine gun',
-        P_WEAPON_CARDS: ['Fire all', 'Hamstring', 'IRrounds', 'Leak', 'Bomb', 'Detonate', 'Cool'],
+        P_WEAPON_CARDS: ['fire_all', 'hamstring', 'irounds', 'leak', 'bomb', 'detonate', 'cool'],
         P_WEAPON_ACTION_OFFENSE: {
-            P_WEAPON_DESCRIPTION: 'This sturdy machine gun has seen thousands of '
-                                  'battles and you are more than likely not her first. Deals 2 damage.',
+            P_WEAPON_DESCRIPTION: 'Deals 2 damage',
+        #This sturdy machine gun has seen thousands of battles and you are more than likely not her first.
+
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
@@ -19,8 +20,8 @@ weapons = {
             ]
         },
         P_WEAPON_ACTION_DEFENSE: {
-            P_WEAPON_DESCRIPTION: 'This sturdy machine gun has seen thousands of '
-                                  'battles and you are more than likely not her first. Deals 1 damage.',
+            P_WEAPON_DESCRIPTION: 'Deals 1 damage.',
+
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
@@ -35,11 +36,12 @@ weapons = {
     },
     'laser': {
         P_WEAPON_FULL_NAME: 'Laser',
-        P_WEAPON_CARDS: ['Snipe', 'Scorch', 'Redirect', 'EMP', 'Detonate EMP', 'Charging', 'Fire!', 'Hold fire'],
+        P_WEAPON_CARDS: ['snipe', 'scorch', 'redirect', 'emp', 'detonate_emp', 'charging', 'fire', 'hold_fire'],
         P_WEAPON_ACTION_OFFENSE: {
-            P_WEAPON_DESCRIPTION: 'This revolutionary invention brings glory'
-                                  ' to its makers and death for all the infidels. '
-                                  'In style. Deals 1 damage to hp and energy.',
+            P_WEAPON_DESCRIPTION: 'Deals 1 damage to hp and energy.',
+            #                                ' This revolutionary invention brings glory'
+            #                                ' to its makers and death for all the infidels.'
+            #                                ' In style. '
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
@@ -59,9 +61,7 @@ weapons = {
             ]
         },
         P_WEAPON_ACTION_DEFENSE: {
-            P_WEAPON_DESCRIPTION: 'This revolutionary invention brings glory'
-                                  ' to its makers and death for all the infidels.'
-                                  ' In style. Deals 1 damage to hp and energy.',
+            P_WEAPON_DESCRIPTION: 'Deals 1 damage to hp and energy',
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
@@ -83,10 +83,9 @@ weapons = {
     },
     'harpoon': {
         P_WEAPON_FULL_NAME: 'Harpoon',
-        P_WEAPON_CARDS: ['Grapple', 'Lighting rod', 'Impale', 'Electrocute', 'Still', 'Grab', 'Fix', 'Spare'],
+        P_WEAPON_CARDS: ['grapple', 'lighting_rod', 'impale', 'electrocute', 'still', 'grab', 'fix', 'spare'],
         P_WEAPON_ACTION_OFFENSE: {
-            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures,'
-                                  ' but now it seeks a different prey. Deals 1 damage.',
+            P_WEAPON_DESCRIPTION: 'Deals 1 damage',  #We used to hunt with those for sky creatures, but now it seeks a different prey.
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
@@ -99,8 +98,7 @@ weapons = {
             ]
         },
         P_WEAPON_ACTION_DEFENSE: {
-            P_WEAPON_DESCRIPTION: 'We used to hunt with those for sky creatures,'
-                                  ' but now it seeks a different prey. Deals 1 damage.',
+            P_WEAPON_DESCRIPTION: 'Deals 1 damage',
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
