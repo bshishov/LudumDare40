@@ -36,10 +36,9 @@
 
         public const string MsgCliQueueStop = "c.q.stop";
         public const string MsgCliGameAction = "c.g.action";
+        
 
-        public static byte[] MessageSeparator = new byte[] { 0x00, 0x01, 0x00, 0x01, 0x00, 0x01 };
-
-
+        // Common keys
         public const string KeyDomain = "domain";
         public const string KeyHead = "head";
         public const string KeyBody = "body";

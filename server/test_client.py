@@ -11,63 +11,13 @@ from game.rules import *
 from main import DEFAULT_HOST, DEFAULT_PORT
 from protocol import *
 from utils import EventSubscription, set_interval
-
-
-class TestClient(asyncore.dispatcher):
-    def __init__(self, host, port, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.logger = logging.getLogger(self.__class__.__name__)
-
-        asyncore.dispatcher.__init__(self)
-        self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.connect((host, port))
-        self.logger.info('Connected to {0}:{1}'.format(host, port))
-        self.on_message = EventSubscription()
-        self.buffer = b''
-
-    def handle_read(self):
-        recv_buffer = self.recv(8192)
-        if recv_buffer is None or len(recv_buffer) <= 0:
-            return
-
-        self.buffer += recv_buffer
-        while len(self.buffer) > 0:
-            sep_index = self.buffer.find(MESSAGE_SEPARATOR, 0)
-            data = self.buffer[:sep_index]
-
-            # if separator not found
-            if sep_index < 0:
-                return
-
-            # remove message data from buffer
-            self.buffer = self.buffer[sep_index + len(MESSAGE_SEPARATOR):]
-            if len(data) > 0:
-                try:
-                    msg = deserialize(data)
-                    self.logger.debug('Got a message: {0}'.format(msg))
-                    self.on_message(msg)
-                except Exception as err:
-                    self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
-
-    def send_message(self, message):
-        try:
-            self.send(serialize(message))
-        except Exception as err:
-            self.logger.error('Could not send message: {0}\nmessage: {1}'.format(err, message))
-
-    def process_cmd(self, cmd):
-        self.logger.info('Command: {0}'.format(cmd))
-        pass
-
-    def handle_close(self):
-        self.logger.info('Disconnected')
-        self.close()
+from connection import ClientChannel
 
 
 class TestPlayer(object):
     def __init__(self, client):
         self._logger = logging.getLogger('Player')
-        self._client = client  # type: TestClient
+        self._client = client  # type: ClientChannel
         self._client.on_message.append(self.on_message)
         self._is_queue = False
         self._is_in_game = False
@@ -217,7 +167,9 @@ class TestPlayer(object):
 
 
 def main(args):
-    client = TestClient(args.host, args.port)
+    client = ClientChannel()
+    client.create_socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((args.host, args.port))
     player = TestPlayer(client)
 
     loop_thread = threading.Thread(target=asyncore.loop, name="Asyncore Loop")

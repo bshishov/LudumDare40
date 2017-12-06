@@ -1,12 +1,15 @@
 import asyncore
 import socket
 import logging
+import struct
 
 from utils import EventSubscription
-from protocol import serialize, deserialize, MESSAGE_SEPARATOR
+from protocol import serialize, deserialize
 
 
 RECV_BUFFER_SIZE = 8192
+HEADER_FMT = 'h'
+HEADER_SIZE = struct.calcsize(HEADER_FMT)
 
 
 class Server(asyncore.dispatcher):
@@ -46,7 +49,10 @@ class Server(asyncore.dispatcher):
 class ClientChannel(asyncore.dispatcher):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.logger = logging.getLogger('Client_{0}_{1}'.format(*self.socket.getpeername()))
+        if hasattr(self.socket, 'getpeername'):
+            self.logger = logging.getLogger('Client_{0}_{1}'.format(*self.socket.getpeername()))
+        else:
+            self.logger = logging.getLogger('Client')
         self.logger.debug('Client handler started')
         self.on_disconnect = EventSubscription()
         self.on_message = EventSubscription()
@@ -55,20 +61,20 @@ class ClientChannel(asyncore.dispatcher):
 
     def handle_read(self):
         recv_buffer = self.recv(8192)
-        if recv_buffer is None or len(recv_buffer) <= 0:
+        if recv_buffer is None or len(recv_buffer) == 0:
             return
 
         self.buffer += recv_buffer
         while len(self.buffer) > 0:
-            sep_index = self.buffer.find(MESSAGE_SEPARATOR, 0)
-            data = self.buffer[:sep_index]
-
-            # if separator not found
-            if sep_index < 0:
+            msg_len = struct.unpack(HEADER_FMT, self.buffer[:HEADER_SIZE])[0]
+            if len(self.buffer) < HEADER_SIZE + msg_len:
+                # more data required
                 return
 
+            data = self.buffer[HEADER_SIZE:HEADER_SIZE + msg_len]
+
             # remove message data from buffer
-            self.buffer = self.buffer[sep_index + len(MESSAGE_SEPARATOR):]
+            self.buffer = self.buffer[HEADER_SIZE + msg_len:]
             if len(data) > 0:
                 try:
                     msg = deserialize(data)
@@ -79,7 +85,8 @@ class ClientChannel(asyncore.dispatcher):
 
     def send_message(self, message):
         try:
-            self.send(serialize(message))
+            data = serialize(message)
+            self.send(struct.pack(HEADER_FMT, len(data)) + data)
         except Exception as err:
             self.logger.error('Could not send message: {0}\nmessage: {1}'.format(err, message))
 

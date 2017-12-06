@@ -66,7 +66,7 @@ def serialize(obj):
         data = json.dumps(obj.__dict__)
     else:
         data = json.dumps(obj)
-    return bytes(data, ENCODING) + MESSAGE_SEPARATOR
+    return bytes(data, ENCODING)
 
 
 def deserialize(data):

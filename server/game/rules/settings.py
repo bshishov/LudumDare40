@@ -90,8 +90,6 @@ EFFECT_TYPE_ENERGY_TEST = 'energy_test'
 EFFECT_TYPE_SPECIAL_SWAP = 'special_swap'
 EFFECT_TYPE_OFFENSE_APPROACH = 'approach'
 
-
-
 # Effect properties
 P_EFFECT_TYPE = P_TYPE
 P_EFFECT_VALUE = P_VALUE
