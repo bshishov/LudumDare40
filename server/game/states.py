@@ -28,11 +28,11 @@ class CardState(object):
         self.cost_defense = card_defense_core.get(P_CARD_COST)
 
     @property
-    def type(self):
+    def type(self) -> str:
         card = get_card(self.name)
         return card.get(P_CARD_TYPE)
 
-    def get_state(self):
+    def get_state(self) -> dict:
         return self.__dict__
 
 
@@ -54,7 +54,7 @@ class EntityState(object):
         self.side = None
         self.is_player = False
 
-    def get_buff(self, buff_name, default=None):
+    def get_buff(self, buff_name, default=None) -> BuffState:
         for b in self.buffs:
             if b.name == buff_name:
                 return b

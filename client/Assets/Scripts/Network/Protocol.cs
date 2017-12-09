@@ -13,7 +13,6 @@
 
         // [SERVER] Base server messages
         public const string MsgSrvError = "s.error";
-
         public const string MsgSrvHello = "s.hello";
 
         // [SERVER] Queue message
@@ -43,10 +42,11 @@
         public const string KeyHead = "head";
         public const string KeyBody = "body";
         public const string KeyStatus = "status";
-
+        
         public const string KeyShip = "ship";
         public const string KeyWeapon = "weapon";
         public const string KeyGameId = "game_id";
         public const string KeySide= "side";
+        public const string KeyState = "state";
     }
 }

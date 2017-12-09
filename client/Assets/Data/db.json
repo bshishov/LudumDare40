@@ -1,0 +1,2439 @@
+{
+    "buffs": {
+        "cardcost_reduce1": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "reduce_cardcost",
+                    "value": 1
+                }
+            ],
+            "description": "Card cost reduced by 1",
+            "duration": 1,
+            "full_name": "Reduce card cost",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "add_cardcost",
+                    "value": 1
+                }
+            ],
+            "turn_effects": []
+        },
+        "cardcost_reduce2": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "reduce_cardcost",
+                    "value": 2
+                }
+            ],
+            "description": "Card cost reduced by 2",
+            "duration": 2,
+            "full_name": "Reduce card cost",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "add_cardcost",
+                    "value": 2
+                }
+            ],
+            "turn_effects": []
+        },
+        "damage_add1": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_add",
+                    "value": 1
+                }
+            ],
+            "description": "Damage output increased by 1",
+            "duration": 1,
+            "full_name": "Increase damage",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_reduce",
+                    "value": 1
+                }
+            ],
+            "turn_effects": []
+        },
+        "damage_add2": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_add",
+                    "value": 2
+                }
+            ],
+            "description": "Damage output increased by 2",
+            "duration": 1,
+            "full_name": "Increase damage",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_reduce",
+                    "value": 2
+                }
+            ],
+            "turn_effects": []
+        },
+        "damage_reduce1": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_reduce",
+                    "value": 1
+                }
+            ],
+            "description": "Damage output reduced by 1",
+            "duration": 1,
+            "full_name": "Reduce damage",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_add",
+                    "value": 1
+                }
+            ],
+            "turn_effects": []
+        },
+        "damage_reduce2": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_reduce",
+                    "value": 2
+                }
+            ],
+            "description": "Damage output reduced by 2",
+            "duration": 1,
+            "full_name": "Reduce damage",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "damage_add",
+                    "value": 2
+                }
+            ],
+            "turn_effects": []
+        },
+        "disarm": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "disarm"
+                }
+            ],
+            "description": "Target cannot use weapon cards",
+            "duration": 1,
+            "full_name": "Mute",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "arm"
+                }
+            ],
+            "turn_effects": []
+        },
+        "energygain_add1": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_add",
+                    "value": 1
+                }
+            ],
+            "description": "Energy gain increased by 1",
+            "duration": 1,
+            "full_name": "Increase energy gain",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_reduce",
+                    "value": 1
+                }
+            ],
+            "turn_effects": []
+        },
+        "energygain_add2": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_add",
+                    "value": 2
+                }
+            ],
+            "description": "Energy gain increased by 2",
+            "duration": 2,
+            "full_name": "Increase energy gain",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_reduce",
+                    "value": 2
+                }
+            ],
+            "turn_effects": []
+        },
+        "energygain_reduce1": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_reduce",
+                    "value": 1
+                }
+            ],
+            "description": "Energy gain reduced by 1",
+            "duration": 1,
+            "full_name": "Reduce energy gain",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_add",
+                    "value": 1
+                }
+            ],
+            "turn_effects": []
+        },
+        "energygain_reduce2": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_reduce",
+                    "value": 2
+                }
+            ],
+            "description": "Energy gain reduced by 2",
+            "duration": 2,
+            "full_name": "Reduce energy gain",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "energygain_add",
+                    "value": 2
+                }
+            ],
+            "turn_effects": []
+        },
+        "lightning_rod": {
+            "apply_effects": [],
+            "cases": {
+                "play_card": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "damage",
+                            "value": 1
+                        }
+                    ]
+                }
+            },
+            "description": "Bla bla bla",
+            "duration": 2,
+            "full_name": "Lightning Rod",
+            "remove_effects": [],
+            "turn_effects": []
+        },
+        "lock_position": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "lock_position"
+                }
+            ],
+            "description": "Target cannot move or be moved",
+            "duration": 1,
+            "full_name": "Lock position",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "unlock_position"
+                }
+            ],
+            "turn_effects": []
+        },
+        "mute": {
+            "apply_effects": [
+                {
+                    "target": "self",
+                    "type": "mute"
+                }
+            ],
+            "description": "Target cannot use ship cards",
+            "duration": 1,
+            "full_name": "Mute",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "unmute"
+                }
+            ],
+            "turn_effects": []
+        },
+        "on_fire": {
+            "apply_effects": [],
+            "description": "You lose 2 HP per turn",
+            "duration": 1,
+            "full_name": "You are burning!",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "add_cardcost"
+                }
+            ],
+            "turn_effects": [
+                {
+                    "target": "self",
+                    "type": "damage",
+                    "value": 2
+                }
+            ]
+        }
+    },
+    "cards": {
+        "barrel": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "You do a barrel roll and safely move 1 forward, deal 1 base dmg. and draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Barrel roll",
+            "offense": {
+                "cost": 2,
+                "description": "You do a barrel roll and safely move 1 forward, deal 1 base dmg. and draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "birds": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Birds move from the south and deal 2 dmg. to everyone on the same position as them",
+                "effects": [
+                    {
+                        "target": "enemy_ship",
+                        "type": "spawn",
+                        "value": "birds"
+                    }
+                ]
+            },
+            "full_name": "Bird flock",
+            "offense": {
+                "cost": 3,
+                "description": "Birds move from the north and deal 2 dmg. to everyone on the same position as them",
+                "effects": [
+                    {
+                        "target": "enemy_ship",
+                        "type": "spawn",
+                        "value": "birds"
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "bomb": {
+            "deck": true,
+            "defense": {
+                "cost": 4,
+                "description": "Drop a bomb to detonate it later and deal damage to all objects in a small radius",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "bomb"
+                    },
+                    {
+                        "target": "self",
+                        "type": "gain_card",
+                        "value": "detonate"
+                    }
+                ]
+            },
+            "full_name": "Bomb",
+            "offense": {
+                "cost": 3,
+                "description": "Take 2 dmg and move forward by 2",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "bursts": {
+            "deck": true,
+            "defense": {
+                "cost": 0,
+                "description": "Everyone gets 4 energy, but can't play weapon and ship cards",
+                "effects": [
+                    {
+                        "target": "all",
+                        "type": "eheal",
+                        "value": 4
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ],
+                "flavor": "It's good to have a spare energy, right? Right?!"
+            },
+            "full_name": "Energy microbursts",
+            "offense": {
+                "cost": 0,
+                "description": "Everyone gets 4 energy, but can't play weapon and ship cards",
+                "effects": [
+                    {
+                        "target": "all",
+                        "type": "eheal",
+                        "value": 4
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ],
+                "flavor": "It's good to have a spare energy, right? Right?!"
+            },
+            "type": "event"
+        },
+        "charging": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "You charge your weapon to deal 6 base damage on command. disarm (self) for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "gain_card",
+                        "value": "fire"
+                    }
+                ]
+            },
+            "full_name": "Chargin' ma laser!",
+            "offense": {
+                "cost": 2,
+                "description": "You charge your weapon to deal 8 base damage on command. disarm (self) for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "gain_card",
+                        "value": "fire"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "cool": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Draw a card. disarm yourself for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "full_name": "Cool the gun",
+            "offense": {
+                "cost": 2,
+                "description": "Draw a card. disarm yourself for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "core": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Damage reduced by 2. Card cost reduced by 2",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "cardcost_reduce2"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_reduce2"
+                    }
+                ]
+            },
+            "full_name": "Power to the core",
+            "offense": {
+                "cost": 3,
+                "description": "Damage reduced by 2. Card cost reduced by 2",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "cardcost_reduce2"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_reduce2"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "detonate": {
+            "deck": false,
+            "defense": {
+                "cost": 1,
+                "description": "Detonate the bomb, dealing 6 damage to everyone near it",
+                "effects": []
+            },
+            "full_name": "Detonate Bomb",
+            "offense": {
+                "cost": 1,
+                "description": "Detonate the bomb, dealing 6 damage to everyone near it",
+                "effects": []
+            },
+            "type": "weapon"
+        },
+        "detonate_emp": {
+            "deck": false,
+            "defense": {
+                "cost": 1,
+                "description": "Detonate EMP, deal 2 damage, 6 energy damage and mute them for 1 turn",
+                "effects": []
+            },
+            "full_name": "Detonate EMP",
+            "offense": {
+                "cost": 1,
+                "description": "Detonate EMP, deal 2 damage, 6 energy damage and mute them for 1 turn",
+                "effects": []
+            },
+            "type": "weapon"
+        },
+        "eboost": {
+            "deck": true,
+            "defense": {
+                "cost": 0,
+                "description": "Sacrifice ship integrity to get 2 energy. Take 1 damage",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "eheal",
+                        "value": 2
+                    }
+                ]
+            },
+            "full_name": "Energy boost",
+            "offense": {
+                "cost": 0,
+                "description": "Sacrifice ship integrity to get 2 energy. Take 1 damage",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "eheal",
+                        "value": 2
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "electrocute": {
+            "deck": true,
+            "defense": {
+                "cost": 4,
+                "description": "disarm and mute your enemy for 1 turn. Deal 3 base dmg. and draw a card.",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "backward",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "backward",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "full_name": "Electrocute",
+            "offense": {
+                "cost": 4,
+                "description": "Reduce enemy's energy gain by 2 and add it to yours. Deal 1 base dmg and 3 energy dmg.",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "forward",
+                        "type": "edamage",
+                        "value": 3
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "forward",
+                        "type": "apply_buff",
+                        "value": "energygain_reduce2"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "energygain_add2"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "emp": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Drop an EMP, detonate it later to deal massive energy damage to enemy ship",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "emp"
+                    },
+                    {
+                        "target": "self",
+                        "type": "gain_card",
+                        "value": "detonate_emp"
+                    }
+                ]
+            },
+            "full_name": "EMP",
+            "offense": {
+                "cost": 4,
+                "description": "Detonate the EMP in proximity to own ship, gaining 10 energy. disarm (self) for 1 round",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "eheal",
+                        "value": 10
+                    },
+                    {
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "fire": {
+            "deck": false,
+            "defense": {
+                "cost": 5,
+                "description": "Deal 6 base dmg, 2 energy damage to everyone behind you and move by 1 position forward",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward_pierce",
+                        "type": "damage",
+                        "value": 6
+                    },
+                    {
+                        "target": "backward_pierce",
+                        "type": "edamage",
+                        "value": 2
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Fire!",
+            "offense": {
+                "cost": 5,
+                "description": "Deal 8 base dmg. 4 energy damage to everyone afore you and move by 1 position backwards",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward_pierce",
+                        "type": "damage",
+                        "value": 8
+                    },
+                    {
+                        "target": "forward_pierce",
+                        "type": "edamage",
+                        "value": 4
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "fire_all": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Fire all weapons in blank. Move yourself backwards by 1, take 1 dmg and deal 3 base dmg",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 3
+                    }
+                ]
+            },
+            "full_name": "Fire all weapons",
+            "offense": {
+                "cost": 4,
+                "description": "Fire all weapons and deal 6 base dmg",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward_pierce",
+                        "type": "damage",
+                        "value": 6
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "fix": {
+            "deck": false,
+            "defense": {
+                "cost": 4,
+                "description": "Fix it right now! Returns you the ability to play all cards",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "arm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "unmute"
+                    }
+                ]
+            },
+            "full_name": "Fix it!",
+            "offense": {
+                "cost": 4,
+                "description": "Fix it right now! Returns you the ability to play all cards",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "arm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "unmute"
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "flare": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Everyone but you deals a reduced by 2 dmg for 1 round.",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "all_except",
+                        "type": "apply_buff",
+                        "value": "damage_reduce2"
+                    }
+                ]
+            },
+            "full_name": "Solar flare",
+            "offense": {
+                "cost": 2,
+                "description": "Everyone but you deals a reduced by 2 dmg for 1 round.",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "all_except",
+                        "type": "apply_buff",
+                        "value": "damage_reduce2"
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "fog": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Attacker takes a position right behind a defender",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "approach"
+                    }
+                ],
+                "flavor": "It's hard to track your position in fog."
+            },
+            "full_name": "Fog",
+            "offense": {
+                "cost": 2,
+                "description": "Attacker takes a position right behind a defender",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "approach"
+                    }
+                ],
+                "flavor": "It's hard to track your position in fog."
+            },
+            "type": "event"
+        },
+        "geomagnetic": {
+            "deck": true,
+            "defense": {
+                "cost": 0,
+                "description": "Everyone takes 10 energy damage. When energy ends you take HP damage instead",
+                "effects": [
+                    {
+                        "target": "all_ships",
+                        "type": "energy_test"
+                    }
+                ],
+                "flavor": "The geomagnetic interference hits you hard."
+            },
+            "full_name": "Geomagnetic storm",
+            "offense": {
+                "cost": 0,
+                "description": "Everyone takes 10 energy damage. When energy ends you take HP damage instead",
+                "effects": [
+                    {
+                        "target": "all_ships",
+                        "type": "energy_test"
+                    }
+                ],
+                "flavor": "The geomagnetic interference hits you hard."
+            },
+            "type": "event"
+        },
+        "grab": {
+            "deck": true,
+            "defense": {
+                "cost": 8,
+                "description": "Deal 4 base dmg, draw a card. Gain \"Spare part\" card, that heals you when played",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 4
+                    },
+                    {
+                        "target": "self",
+                        "type": "gain_card",
+                        "value": "spare"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "full_name": "That's mine",
+            "offense": {
+                "cost": 8,
+                "description": "Deal 5 base dmg., disarm and mute your enemy. Enemy gets a \"Fix it!\" card",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 5
+                    },
+                    {
+                        "target": "enemy_ship",
+                        "type": "gain_card",
+                        "value": "fix"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "grapple": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "Deal 1 base dmg., pooling your enemy closer",
+                "effects": [
+                    {
+                        "target": "backward",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Grapple",
+            "offense": {
+                "cost": 2,
+                "description": "Deal 1 base dmg., pooling your enemy closer",
+                "effects": [
+                    {
+                        "target": "forward",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "hamstring": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Aim for the engines, dealing 2 base dmg and move enemy back by 1 position",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "backward",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "full_name": "Hamstring",
+            "offense": {
+                "cost": 3,
+                "description": "Aim for the wings and deal 3 base dmg. Lock enemy position for 2 turns",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "forward",
+                        "type": "apply_buff",
+                        "value": "lock_position"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "headwind": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "Headwind moves you 1 position back",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "full_name": "Headwind",
+            "offense": {
+                "cost": 1,
+                "description": "Headwind moves you 1 position back",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "healdrone": {
+            "deck": true,
+            "defense": {
+                "cost": 5,
+                "description": "You summon a healing drone behind you. It will heal you for 3 turns",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "hdrone"
+                    }
+                ]
+            },
+            "full_name": "Little Drone Helper",
+            "offense": {
+                "cost": 5,
+                "description": "You summon a healing drone behind you. It will heal you for 3 turns",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "hdrone"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "hold_fire": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "disarm yourself fo 2 turns but increase your damage by 2 for 3 rounds and draw a card",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 3,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_add2"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "full_name": "Hold fire",
+            "offense": {
+                "cost": 3,
+                "description": "disarm yourself fo 2 turns but increase your damage by 2 for 3 rounds and draw a card",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 3,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_add2"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "impale": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Impale all enemies behind you, dealing 2 base dmg and move them backwards by 1",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward_pierce",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "backward_pierce",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "full_name": "Impale",
+            "offense": {
+                "cost": 4,
+                "description": "Deal 3 base dmg to anyone afore you, move them forward by 1 and apply disarm for 1 turn",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward_pierce",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "forward_pierce",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "forward_pierce",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "irounds": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Blind your enemy and reduce their damage by 1 for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "backward",
+                        "type": "apply_buff",
+                        "value": "damage_reduce1"
+                    }
+                ]
+            },
+            "full_name": "Incendiary rounds",
+            "offense": {
+                "cost": 2,
+                "description": "Deal 3 base dmg and put the enemy on fire, dealing 1 damage per turn for 2 turns",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "forward",
+                        "type": "apply_buff",
+                        "value": "on_fire"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "leak": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Shoot the enemies tanks, causing them to get 1 less energy for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "backward",
+                        "type": "apply_buff",
+                        "value": "energygain_reduce1"
+                    }
+                ]
+            },
+            "full_name": "Cause a leak",
+            "offense": {
+                "cost": 2,
+                "description": "Deal 2 base dmg, move enemy back by 1 and cause them to get 1 less energy for 2 turns",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "forward",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "forward",
+                        "type": "apply_buff",
+                        "value": "energygain_reduce1"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "lighting_rod": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Deal 2 base dmg and make your opponent take 2 damage when they play cards for 1 turn",
+                "effects": [
+                    {
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "lightning_rod"
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "full_name": "Lighting rod",
+            "offense": {
+                "cost": 3,
+                "description": "Deal 2 base dmg and make your opponent take 2 damage when they play cards for 1 turn",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "lightning_rod"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "meteor": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "Ship with most health takes 2 damage",
+                "effects": [
+                    {
+                        "target": "max_health",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ],
+                "flavor": "Sometimes a hull full of holes is convenient - rocks just fly right through it!"
+            },
+            "full_name": "Meteor shower",
+            "offense": {
+                "cost": 1,
+                "description": "Ship with most health takes 2 damage",
+                "effects": [
+                    {
+                        "target": "max_health",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ],
+                "flavor": "Sometimes a hull full of holes is convenient - rocks just fly right through it!"
+            },
+            "type": "event"
+        },
+        "mine": {
+            "deck": true,
+            "defense": {
+                "cost": 4,
+                "description": "Place a floating mine in 2 positions behind you. Mine deals 5 damage on collide.",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "mine"
+                    }
+                ]
+            },
+            "full_name": "Floating mine",
+            "offense": {
+                "cost": 4,
+                "description": "Place a floating mine in 2 positions in front of you. Mine deals 5 damage on collide.",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "mine"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "missile": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "You fire a missile, exploding it in distance. No one can use weapon cards for 1 turn",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    }
+                ]
+            },
+            "full_name": "Hardpoint missile",
+            "offense": {
+                "cost": 2,
+                "description": "You fire a missile, pushing enemy away by 1 position and dealing 3 damage",
+                "effects": [
+                    {
+                        "target": "forward",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 3
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "power": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "Decrease enemy ship damage by 1 for 2 turns",
+                "effects": [
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_reduce1"
+                    }
+                ],
+                "flavor": "Use the ship's special reserve to power up your armor."
+            },
+            "full_name": "Power up",
+            "offense": {
+                "cost": 1,
+                "description": "Increase your damage by 1 for this turn",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_add1"
+                    }
+                ],
+                "flavor": "Use the ship's special reserve to power up your weapon."
+            },
+            "type": "ship"
+        },
+        "ram": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Deal 4 base dmg., take 2 damage and move backwards by 1 position",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "backward_pierce",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward_pierce",
+                        "type": "damage",
+                        "value": 4
+                    }
+                ]
+            },
+            "full_name": "Ram",
+            "offense": {
+                "cost": 3,
+                "description": "Deal 4 base dmg., take 2 damage and move forward by 1 position",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward_pierce",
+                        "type": "damage",
+                        "value": 4
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "reactor": {
+            "deck": true,
+            "defense": {
+                "cost": 6,
+                "description": "Draw 2 cards. Energy gain reduced by 2 for 2 rounds.",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "energygain_reduce2"
+                    }
+                ]
+            },
+            "full_name": "Cool the reactor",
+            "offense": {
+                "cost": 6,
+                "description": "Draw 2 cards. Energy gain reduced by 2 for 2 rounds.",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "energygain_reduce2"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "redirect": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Unmute and disarm yourself. Draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "unmute"
+                    },
+                    {
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "full_name": "Redirect energy",
+            "offense": {
+                "cost": 3,
+                "description": "Unmute and disarm yourself. Draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "unmute"
+                    },
+                    {
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "sandstorm": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Enemy takes your position. You move 1 position back. Everyone takes 2 damage",
+                "effects": [
+                    {
+                        "target": "enemy_ship",
+                        "type": "special_swap"
+                    },
+                    {
+                        "target": "all",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "full_name": "Sandstorm",
+            "offense": {
+                "cost": 1,
+                "description": "Sudden sandstorm strikes the enemy ship for 2 damage",
+                "effects": [
+                    {
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "scorch": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Deal 2 dmg and disarm everyone for 1 turn",
+                "effects": [
+                    {
+                        "target": "all",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    }
+                ]
+            },
+            "full_name": "Scorch this feathers",
+            "offense": {
+                "cost": 2,
+                "description": "Deal 1 base dmg, 2 energy dmg and make enemy burn, dealing 1 dmg for 2 turns",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "forward",
+                        "type": "edamage",
+                        "value": 2
+                    },
+                    {
+                        "target": "forward",
+                        "type": "apply_buff",
+                        "value": "on_fire"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "sidewind": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Everyone is disarmed for 1 turn.",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    }
+                ]
+            },
+            "full_name": "Sidewind",
+            "offense": {
+                "cost": 2,
+                "description": "Everyone is disarmed for 1 turn.",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "all",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "snipe": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Deal 2 base dmg. Enemy deals 1 dmg less for 1 turn.",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "damage_reduce1"
+                    }
+                ]
+            },
+            "full_name": "Precise shot",
+            "offense": {
+                "cost": 3,
+                "description": "Deal 3 base dmg, 2 energy dmg and mute enemy for 2 turns",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "enemy_ship",
+                        "type": "edamage",
+                        "value": 2
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "spare": {
+            "deck": false,
+            "defense": {
+                "cost": 1,
+                "description": "Use it to quickly fix your ship and get 4 HP",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "heal",
+                        "value": 4
+                    }
+                ]
+            },
+            "full_name": "Spare part!",
+            "offense": {
+                "cost": 1,
+                "description": "Use it to quickly fix your ship and get 4 HP",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "heal",
+                        "value": 4
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "still": {
+            "deck": true,
+            "defense": {
+                "cost": 4,
+                "description": "Deal 3 base dmg, move enemy further and lock both ships' positions",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "enemy_ship",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all_ships",
+                        "type": "apply_buff",
+                        "value": "lock_position"
+                    }
+                ]
+            },
+            "full_name": "Hold still",
+            "offense": {
+                "cost": 4,
+                "description": "Deal 3 base dmg, move enemy further and lock both ships' positions",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 3
+                    },
+                    {
+                        "target": "enemy_ship",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "all_ships",
+                        "type": "apply_buff",
+                        "value": "lock_position"
+                    }
+                ]
+            },
+            "type": "weapon"
+        },
+        "stop": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "disarm and mute, move back by 2. Draw a card and increase energy gain by 2 for 2 rounds",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -2
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "energygain_add2"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ]
+            },
+            "full_name": "Full stop",
+            "offense": {
+                "cost": 3,
+                "description": "disarm and mute, move back by 2. Draw a card and increase energy gain by 2 for 2 rounds",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -2
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "buff_duration": 2,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "energygain_add2"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "disarm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "mute"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "tab": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Rearm, move back, reduce card cost for 1 turn and deal 2 base dmg. to anyone behind",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "target": "self",
+                        "type": "arm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "cardcost_reduce1"
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "full_name": "Turn and burn",
+            "offense": {
+                "cost": 3,
+                "description": "You take a vantage point. Move 1 forward, rearm and reduce card cost for 1 turn",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "arm"
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "cardcost_reduce1"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "tailwind": {
+            "deck": true,
+            "defense": {
+                "cost": 1,
+                "description": "Tailwind moves you 1 position forward",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Tailwind",
+            "offense": {
+                "cost": 1,
+                "description": "Tailwind moves you 1 position forward",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "thunder": {
+            "deck": true,
+            "defense": {
+                "cost": 0,
+                "description": "Thunderbolt is attracted to energy. Ship with higher energy takes 2 damage",
+                "effects": [
+                    {
+                        "target": "max_energy",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "full_name": "Thunder and Lightning",
+            "offense": {
+                "cost": 0,
+                "description": "Thunderbolt is attracted to energy. Ship with higher energy takes 2 damage",
+                "effects": [
+                    {
+                        "target": "max_energy",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "tornado": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "Ship with less HP takes 2 dmg. You move forward by 3 and enemy moves backwards by 3.",
+                "effects": [
+                    {
+                        "target": "min_health",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "all_enemies",
+                        "type": "position",
+                        "value": 3
+                    },
+                    {
+                        "target": "all_allies",
+                        "type": "position",
+                        "value": -3
+                    }
+                ]
+            },
+            "full_name": "Tornado",
+            "offense": {
+                "cost": 3,
+                "description": "Ship with less HP takes 2 dmg. You move forward by 3 and enemy moves backwards by 3.",
+                "effects": [
+                    {
+                        "target": "min_health",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "all_allies",
+                        "type": "position",
+                        "value": 3
+                    },
+                    {
+                        "target": "all_enemies",
+                        "type": "position",
+                        "value": -3
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "wingdrone": {
+            "deck": true,
+            "defense": {
+                "cost": 5,
+                "description": "Summon an attack drone behind you. It will attack enemy in front of you for 3 turns",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "adrone"
+                    }
+                ]
+            },
+            "full_name": "Wingdrone",
+            "offense": {
+                "cost": 5,
+                "description": "Summon an attack drone behind you. It will attack enemy in front of you for 3 turns",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "adrone"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
+        "wingman": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Ally shows up to help you deal with a pursuing enemy. They deal 3 damage to enemy ship",
+                "effects": [
+                    {
+                        "target": "enemy_ship",
+                        "type": "damage",
+                        "value": 3
+                    }
+                ]
+            },
+            "full_name": "Wingman's help",
+            "offense": {
+                "cost": 2,
+                "description": "Ally shows up to help you finish the prey. Damage increased by 2 for this turn",
+                "effects": [
+                    {
+                        "buff_duration": 1,
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "damage_add2"
+                    }
+                ]
+            },
+            "type": "event"
+        }
+    },
+    "objects": {
+        "adrone": {
+            "cases": {
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "all_enemies",
+                            "type": "damage",
+                            "value": 2
+                        }
+                    ]
+                }
+            },
+            "description": "Simple attacking drone",
+            "full_name": "Wingdrone"
+        },
+        "birds": {
+            "cases": {
+                "collide": {
+                    "effects": [
+                        {
+                            "range": 0,
+                            "target": "all",
+                            "type": "damage",
+                            "value": 2
+                        }
+                    ]
+                }
+            },
+            "description": "A flock of birds",
+            "full_name": "Birds!"
+        },
+        "bomb": {
+            "cases": {
+                "play_card": {
+                    "arg": "detonate",
+                    "effects": [
+                        {
+                            "target": "all",
+                            "type": "damage",
+                            "value": 5
+                        }
+                    ]
+                },
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "position",
+                            "value": -1
+                        }
+                    ]
+                }
+            },
+            "description": "Just a flying c4",
+            "full_name": "Bomb"
+        },
+        "emp": {
+            "cases": {
+                "play_card": {
+                    "arg": "detonate EMP",
+                    "effects": [
+                        {
+                            "target": "all",
+                            "type": "damage",
+                            "value": 2
+                        },
+                        {
+                            "target": "all",
+                            "type": "edamage",
+                            "value": 6
+                        },
+                        {
+                            "target": "all",
+                            "type": "mute"
+                        }
+                    ]
+                },
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "position",
+                            "value": -1
+                        }
+                    ]
+                }
+            },
+            "description": "A flying electromagnetic grenade",
+            "full_name": "EMP"
+        },
+        "hdrone": {
+            "cases": {
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "ally_ship",
+                            "type": "heal",
+                            "value": 2
+                        }
+                    ]
+                }
+            },
+            "description": "Simple healing drone",
+            "full_name": "Helper drone"
+        },
+        "mine": {
+            "cases": {
+                "collide": {
+                    "effects": [
+                        {
+                            "range": 0,
+                            "target": "all",
+                            "type": "damage",
+                            "value": 5
+                        }
+                    ]
+                },
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "position",
+                            "value": -1
+                        }
+                    ]
+                }
+            },
+            "description": "A flying landmine",
+            "full_name": "Flying mine"
+        }
+    },
+    "ships": {
+        "fighter": {
+            "cards": [
+                "tab",
+                "barrel",
+                "missile",
+                "wingdrone"
+            ],
+            "energy_per_turn": 4,
+            "hp": 20,
+            "max_energy": 20
+        },
+        "scout": {
+            "cards": [
+                "mine",
+                "healdrone",
+                "reactor",
+                "core"
+            ],
+            "energy_per_turn": 6,
+            "hp": 25,
+            "max_energy": 18
+        },
+        "tank": {
+            "cards": [
+                "power",
+                "ram",
+                "eboost",
+                "stop"
+            ],
+            "energy_per_turn": 5,
+            "hp": 30,
+            "max_energy": 14
+        }
+    },
+    "weapons": {
+        "harpoon": {
+            "cards": [
+                "grapple",
+                "lighting_rod",
+                "impale",
+                "electrocute",
+                "still",
+                "grab",
+                "fix",
+                "spare"
+            ],
+            "defense": {
+                "cost": 2,
+                "description": "Deals 1 damage",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Harpoon",
+            "offense": {
+                "cost": 2,
+                "description": "Deals 1 damage",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            }
+        },
+        "laser": {
+            "cards": [
+                "snipe",
+                "scorch",
+                "redirect",
+                "emp",
+                "detonate_emp",
+                "charging",
+                "fire",
+                "hold_fire"
+            ],
+            "defense": {
+                "cost": 2,
+                "description": "Deals 1 damage to hp and energy",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "edamage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Laser",
+            "offense": {
+                "cost": 2,
+                "description": "Deals 1 damage to hp and energy.",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "edamage",
+                        "value": 1
+                    }
+                ]
+            }
+        },
+        "mg": {
+            "cards": [
+                "fire_all",
+                "hamstring",
+                "irounds",
+                "leak",
+                "bomb",
+                "detonate",
+                "cool"
+            ],
+            "defense": {
+                "cost": 2,
+                "description": "Deals 1 damage.",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Machine gun",
+            "offense": {
+                "cost": 2,
+                "description": "Deals 2 damage",
+                "effects": [
+                    {
+                        "range": 3,
+                        "range_mod": 1,
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 2
+                    }
+                ]
+            }
+        }
+    }
+}

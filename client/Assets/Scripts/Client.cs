@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assets.Scripts.Network;
 using Assets.Scripts.Utils;
+using SimpleJSON;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace Assets.Scripts.Network
+namespace Assets.Scripts
 {
+    [RequireComponent(typeof(ActionDispatcher))]
     public class Client : Singleton<Client>
     {
         public delegate void Messagehandler(Message message);
@@ -24,6 +27,7 @@ namespace Assets.Scripts.Network
         public int Port = 8976;
         public string GameSceneName = "Battle";
         public string LobbySceneName = "Lobby";
+        public TextAsset GameDbAsset;
 
         public event Messagehandler MessageReceived;
         public event Messagehandler GameMessageReceived;
@@ -32,14 +36,11 @@ namespace Assets.Scripts.Network
         private readonly Dictionary<string, List<Messagehandler>> _messageSubscribers = 
             new Dictionary<string, List<Messagehandler>>(); 
 
-        // Dispatching
-        private readonly List<System.Action> _dispatchList = new List<Action>();
-        private readonly List<System.Action> _dispatchListCopy = new List<Action>();
-        private bool _dispatching;
-        private readonly object _dispatchLock = new object();
-
         private readonly NetworkChannel<Message> _channel = 
             new NetworkChannel<Message>(new MessageSerializer());
+
+        private JSONNode _db;
+        private ActionDispatcher _dispatcher;
 
 
         void Awake()
@@ -49,20 +50,30 @@ namespace Assets.Scripts.Network
 
         void Start ()
         {
+            _dispatcher = GetComponent<ActionDispatcher>();
+
+            // Load database
+            if (GameDbAsset == null)
+            {
+                Debug.LogError("Game DB asset is not set");
+            }
+            else
+            {
+                _db = JSON.Parse(GameDbAsset.text);
+                Debug.LogFormat("Loaded Game DB asset: Length: {0}", GameDbAsset.text.Length);
+            }
+
             _channel.Start(Host, Port);
             _channel.Received += (ch, msg) =>
             {
                 // Dispatch message processing to Unity thread
                 if (MessageReceived != null)
-                    Dispatch(() => MessageReceived.Invoke(msg));
+                    _dispatcher.Dispatch(() => MessageReceived.Invoke(msg));
             };
-
             
             _channel.ErrorOccured += (ch, err) =>
             {
-                Debug.LogWarningFormat("Channel error: {0}", err);
-                if (SceneManager.GetActiveScene().name != LobbySceneName)
-                    SceneManager.LoadScene(LobbySceneName);
+                _dispatcher.Dispatch(() => OnChannelError(err));
             };
 
             MessageReceived += OnMessageReceive;
@@ -132,6 +143,13 @@ namespace Assets.Scripts.Network
             }
         }
 
+        private void OnChannelError(Exception err)
+        {
+            Debug.LogWarningFormat("Channel error: {0}", err);
+            if (SceneManager.GetActiveScene().name != LobbySceneName)
+                SceneManager.LoadScene(LobbySceneName);
+        }
+
         public void Subscribe(string head, Messagehandler handler)
         {
             if (_messageSubscribers.ContainsKey(head))
@@ -166,15 +184,6 @@ namespace Assets.Scripts.Network
             _channel.Send(message);
         }
 
-        public void Dispatch(System.Action action)
-        {
-            lock (_dispatchLock)
-            {
-                _dispatchList.Add(action);
-                _dispatching = true;
-            }   
-        }
-
         public void StartQueue(string ship, string weapon)
         {
             var msg = new Message(Protocol.MsgDomainLobby, Protocol.MsgCliQueueStart, "Start queue");
@@ -186,25 +195,6 @@ namespace Assets.Scripts.Network
         public void StopQueue()
         {
             Send(new Message(Protocol.MsgDomainLobby, Protocol.MsgCliQueueStop, "Stop queue"));
-        }
-
-        void Update ()
-        {
-            if (!_dispatching)
-                return;
-
-            lock (_dispatchLock)
-            {
-                _dispatchListCopy.AddRange(_dispatchList);
-                _dispatchList.Clear();
-            }
-
-            foreach (var action in _dispatchListCopy)
-            {
-                action.Invoke();
-            }
-
-            _dispatchListCopy.Clear();
         }
 
         void OnApplicationQuit()

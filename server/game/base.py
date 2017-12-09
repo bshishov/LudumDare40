@@ -135,7 +135,7 @@ class GameBase(object):
 
         self.notify_players(MSG_SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
-    def get_state(self, perspective_player=None):
+    def get_state(self, perspective_player=None) -> dict:
         return {}
 
     def notify_players(self, head, status='', *args, **kwargs):

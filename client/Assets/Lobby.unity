@@ -1033,7 +1033,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 631019834}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -250, z: 0}
+  m_LocalPosition: {x: 0, y: -225, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1895445161}
@@ -1151,6 +1151,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 711978195}
+  - component: {fileID: 711978197}
   - component: {fileID: 711978196}
   m_Layer: 0
   m_Name: Client
@@ -1185,7 +1186,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Host: 127.0.0.1
   Port: 8976
-  SceneToLoad: Battle
+  GameSceneName: Battle
+  LobbySceneName: Lobby
+  GameDbAsset: {fileID: 4900000, guid: ac9f15071e94d0645919a294a35475a3, type: 3}
+--- !u!114 &711978197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 711978194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621b61b99c388e046bd52ff90868f69f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &720013766
 Prefab:
   m_ObjectHideFlags: 0
@@ -1542,7 +1556,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1617426334}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 335, y: 250, z: 0}
+  m_LocalPosition: {x: 366.5, y: 225, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 631019835}

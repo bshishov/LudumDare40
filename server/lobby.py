@@ -5,6 +5,7 @@ import time
 from protocol import *
 import game.base
 import game.card_game
+from game.rules import get_gb
 
 
 MATCHMAKING_DELAY = 10  # seconds
@@ -29,9 +30,9 @@ class Lobby(object):
         player = game.base.Player(channel)  # type: game.base.Player
         with self._players_lock:
             self._players[channel] = player
-            player.send(LobbyMessage(MSG_SRV_HELLO, status='Welcome',
-                                     version=VERSION,
-                                     players=len(self._players)))
+        player.send(LobbyMessage(MSG_SRV_HELLO, status='Welcome',
+                                 version=VERSION,
+                                 players=len(self._players)))
         self._logger.info('Player connected')
 
     def on_client_disconnect(self, channel):

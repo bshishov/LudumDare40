@@ -2,13 +2,19 @@ import argparse
 import logging
 
 from lobby import Lobby
+from game.rules import export_db
 import connection
 
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 8976
 
+DB_EXPORT_PATH = '../client/Assets/Data/db.json'
+
 
 def main(args):
+    logging.info('Exporting game database to: {0}'.format(DB_EXPORT_PATH))
+    export_db(DB_EXPORT_PATH)
+
     lobby = Lobby()
     server = connection.Server(args.host, args.port)
     server.on_client_connect.append(lobby.on_client_connect)

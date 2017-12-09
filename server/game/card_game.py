@@ -1,3 +1,5 @@
+from typing import Optional, List
+
 from game.base import *
 from game.effects import EffectHandler
 from game.rules import *
@@ -165,7 +167,7 @@ class CardGame(GameBase):
             if case_arg is None or case_arg == arg:
                 self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, []))
 
-    def is_offense(self, entity):
+    def is_offense(self, entity) -> Optional[bool]:
         if not self.is_player(entity):
             return None
 
@@ -201,7 +203,7 @@ class CardGame(GameBase):
         es = self.get_targets_no_range(entity, target)
         return filter_position_range(es, entity.position - target_range, entity.position + target_range)
 
-    def get_targets_no_range(self, entity, target):
+    def get_targets_no_range(self, entity, target) -> List[EntityState]:
         if target == TARGET_SELF:
             return [entity, ]
 
@@ -304,7 +306,7 @@ class CardGame(GameBase):
         """
         return [self.player_a_entity, self.player_b_entity] + self.objects  # type: List[EntityState]
 
-    def get_state(self, perspective_player=None):
+    def get_state(self, perspective_player=None) -> dict:
         """
             @:type perspective_player: Player
         """
@@ -320,14 +322,14 @@ class CardGame(GameBase):
         }
         return state
 
-    def get_player_state(self, player, hide_hand=False):
+    def get_player_state(self, player, hide_hand=False) -> dict:
         if player == self.player_a:
             return self.player_a_entity.get_state(hide_hand=hide_hand)
         if player == self.player_b:
             return self.player_b_entity.get_state(hide_hand=hide_hand)
-        return None
+        return {}
 
-    def is_player(self, entity):
+    def is_player(self, entity) -> bool:
         if entity == self.player_a_entity:
             return True
         if entity == self.player_b_entity:
@@ -346,5 +348,5 @@ class CardGame(GameBase):
             self.notify_player(self.player_b, *args, **kwargs)
 
 
-def create(player_a, player_b):
+def create(player_a, player_b) -> GameBase:
     return CardGame(player_a, player_b)
