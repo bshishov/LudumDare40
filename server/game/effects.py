@@ -113,7 +113,7 @@ class EffectHandler(object):
         if buff_state is not None:
             buff = get_buff(buff_name)
             entity.buffs.remove(buff_state)
-            self.apply_effects(entity, buff.get(entity, P_BUFF_ON_REMOVE_EFFECTS, []))
+            self.apply_effects(entity, buff.get(P_BUFF_ON_REMOVE_EFFECTS, []))
 
     @effect_handler(EFFECT_TYPE_ADD_CARDCOST, (P_EFFECT_VALUE, 0), (P_EFFECT_CARD_TYPE, None))
     def add_card_cost(self, entity, amount, card_type):
