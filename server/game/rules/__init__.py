@@ -37,7 +37,7 @@ def export_cards_to_excel_csv(filename):
 
         parts = field.split('/')
         if len(parts) == 1:
-            return c.get(field)
+            return c.get(field, '--')
 
         o = c
         for pp in parts:
@@ -49,9 +49,9 @@ def export_cards_to_excel_csv(filename):
                 try:
                     o = o[pp]
                 except KeyError:
-                    return ''
+                    return '--'
                 except IndexError:
-                    return ''
+                    return '--'
         return o
 
     def resolve(card_key, fields) -> dict:
