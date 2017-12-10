@@ -1,11 +1,14 @@
 ﻿using Assets.Scripts.Data;
 using SimpleJSON;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
-    public class UIWeapon : MonoBehaviour
+    public class UIWeapon : MonoBehaviour, 
+        IPointerEnterHandler,
+        IPointerExitHandler
     {
         public Perspective Perspective;
         public Image Icon;
@@ -14,6 +17,7 @@ namespace Assets.Scripts.UI
         public WeaponsAppearance Appearance;
 
         private string _weaponName;
+        private string _description;
 
         void Start()
         {
@@ -51,6 +55,7 @@ namespace Assets.Scripts.UI
                     }
                 }
 
+                _description = action[Rules.PWeaponDescription].Value;
                 var cost = action[Rules.PWeaponCost].AsInt;
 
                 if (CostText != null)
@@ -79,6 +84,20 @@ namespace Assets.Scripts.UI
             {
                 Debug.LogWarningFormat("Can't find icon for weapon: {0}", weaponName);
             }
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            var tooltip = UITooltip.Instance;
+            if (tooltip != null)
+                tooltip.Show(_weaponName, _description);
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            var tooltip = UITooltip.Instance;
+            if (tooltip != null)
+                tooltip.Hide();
         }
     }
 }

@@ -6,6 +6,7 @@ namespace Assets.Scripts.UI
 {
     public class UIEntity : MonoBehaviour
     {
+        public UIBuffCollection BuffCollection;
         public Text HpText;
         public Text EnergyText;
 
@@ -24,6 +25,9 @@ namespace Assets.Scripts.UI
             var shaker = GetComponent<UIShaker>();
             if(shaker != null)
                 shaker.Shake();
+
+            if(BuffCollection != null)
+                BuffCollection.EntityId = entityState[Rules.PStateId].AsInt;
         }
     }
 }

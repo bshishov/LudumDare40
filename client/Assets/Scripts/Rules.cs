@@ -20,6 +20,7 @@ namespace Assets.Scripts
         public static string PStateArmed = "armed";
         public static string PStateMuted = "muted";
         public static string PStateLocked = "locked";
+        public static string PStateBuffs = "buffs";
 
         // Player-specific entity state
         public static string PStateWeaponName = "weapon_name";
@@ -32,7 +33,8 @@ namespace Assets.Scripts
         public static string PStateCardName = "name";
 
         // Buff state
-
+        public static string PStateBuffName = "name";
+        public static string PStateBuffDuration = "duration";
 
         // Game state
         public static string PStateObjects = "objects";

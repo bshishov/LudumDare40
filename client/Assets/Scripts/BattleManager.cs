@@ -195,6 +195,24 @@ namespace Assets.Scripts
             return null;
         }
 
+        public JSONObject GetEntityState(int id)
+        {
+            var objects = _state[Rules.PStateObjects];
+            foreach (var o in objects.Children)
+            {
+                if (id == o[Rules.PStateId].AsInt)
+                    return o.AsObject;
+            }
+
+            if (id == MyState[Rules.PStateId].AsInt)
+                return MyState;
+
+            if (id == OpponentsState[Rules.PStateId].AsInt)
+                return OpponentsState;
+
+            return null;
+        }
+
         public bool IsOffense(Perspective perspective)
         {
             var myPos = MyState[Rules.PStatePosition].AsInt;

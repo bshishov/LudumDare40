@@ -24,7 +24,7 @@ GameObject:
   - component: {fileID: 114148668276061504}
   - component: {fileID: 114455536772893996}
   m_Layer: 5
-  m_Name: EventMessage
+  m_Name: UIEventMessage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

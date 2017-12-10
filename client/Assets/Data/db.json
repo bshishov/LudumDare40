@@ -2702,7 +2702,8 @@
                 }
             },
             "description": "Simple attacking drone",
-            "full_name": "Wingdrone"
+            "full_name": "Wingdrone",
+            "hp": 3
         },
         "birds": {
             "cases": {
@@ -2727,7 +2728,8 @@
                 }
             },
             "description": "A flock of birds",
-            "full_name": "Birds!"
+            "full_name": "Birds!",
+            "hp": 3
         },
         "bomb": {
             "cases": {
@@ -2752,7 +2754,8 @@
                 }
             },
             "description": "Just a flying c4",
-            "full_name": "Bomb"
+            "full_name": "Bomb",
+            "hp": 3
         },
         "debris": {
             "cases": {
@@ -2787,7 +2790,8 @@
                 }
             },
             "description": "Chunks of metal blown away from your ship",
-            "full_name": "Debris"
+            "full_name": "Debris",
+            "hp": 3
         },
         "emp": {
             "cases": {
@@ -2825,7 +2829,8 @@
                 }
             },
             "description": "A flying electromagnetic grenade",
-            "full_name": "EMP"
+            "full_name": "EMP",
+            "hp": 3
         },
         "hdrone": {
             "cases": {
@@ -2850,7 +2855,8 @@
                 }
             },
             "description": "Simple healing drone",
-            "full_name": "Helper drone"
+            "full_name": "Helper drone",
+            "hp": 3
         },
         "mine": {
             "cases": {
@@ -2875,7 +2881,8 @@
                 }
             },
             "description": "A flying landmine",
-            "full_name": "Flying mine"
+            "full_name": "Flying mine",
+            "hp": 3
         },
         "wgenerator": {
             "cases": {
@@ -2901,7 +2908,8 @@
                 }
             },
             "description": "It pushes everyone backwards",
-            "full_name": "Wind generator"
+            "full_name": "Wind generator",
+            "hp": 3
         }
     },
     "ships": {

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Assets.Scripts
 {
+
     public class Entity : MonoBehaviour
     {
         public int Id { get { return _state[Rules.PStateId]; } }
@@ -81,6 +82,20 @@ namespace Assets.Scripts
             {
                 Destroy(_ui.gameObject);
             }
+        }
+
+        void OnMouseEnter()
+        {
+            var tooltip = UITooltip.Instance;
+            if(tooltip != null)
+                tooltip.Show("Entity", _state.ToString(4));
+        }
+
+        void OnMouseExit()
+        {
+            var tooltip = UITooltip.Instance;
+            if (tooltip != null)
+                tooltip.Hide();
         }
     }
 }

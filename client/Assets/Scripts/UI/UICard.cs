@@ -2,12 +2,15 @@
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI
 {
     [RequireComponent(typeof(Button))]
-    public class UICard : MonoBehaviour
+    public class UICard : MonoBehaviour,
+        IPointerEnterHandler,
+        IPointerExitHandler
     {
         public CardsAppearance Appearance;
         public Image Background;
@@ -109,6 +112,20 @@ namespace Assets.Scripts.UI
         void OnMouseOver()
         {
             Debug.Log("MOUSE OVER");
+        }
+
+        public void OnPointerEnter(PointerEventData eventData)
+        {
+            var tooltip = UITooltip.Instance;
+            if (tooltip != null)
+                tooltip.Show(_name, Client.Instance.GetCard(_name).ToString(4));
+        }
+
+        public void OnPointerExit(PointerEventData eventData)
+        {
+            var tooltip = UITooltip.Instance;
+            if (tooltip != null)
+                tooltip.Hide();
         }
     }
 }

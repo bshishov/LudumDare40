@@ -38,6 +38,7 @@ GameObject:
   - component: {fileID: 4162701308988028}
   - component: {fileID: 114776488407890652}
   - component: {fileID: 114345395824448240}
+  - component: {fileID: 65422809315197022}
   m_Layer: 0
   m_Name: fighter
   m_TagString: Untagged
@@ -257,6 +258,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1972001616124324}
   m_Mesh: {fileID: 4300002, guid: ddce9a52cd0f08c418a71c7b5e19d020, type: 3}
+--- !u!65 &65422809315197022
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1230271369458546}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114345395824448240
 MonoBehaviour:
   m_ObjectHideFlags: 1

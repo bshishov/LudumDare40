@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 1f2afe1c981a29e4785a3001269e8300
+timeCreated: 1512931948
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Benguiat Rus
+  fontNames:
+  - Benguiat Rus
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
