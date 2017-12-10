@@ -46,6 +46,10 @@ objects = {
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
                         P_EFFECT_TARGET: TARGET_ALL
+                    },
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_DESTROY,
+                        P_EFFECT_TARGET: TARGET_SELF
                     }
                 ]
             },
@@ -158,6 +162,67 @@ objects = {
                     },
                 ]
             }
+        },
+    },
+    'debris': {
+        P_OBJECT_FULL_NAME: 'Debris',
+        P_OBJECT_DESCRIPTION: 'Chunks of metal blown away from your ship',
+        P_OBJECT_CASES: {
+            CASE_SPAWNED: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: 'destroy',
+                        P_EFFECT_BUFF_DURATION: 2
+                    },
+                ]
+            },
+            CASE_COLLIDE: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                        P_EFFECT_TARGET: TARGET_ALL_EXCEPT_SELF,
+                        P_EFFECT_RANGE: 2,
+                        P_EFFECT_VALUE: 3
+                    }
+                ]
+            },
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: -1
+                    },
+                ]
+            }
+        },
+    },
+    'wgenerator': {
+        P_OBJECT_FULL_NAME: 'Wind generator',
+        P_OBJECT_DESCRIPTION: 'It pushes everyone backwards',
+        P_OBJECT_CASES: {
+            CASE_SPAWNED: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: 'destroy',
+                        P_EFFECT_BUFF_DURATION: 3
+                    },
+                ]
+            },
+            CASE_COLLIDE: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_ALL,
+                        P_EFFECT_RANGE: 1,
+                        P_EFFECT_VALUE: -1
+                    }
+                ]
+            },
         },
     }
 }

@@ -425,8 +425,10 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'emp'
+                    P_EFFECT_VALUE: 'emp',
+                    P_EFFECT_SPAWN_POSITION: -1
                 },
+
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_GAIN_CARD,
@@ -1125,6 +1127,7 @@ cards = {
 
             ]
         },
+
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'disarm and mute, move back by 2. Draw a card and increase energy gain by 2 for 2 rounds',
             P_CARD_COST: 3,
@@ -1160,6 +1163,84 @@ cards = {
         }
 
     },
+    'explode': {
+        P_CARD_FULL_NAME: 'Explode',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Take 2 dmg, draw a card. Created debris deals 3 damage to everyone in it\'s radius',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_BUFF_DURATION: 'debris'
+                }
+
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Take 2 dmg, draw a card. Created debris deals 3 damage to everyone in it\'s radius',
+            P_CARD_COST: 4,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_BUFF_DURATION: 'debris'
+                }
+            ]
+        }
+
+    },
+    'armoffense': {
+        P_CARD_FULL_NAME: 'Armored offense',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'For 4 rounds you will move forward 1 position per turn',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'marcho'
+                }
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'For 4 rounds you will move backwards 1 position per turn',
+            P_CARD_COST: 5,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'marchd'
+                }
+            ]
+        }
+
+    },
+
     'tab': {
         P_CARD_FULL_NAME: 'Turn and burn',
         P_CARD_TYPE: CARD_TYPE_SHIP,
@@ -1331,6 +1412,106 @@ cards = {
         }
 
     },
+    'maneuver': {
+        P_CARD_FULL_NAME: 'Offensive maneuver',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'You deal 1 base damage, move forward and deal 1 base damage again',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'You deal 1 base damage, move backwards and deal 1 base damage again',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                },
+            ]
+        }
+
+    },
+    'sonic': {
+        P_CARD_FULL_NAME: 'Sonic boost',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'You drop random ship card, move forward by 2 and deny enemy from moving fo 1 turn',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DROP_CARD_OF_TYPE,
+                    P_EFFECT_VALUE: 'ship'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'lock_position',
+                    P_EFFECT_BUFF_DURATION: 1
+                },
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'You drop random ship card, move forward by 2 and deny enemy from moving fo 1 turn',
+            P_CARD_COST: 3,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DROP_CARD_OF_TYPE,
+                    P_EFFECT_VALUE: 'ship'
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 2
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'lock_position',
+                    P_EFFECT_BUFF_DURATION: 1
+                },
+            ]
+        }
+
+    },
     'mine': {
         P_CARD_FULL_NAME: 'Floating mine',
         P_CARD_TYPE: CARD_TYPE_SHIP,
@@ -1476,6 +1657,72 @@ cards = {
             ]
         }
 
+    },
+    'closer': {
+        P_CARD_FULL_NAME: 'Get closer',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Move 1 forward and draw a card',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Move 1 backwards and draw a card',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DRAW_CARD
+                },
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        }
+    },
+    'wgenerator': {
+        P_CARD_FULL_NAME: 'Wind generator',
+        P_CARD_TYPE: CARD_TYPE_SHIP,
+        P_CARD_DECK: True,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Spawn a wind generator behind enemy ship that pushes everyone in a small radius backwards',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'wgenerator',
+                    P_EFFECT_SPAWN_POSITION: -1
+                }
+            ]
+        },
+
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Spawn a wind generator before enemy ship that pushes everyone in a small radius backwards',
+            P_CARD_COST: 2,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
+                    P_EFFECT_VALUE: 'wgenerator',
+                    P_EFFECT_SPAWN_POSITION: 1
+                }
+            ]
+        }
     },
     'sandstorm': {
         P_CARD_FULL_NAME: 'Sandstorm',

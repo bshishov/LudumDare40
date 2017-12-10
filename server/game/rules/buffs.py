@@ -306,4 +306,32 @@ buffs = {
             }
         ],
     },
+    'marcho': {
+        P_BUFF_FULL_NAME: 'March',
+        P_BUFF_DESCRIPTION: 'Each turn you move forward',
+        P_BUFF_DURATION: 4,
+        P_BUFF_ON_APPLY_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: 1
+            }
+        ],
+        P_BUFF_ON_REMOVE_EFFECTS: [],
+    },
+    'marchd': {
+        P_BUFF_FULL_NAME: 'March',
+        P_BUFF_DESCRIPTION: 'Each turn you move backwards',
+        P_BUFF_DURATION: 3,
+        P_BUFF_ON_APPLY_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                P_EFFECT_TARGET: TARGET_SELF,
+                P_EFFECT_VALUE: -1
+            }
+        ],
+        P_BUFF_ON_REMOVE_EFFECTS: [],
+    },
 }
