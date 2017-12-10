@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: fab89f7639b75b24c9d7d166aebb9e50
-timeCreated: 1512413853
+timeCreated: 1512859300
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -276,9 +276,9 @@ TextureImporter:
       name: icons_atlas_13
       rect:
         serializedVersion: 2
-        x: 5
+        x: 15
         y: 227
-        width: 281
+        width: 271
         height: 137
       alignment: 0
       pivot: {x: 0.5, y: 0.5}

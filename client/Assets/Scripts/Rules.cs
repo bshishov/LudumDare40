@@ -6,6 +6,39 @@ namespace Assets.Scripts
         public static string SideA = "a";
         public static string SideB = "b";
 
+        // State parameters
+        // Entity state
+        public static string PStateId = "id";
+        public static string PStateName = "name";
+        public static string PStateHp = "hp";
+        public static string PStatePosition = "position";
+        public static string PStateEnergy = "energy";
+        public static string PStateMaxEnergy = "max_energy";
+        public static string PStateEnergyGain = "energy_gain";
+        public static string PStateDamageMod = "damage_mod";
+        public static string PStateSide = "side";
+        public static string PStateArmed = "armed";
+        public static string PStateMuted = "muted";
+        public static string PStateLocked = "locked";
+
+        // Player-specific entity state
+        public static string PStateWeaponName = "weapon_name";
+        public static string PStateShipName = "ship_name";
+        public static string PStateHand = "hand";
+
+        // Card state 
+        public static string PStateCardCostOffense = "cost_offense";
+        public static string PStateCardCostDefense = "cost_defense";
+        public static string PStateCardName = "name";
+
+        // Buff state
+
+
+        // Game state
+        public static string PStateObjects = "objects";
+        public static string PStateTurn = "turn";
+
+
         // NOTE: These values MUST match /server/game/rules/settings.py
 
         // DB section
@@ -115,7 +148,7 @@ namespace Assets.Scripts
         public static string PShipEnergyPerTurn = "energy_per_turn";
         public static string PShipCards = "cards";
 
-        // Weapon properties
+        // WeaponInfo properties
         public static string PWeaponDescription = "description";
         public static string PWeaponFullName = "full_name";
         public static string PWeaponCost = "cost";
