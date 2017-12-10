@@ -19,6 +19,7 @@ namespace Assets.Scripts
         }
 
         public bool IsInGame { get; private set; }
+        public bool IsGameStarted { get; private set; }
         public bool IsInQueue { get; private set; }
         public string GameId { get; private set; }
         public string Side { get; private set; }
@@ -85,8 +86,9 @@ namespace Assets.Scripts
 
             Subscribe(Protocol.MsgSrvGameBegin, message =>
             {
-                Side = message.Body[Protocol.KeySide];
-                Debug.LogFormat("Game begin");
+                IsGameStarted = true;
+                Side = message.Body[Protocol.KeySide].Value;
+                Debug.LogFormat("Game begin, side: {0}", Side);
             });
 
             Subscribe(Protocol.MsgSrvQueueStarted, message =>
@@ -105,14 +107,22 @@ namespace Assets.Scripts
             {
                 IsInQueue = false;
                 IsInGame = true;
-                GameId = message.Body[Protocol.KeyGameId];
+                GameId = message.Body[Protocol.KeyGameId].Value;
                 Debug.LogFormat("Game started, id: {0}", GameId);
-                SceneManager.LoadScene(GameSceneName);
+                if(SceneManager.GetActiveScene().name != GameSceneName)
+                    SceneManager.LoadScene(GameSceneName);
             });
 
             Subscribe(Protocol.MsgSrvGameEffect, message =>
             {
                 Debug.LogFormat("Effect: {0}", message);
+            });
+
+            Subscribe(Protocol.MsgSrvGameEnd, message =>
+            {
+                IsInGame = false;
+                IsGameStarted = false;
+                Debug.LogFormat("Game ended: {0}", message);
             });
         }
 
@@ -145,6 +155,9 @@ namespace Assets.Scripts
 
         private void OnChannelError(Exception err)
         {
+            IsInGame = false;
+            IsGameStarted = false;
+            IsInQueue = false;
             Debug.LogWarningFormat("Channel error: {0}", err);
             if (SceneManager.GetActiveScene().name != LobbySceneName)
                 SceneManager.LoadScene(LobbySceneName);
@@ -202,12 +215,44 @@ namespace Assets.Scripts
             _channel.Close();
         }
 
+        public JSONObject GetCard(string key)
+        {
+            return _db[Rules.SectionCards][key].AsObject;
+        }
+
         void OnGUI()
         {
-            if (GUI.Button(new Rect(10, 10, 150, 100), "QUEUE"))
-            {
+            if (GUI.Button(new Rect(0, 0, 30, 20), "FL"))
+                StartQueue("fighter", "laser");
+
+            if (GUI.Button(new Rect(0, 20, 30, 20), "FH"))
+                StartQueue("fighter", "harpoon");
+
+            if (GUI.Button(new Rect(0, 40, 30, 20), "FM"))
+                StartQueue("fighter", "mg");
+
+            if (GUI.Button(new Rect(0, 60, 30, 20), "TL"))
                 StartQueue("tank", "laser");
-            }
+
+            if (GUI.Button(new Rect(0, 80, 30, 20), "TH"))
+                StartQueue("tank", "harpoon");
+
+            if (GUI.Button(new Rect(0, 100, 30, 20), "TM"))
+                StartQueue("tank", "mg");
+
+            if (GUI.Button(new Rect(0, 120, 30, 20), "SL"))
+                StartQueue("scout", "laser");
+
+            if (GUI.Button(new Rect(0, 140, 30, 20), "SH"))
+                StartQueue("scout", "harpoon");
+
+            if (GUI.Button(new Rect(0, 160, 30, 20), "SM"))
+                StartQueue("scout", "mg");
+        }
+
+        public JSONObject GetWeapon(string key)
+        {
+            return _db[Rules.SectionWeapons][key].AsObject;
         }
     }
 }

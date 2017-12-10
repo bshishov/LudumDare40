@@ -27,7 +27,7 @@ namespace Assets.Scripts.UI
         public void SelectWeapon(string weaponName)
         {
             _selectedWeapon = weaponName;
-            Debug.LogFormat("Weapon selected: {0}", _selectedWeapon);
+            Debug.LogFormat("WeaponInfo selected: {0}", _selectedWeapon);
 
             foreach (var weaponIcon in _weaponIcons)
                 weaponIcon.SetSelected(weaponIcon.WeaponName.Equals(_selectedWeapon));

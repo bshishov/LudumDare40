@@ -68,6 +68,9 @@ class CardGame(GameBase):
             @type card_name: str
             @type player_state: PlayerState
         """
+        if player_state.muted:
+            raise GameError('You are muted')
+
         card = get_card(card_name)
         card_state = player_state.get_card_in_hand(card_name, None)
         if card_state is None:
@@ -81,7 +84,7 @@ class CardGame(GameBase):
         if card_action is None:
             raise GameError('Card does not have any actions: {0}'.format(card_name))
         if cost > player_state.energy:
-            raise GameError('Not enough energy: {0}'.format(card_name))
+            raise GameError('Not enough energy to play card: {0}'.format(card_name))
 
         # Play card
         self.effect_handler.remove_card(player_state, card_name)
@@ -94,7 +97,8 @@ class CardGame(GameBase):
             @type player_state: PlayerState
         """
         if not player_state.armed:
-            raise GameError('Not armed: {0}'.format(player_state))
+            raise GameError('You are not armed')
+
         w = get_weapon(player_state.weapon_name)
         if self.is_offense(player_state):
             w_action = w.get(P_WEAPON_ACTION_OFFENSE, w.get(P_WEAPON_ACTION_SAME, None))
@@ -129,6 +133,9 @@ class CardGame(GameBase):
                 else:
                     buff = get_buff(buff.name)
                     self.effect_handler.apply_effects(entity_state, buff.get(P_BUFF_ON_ROUND_EFFECTS, []))
+
+        self.effect_handler.draw_card(self.player_a_entity)
+        self.effect_handler.draw_card(self.player_b_entity)
 
     def start_round(self):
         # Process energy

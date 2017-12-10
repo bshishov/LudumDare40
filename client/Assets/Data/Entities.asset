@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95e876b7c5d63264fbb21ce65fa6d4ec, type: 3}
+  m_Name: Entities
+  m_EditorClassIdentifier: 
+  DefaultPrefab: {fileID: 1957326492155778, guid: 66e104edf4f2314469e12b5ea1b6c1a5,
+    type: 2}
+  Entities:
+  - DatabaseKey: tank
+    Prefab: {fileID: 1902553452737012, guid: e8aa3abb25db80b4c9c44af6d0368444, type: 2}
+  - DatabaseKey: scout
+    Prefab: {fileID: 1307173687949272, guid: cd98ea41ff235bc43a0eb4195c891df5, type: 2}
+  - DatabaseKey: fighter
+    Prefab: {fileID: 1230271369458546, guid: f4f6043f238b52941936d40df3e7a6eb, type: 2}
