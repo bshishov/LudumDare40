@@ -200,7 +200,7 @@ if __name__ == '__main__':
     parser.add_argument("--host", help="Host to bind the socket to", type=str, default=DEFAULT_HOST)
     parser.add_argument("--port", help="Port to run the server on", type=int, default=DEFAULT_PORT)
     parser.add_argument("--auto", help="Use auto queue", action='store_true')
-    parser.add_argument("--ship", help="Default ship", type=str, default='tank')
-    parser.add_argument("--weapon", help="Default weapon", type=str, default='laser')
+    parser.add_argument("--ship", help="Default ship", type=str, default='scout')
+    parser.add_argument("--weapon", help="Default weapon", type=str, default='harpoon')
 
     main(parser.parse_args())

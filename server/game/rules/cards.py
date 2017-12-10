@@ -19,8 +19,8 @@ cards = {
             ]
         },
         P_CARD_ACTION_DEFENSE: {
-            P_CARD_DESCRIPTION: 'Fire all weapons in blank. Move yourself backwards by 1, take 1 dmg and deal 3 base dmg',
-            P_CARD_COST: 2,
+            P_CARD_DESCRIPTION: 'Fire all weapons in blank. Move yourself backwards by 1, take 1 dmg and deal 4 base dmg',
+            P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -35,7 +35,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                    P_EFFECT_VALUE: 3,
+                    P_EFFECT_VALUE: 4,
                     P_EFFECT_RANGE: 3,
                     P_EFFECT_RANGE_MOD: 1,
                 }
@@ -89,8 +89,8 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Deal 3 base dmg and put the enemy on fire, dealing 1 damage per turn for 2 turns',
-            P_CARD_COST: 2,
+            P_CARD_DESCRIPTION: 'Deal 3 base dmg and put the enemy on fire, dealing 2 damage per turn for 2 turns',
+            P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
@@ -102,7 +102,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                    P_EFFECT_VALUE: 'on_fire'
+                    P_EFFECT_VALUE: 'on_fire',
+                    P_EFFECT_BUFF_DURATION: 2
                 }
             ]
         },
@@ -314,12 +315,12 @@ cards = {
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Deal 1 base dmg, 2 energy dmg and make enemy burn, dealing 1 dmg for 2 turns',
-            P_CARD_COST: 2,
+            P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                    P_EFFECT_VALUE: 1,
+                    P_EFFECT_VALUE: 2,
                     P_EFFECT_RANGE: 3,
                     P_EFFECT_RANGE_MOD: 1,
                 },
@@ -359,7 +360,7 @@ cards = {
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
             P_CARD_DESCRIPTION: 'Unmute and disarm yourself. Draw a card',
-            P_CARD_COST: 3,
+            P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -378,7 +379,7 @@ cards = {
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Unmute and disarm yourself. Draw a card',
-            P_CARD_COST: 3,
+            P_CARD_COST: 2,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -419,7 +420,7 @@ cards = {
         },
         P_CARD_ACTION_DEFENSE: {
             P_CARD_DESCRIPTION: 'Drop an EMP, detonate it later to deal massive energy damage to enemy ship',
-            P_CARD_COST: 3,
+            P_CARD_COST: 4,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -683,8 +684,8 @@ cards = {
         P_CARD_TYPE: CARD_TYPE_WEAPON,
         P_CARD_DECK: True,
         P_CARD_ACTION_OFFENSE: {
-            P_CARD_DESCRIPTION: 'Deal 3 base dmg to anyone afore you, move them forward by 1 and apply disarm for 1 turn',
-            P_CARD_COST: 4,
+            P_CARD_DESCRIPTION: 'Deal 3 base dmg to anyone afore you, move them forward by 1 and apply mute for 1 turn',
+            P_CARD_COST: 3,
             P_CARD_EFFECTS: [
                 {
                     P_EFFECT_TARGET: TARGET_FORWARD_PIERCE,
@@ -1883,6 +1884,222 @@ cards = {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
                     P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    }
+
+    # CHEAT CARDS
+
+    ,
+    'cheat_dmg_enship': {
+        P_CARD_FULL_NAME: 'cheat_dmg_enship',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Deal 1 dmg to enemy ship',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Deal 1 dmg to enemy ship',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'cheat_dmg_first': {
+        P_CARD_FULL_NAME: 'cheat_dmg_first',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Deal 1 dmg forward',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Deal 1 dmg backward',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
+                    P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'cheat_move_fwd': {
+        P_CARD_FULL_NAME: 'cheat_move_fwd',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Move forward by 1',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Move forward by 1',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'cheat_move_bwd': {
+        P_CARD_FULL_NAME: 'cheat_move_bwd',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Move back by 1',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Move back by 1',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                    P_EFFECT_VALUE: -1
+                }
+            ]
+        }
+    },
+    'cheat_disarm': {
+        P_CARD_FULL_NAME: 'cheat_disarm',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Disarm enemy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Disarm enemy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'disarm'
+                }
+            ]
+        }
+    },
+    'cheat_arm': {
+        P_CARD_FULL_NAME: 'cheat_arm',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Arm self',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ARM
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Arm self',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_ARM
+                }
+            ]
+        }
+    },
+    'cheat_mute': {
+        P_CARD_FULL_NAME: 'cheat_mute',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Mute enemy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute'
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Mute enemy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                    P_EFFECT_VALUE: 'mute'
+                }
+            ]
+        }
+    },
+    'cheat_unmute': {
+        P_CARD_FULL_NAME: 'cheat_unmute',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Unmute self',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Unmute self',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE
                 }
             ]
         }

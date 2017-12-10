@@ -258,7 +258,7 @@ buffs = {
     'on_fire': {
         P_BUFF_FULL_NAME: 'You are burning!',
         P_BUFF_DESCRIPTION: 'You lose 2 HP per turn',
-        P_BUFF_DURATION: 1,
+        P_BUFF_DURATION: 2,
         P_BUFF_ON_APPLY_EFFECTS: [],
         P_BUFF_ON_ROUND_EFFECTS: [
             {

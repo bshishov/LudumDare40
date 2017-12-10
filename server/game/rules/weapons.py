@@ -65,14 +65,14 @@ weapons = {
             P_WEAPON_COST: 2,
             P_WEAPON_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
                     P_EFFECT_VALUE: 1,
                     P_EFFECT_RANGE: 3,
                     P_EFFECT_RANGE_MOD: 1,
                 },
                 {
-                    P_EFFECT_TARGET: TARGET_FORWARD,
+                    P_EFFECT_TARGET: TARGET_BACKWARD,
                     P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
                     P_EFFECT_VALUE: 1,
                     P_EFFECT_RANGE: 3,
