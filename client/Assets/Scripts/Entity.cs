@@ -44,5 +44,10 @@ namespace Assets.Scripts
         {
             return new Vector3(0, 0, position);
         }
+
+        public void DestroyEntity()
+        {
+            Destroy(gameObject);
+        }
     }
 }

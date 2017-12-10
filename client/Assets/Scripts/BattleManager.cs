@@ -81,6 +81,11 @@ namespace Assets.Scripts
                 }
             }
 
+            
+            var eToRemove = _entities.Where(e => !objectIds.Contains(e.Id));
+            foreach (var e in eToRemove)
+                e.DestroyEntity();
+
             _entities.RemoveAll(e => !objectIds.Contains(e.Id));
         }
 

@@ -69,6 +69,7 @@ CASES = [
     CASE_OVERLOAD,
     CASE_ROUND_END,
     CASE_ROUND_START,
+    CASE_SPAWNED
 ]
 EFFECTS_WITHOUT_VALUE = [
     EFFECT_TYPE_DISARM,
@@ -203,7 +204,7 @@ case_schema = {
     SCHEMA_FIELDS: {
         P_CASE_ARG: {
             SCHEMA_REQUIRED: False,
-            SCHEMA_VALIDATORS: [Type(str)]
+            SCHEMA_VALIDATORS: [Type(str), IfConditionValid(Exact(CASE_PLAY_CARD), In(cards))]
         },
         P_CASE_EFFECTS: {
             SCHEMA_REQUIRED: True,

@@ -141,6 +141,7 @@ class EffectHandler(object):
             if enemy.position == new_pos and enemy.side == SIDE_A:
                 if enemy.locked:
                     self.logger.debug('Trying to move locked players')
+                    return
                 else:
                     self.move(enemy, -amount)
                     self.game.invoke_case(enemy, CASE_COLLIDE, new_pos)

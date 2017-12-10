@@ -19,7 +19,7 @@ def main(args):
     server = connection.Server(args.host, args.port)
     server.on_client_connect.append(lobby.on_client_connect)
     server.on_client_disconnect.append(lobby.on_client_disconnect)
-    connection.run_loop()
+    connection.run_loop(timeout=0.5)
 
 
 if __name__ == '__main__':

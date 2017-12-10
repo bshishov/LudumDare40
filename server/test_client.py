@@ -172,7 +172,7 @@ def main(args):
     client.connect((args.host, args.port))
     player = TestPlayer(client)
 
-    loop_thread = threading.Thread(target=asyncore.loop, name="Asyncore Loop")
+    loop_thread = threading.Thread(target=asyncore.loop, name="Asyncore Loop", kwargs={'timeout': 0.5})
     loop_thread.start()
 
     # TODO: move to args

@@ -58,24 +58,25 @@ class ClientChannel(asyncore.dispatcher):
         self.on_disconnect = EventSubscription()
         self.on_message = EventSubscription()
         self.is_active = True
-        self.buffer = b''
+        self.read_buffer = b''
+        self.write_buffer = b''
 
     def handle_read(self):
         recv_buffer = self.recv(8192)
         if recv_buffer is None or len(recv_buffer) == 0:
             return
 
-        self.buffer += recv_buffer
-        while len(self.buffer) > 0:
-            msg_len = struct.unpack(HEADER_FMT, self.buffer[:HEADER_SIZE])[0]
-            if len(self.buffer) < HEADER_SIZE + msg_len:
+        self.read_buffer += recv_buffer
+        while len(self.read_buffer) > 0:
+            msg_len = struct.unpack(HEADER_FMT, self.read_buffer[:HEADER_SIZE])[0]
+            if len(self.read_buffer) < HEADER_SIZE + msg_len:
                 # more data required
                 return
 
-            data = self.buffer[HEADER_SIZE:HEADER_SIZE + msg_len]
+            data = self.read_buffer[HEADER_SIZE:HEADER_SIZE + msg_len]
 
             # remove message data from buffer
-            self.buffer = self.buffer[HEADER_SIZE + msg_len:]
+            self.read_buffer = self.read_buffer[HEADER_SIZE + msg_len:]
             if len(data) > 0:
                 try:
                     msg = deserialize(data)
@@ -88,7 +89,7 @@ class ClientChannel(asyncore.dispatcher):
     def send_message(self, message):
         try:
             data = serialize(message)
-            self.send(struct.pack(HEADER_FMT, len(data)) + data)
+            self.write_buffer += struct.pack(HEADER_FMT, len(data)) + data
         except Exception as err:
             self.logger.error('Could not send message: {0}\nmessage: {1}'.format(err, message))
 
@@ -97,6 +98,13 @@ class ClientChannel(asyncore.dispatcher):
         self.close()
         self.on_disconnect(self)
         self.is_active = False
+
+    def writable(self):
+        return len(self.write_buffer) > 0
+
+    def handle_write(self):
+        sent = self.send(self.write_buffer)
+        self.write_buffer = self.write_buffer[sent:]
 
     def __del__(self):
         self.logger.debug('Handler deleted')

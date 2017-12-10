@@ -120,6 +120,19 @@
             ],
             "turn_effects": []
         },
+        "destroy": {
+            "apply_effects": [],
+            "description": "Destroys the object after some time",
+            "duration": 3,
+            "full_name": "Destroy",
+            "remove_effects": [
+                {
+                    "target": "self",
+                    "type": "destroy"
+                }
+            ],
+            "turn_effects": []
+        },
         "disarm": {
             "apply_effects": [
                 {
@@ -2353,6 +2366,16 @@
     "objects": {
         "adrone": {
             "cases": {
+                "spawned": {
+                    "effects": [
+                        {
+                            "buff_duration": 3,
+                            "target": "self",
+                            "type": "apply_buff",
+                            "value": "destroy"
+                        }
+                    ]
+                },
                 "turn_end": {
                     "effects": [
                         {
@@ -2375,6 +2398,15 @@
                             "target": "all",
                             "type": "damage",
                             "value": 2
+                        }
+                    ]
+                },
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "position",
+                            "value": -1
                         }
                     ]
                 }
@@ -2410,7 +2442,7 @@
         "emp": {
             "cases": {
                 "play_card": {
-                    "arg": "detonate EMP",
+                    "arg": "detonate_emp",
                     "effects": [
                         {
                             "target": "all",
@@ -2443,6 +2475,16 @@
         },
         "hdrone": {
             "cases": {
+                "spawned": {
+                    "effects": [
+                        {
+                            "buff_duration": 3,
+                            "target": "self",
+                            "type": "apply_buff",
+                            "value": "destroy"
+                        }
+                    ]
+                },
                 "turn_end": {
                     "effects": [
                         {

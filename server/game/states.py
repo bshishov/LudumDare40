@@ -50,7 +50,7 @@ class EntityState(object):
         self.muted = False
         self.locked = False
         self.damage_mod = 0
-        self.buffable = False
+        self.buffable = True
         self.side = None
         self.is_player = False
 

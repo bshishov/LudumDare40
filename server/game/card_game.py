@@ -126,12 +126,13 @@ class CardGame(GameBase):
             self.start_round()
 
     def end_round(self):
+        self.invoke_case_global(CASE_ROUND_END)
+
         # Process buffs
         for entity_state in self.get_all_entities():
-            self.invoke_case_global(CASE_ROUND_END)
             for buff in entity_state.buffs:
-                d = buff.duration - 1
-                if d <= 0:
+                buff.duration -= 1
+                if buff.duration <= 0:
                     self.effect_handler.remove_buff(entity_state, buff.name)
                 else:
                     buff = get_buff(buff.name)
@@ -141,9 +142,10 @@ class CardGame(GameBase):
         self.effect_handler.draw_card(self.player_b_entity)
 
     def start_round(self):
+        self.invoke_case_global(CASE_ROUND_START)
+
         # Process energy
         for entity_state in self.get_all_entities():
-            self.invoke_case_global(CASE_ROUND_START)
             self.effect_handler.energy_heal(entity_state, entity_state.energy_gain)
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
