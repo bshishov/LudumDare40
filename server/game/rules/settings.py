@@ -137,6 +137,7 @@ P_WEAPON_EFFECTS = 'effects'
 # Entities properties
 P_OBJECT_FULL_NAME = 'full_name'
 P_OBJECT_DESCRIPTION = 'description'
+P_OBJECT_HP = 'hp'
 P_OBJECT_CASES = 'cases'
 
 # Buff properties

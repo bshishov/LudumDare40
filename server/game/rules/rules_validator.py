@@ -260,6 +260,10 @@ object_schema = {
             SCHEMA_REQUIRED: True,
             SCHEMA_VALIDATORS: [Type(str), StrShortenThan(DESCRIPTION_MAX_LEN)]
         },
+        P_OBJECT_HP: {
+            SCHEMA_REQUIRED: True,
+            SCHEMA_VALIDATORS: [Type(int)]
+        },
         P_OBJECT_CASES: {
             SCHEMA_REQUIRED: False,
             SCHEMA_VALIDATORS: [Type(dict),

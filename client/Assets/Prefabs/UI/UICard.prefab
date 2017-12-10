@@ -75,8 +75,9 @@ GameObject:
   - component: {fileID: 114509830066024232}
   - component: {fileID: 114533726200114074}
   - component: {fileID: 114342082170136002}
+  - component: {fileID: 114079281386568232}
   m_Layer: 5
-  m_Name: Card
+  m_Name: UICard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100,6 +101,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114079281386568232
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1907468457898120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 663d837f5ae176c41a6c543907aa3274, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Amplitude: 4
+  Speed: 70
 --- !u!114 &114342082170136002
 MonoBehaviour:
   m_ObjectHideFlags: 1

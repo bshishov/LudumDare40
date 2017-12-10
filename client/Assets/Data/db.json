@@ -268,6 +268,34 @@
             ],
             "turn_effects": []
         },
+        "marchd": {
+            "apply_effects": [],
+            "description": "Each turn you move backwards",
+            "duration": 3,
+            "full_name": "March",
+            "remove_effects": [],
+            "turn_effects": [
+                {
+                    "target": "self",
+                    "type": "position",
+                    "value": -1
+                }
+            ]
+        },
+        "marcho": {
+            "apply_effects": [],
+            "description": "Each turn you move forward",
+            "duration": 4,
+            "full_name": "March",
+            "remove_effects": [],
+            "turn_effects": [
+                {
+                    "target": "self",
+                    "type": "position",
+                    "value": 1
+                }
+            ]
+        },
         "mute": {
             "apply_effects": [
                 {
@@ -307,6 +335,33 @@
         }
     },
     "cards": {
+        "armoffense": {
+            "deck": true,
+            "defense": {
+                "cost": 5,
+                "description": "For 4 rounds you will move backwards 1 position per turn",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "marchd"
+                    }
+                ]
+            },
+            "full_name": "Armored offense",
+            "offense": {
+                "cost": 5,
+                "description": "For 4 rounds you will move forward 1 position per turn",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "apply_buff",
+                        "value": "marcho"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
         "barrel": {
             "deck": true,
             "defense": {
@@ -783,6 +838,41 @@
             },
             "type": "event"
         },
+        "closer": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Move 1 backwards and draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    }
+                ]
+            },
+            "full_name": "Get closer",
+            "offense": {
+                "cost": 2,
+                "description": "Move 1 forward and draw a card",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "ship"
+        },
         "cool": {
             "deck": true,
             "defense": {
@@ -998,6 +1088,7 @@
                 "description": "Drop an EMP, detonate it later to deal massive energy damage to enemy ship",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "emp"
@@ -1027,6 +1118,51 @@
                 ]
             },
             "type": "weapon"
+        },
+        "explode": {
+            "deck": true,
+            "defense": {
+                "cost": 4,
+                "description": "Take 2 dmg, draw a card. Created debris deals 3 damage to everyone in it's radius",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "debris"
+                    }
+                ]
+            },
+            "full_name": "Explode",
+            "offense": {
+                "cost": 4,
+                "description": "Take 2 dmg, draw a card. Created debris deals 3 damage to everyone in it's radius",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "damage",
+                        "value": 2
+                    },
+                    {
+                        "target": "self",
+                        "type": "draw_card"
+                    },
+                    {
+                        "target": "self",
+                        "type": "spawn",
+                        "value": "debris"
+                    }
+                ]
+            },
+            "type": "ship"
         },
         "fire": {
             "deck": false,
@@ -1644,6 +1780,53 @@
             },
             "type": "weapon"
         },
+        "maneuver": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "You deal 1 base damage, move backwards and deal 1 base damage again",
+                "effects": [
+                    {
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": -1
+                    },
+                    {
+                        "target": "backward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "Offensive maneuver",
+            "offense": {
+                "cost": 2,
+                "description": "You deal 1 base damage, move forward and deal 1 base damage again",
+                "effects": [
+                    {
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 1
+                    },
+                    {
+                        "target": "forward",
+                        "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "ship"
+        },
         "meteor": {
             "deck": true,
             "defense": {
@@ -2055,6 +2238,55 @@
             },
             "type": "weapon"
         },
+        "sonic": {
+            "deck": true,
+            "defense": {
+                "cost": 3,
+                "description": "You drop random ship card, move forward by 2 and deny enemy from moving fo 1 turn",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "drop_card",
+                        "value": "ship"
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 2
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "lock_position"
+                    }
+                ]
+            },
+            "full_name": "Sonic boost",
+            "offense": {
+                "cost": 3,
+                "description": "You drop random ship card, move forward by 2 and deny enemy from moving fo 1 turn",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "drop_card",
+                        "value": "ship"
+                    },
+                    {
+                        "target": "self",
+                        "type": "position",
+                        "value": 2
+                    },
+                    {
+                        "buff_duration": 1,
+                        "target": "enemy_ship",
+                        "type": "apply_buff",
+                        "value": "lock_position"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
         "spare": {
             "deck": false,
             "defense": {
@@ -2361,6 +2593,35 @@
             },
             "type": "event"
         },
+        "wgenerator": {
+            "deck": true,
+            "defense": {
+                "cost": 2,
+                "description": "Spawn a wind generator before enemy ship that pushes everyone in a small radius backwards",
+                "effects": [
+                    {
+                        "spawn_position": 1,
+                        "target": "enemy_ship",
+                        "type": "spawn",
+                        "value": "wgenerator"
+                    }
+                ]
+            },
+            "full_name": "Wind generator",
+            "offense": {
+                "cost": 2,
+                "description": "Spawn a wind generator behind enemy ship that pushes everyone in a small radius backwards",
+                "effects": [
+                    {
+                        "spawn_position": -1,
+                        "target": "enemy_ship",
+                        "type": "spawn",
+                        "value": "wgenerator"
+                    }
+                ]
+            },
+            "type": "ship"
+        },
         "wingdrone": {
             "deck": true,
             "defense": {
@@ -2493,6 +2754,41 @@
             "description": "Just a flying c4",
             "full_name": "Bomb"
         },
+        "debris": {
+            "cases": {
+                "collide": {
+                    "effects": [
+                        {
+                            "range": 2,
+                            "target": "all_except",
+                            "type": "damage",
+                            "value": 3
+                        }
+                    ]
+                },
+                "spawned": {
+                    "effects": [
+                        {
+                            "buff_duration": 2,
+                            "target": "self",
+                            "type": "apply_buff",
+                            "value": "destroy"
+                        }
+                    ]
+                },
+                "turn_end": {
+                    "effects": [
+                        {
+                            "target": "self",
+                            "type": "position",
+                            "value": -1
+                        }
+                    ]
+                }
+            },
+            "description": "Chunks of metal blown away from your ship",
+            "full_name": "Debris"
+        },
         "emp": {
             "cases": {
                 "play_card": {
@@ -2511,6 +2807,10 @@
                         {
                             "target": "all",
                             "type": "mute"
+                        },
+                        {
+                            "target": "self",
+                            "type": "destroy"
                         }
                     ]
                 },
@@ -2576,6 +2876,32 @@
             },
             "description": "A flying landmine",
             "full_name": "Flying mine"
+        },
+        "wgenerator": {
+            "cases": {
+                "collide": {
+                    "effects": [
+                        {
+                            "range": 1,
+                            "target": "all",
+                            "type": "position",
+                            "value": -1
+                        }
+                    ]
+                },
+                "spawned": {
+                    "effects": [
+                        {
+                            "buff_duration": 3,
+                            "target": "self",
+                            "type": "apply_buff",
+                            "value": "destroy"
+                        }
+                    ]
+                }
+            },
+            "description": "It pushes everyone backwards",
+            "full_name": "Wind generator"
         }
     },
     "ships": {

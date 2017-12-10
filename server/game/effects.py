@@ -201,6 +201,7 @@ class EffectHandler(object):
         if name not in objects:
             raise GameError('No such entity: {0}'.format(name))
         e = EntityState()
+        e.hp = objects[name].get(P_OBJECT_HP, e.hp)
         e.name = name
         e.side = entity.side
         e.position = max(min(entity.position + spawn_position, self.game.board_size - 1), 0)

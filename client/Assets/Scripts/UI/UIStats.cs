@@ -32,6 +32,10 @@ namespace Assets.Scripts.UI
 
             if (EnergyGainText != null)
                 EnergyGainText.text = energyGain.ToString("+0;-#");
+
+            var shaker = GetComponent<UIShaker>();
+            if (shaker != null)
+                shaker.Shake();
         }
     }
 }

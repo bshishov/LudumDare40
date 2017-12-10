@@ -4,6 +4,7 @@ objects = {
     'bomb': {
         P_OBJECT_FULL_NAME: 'Bomb',
         P_OBJECT_DESCRIPTION: 'Just a flying c4',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_PLAY_CARD: {
                 P_CASE_ARG: 'detonate',
@@ -29,6 +30,7 @@ objects = {
     'emp': {
         P_OBJECT_FULL_NAME: 'EMP',
         P_OBJECT_DESCRIPTION: 'A flying electromagnetic grenade',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_PLAY_CARD: {
                 P_CASE_ARG: 'detonate_emp',
@@ -67,6 +69,7 @@ objects = {
     'mine': {
         P_OBJECT_FULL_NAME: 'Flying mine',
         P_OBJECT_DESCRIPTION: 'A flying landmine',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_COLLIDE: {
                 P_CASE_EFFECTS: [
@@ -92,6 +95,7 @@ objects = {
     'adrone': {
         P_OBJECT_FULL_NAME: 'Wingdrone',
         P_OBJECT_DESCRIPTION: 'Simple attacking drone',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_SPAWNED: {
                 P_CASE_EFFECTS: [
@@ -117,6 +121,7 @@ objects = {
     'hdrone': {
         P_OBJECT_FULL_NAME: 'Helper drone',
         P_OBJECT_DESCRIPTION: 'Simple healing drone',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_SPAWNED: {
                 P_CASE_EFFECTS: [
@@ -142,6 +147,7 @@ objects = {
     'birds': {
         P_OBJECT_FULL_NAME: 'Birds!',
         P_OBJECT_DESCRIPTION: 'A flock of birds',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_COLLIDE: {
                 P_CASE_EFFECTS: [
@@ -167,6 +173,7 @@ objects = {
     'debris': {
         P_OBJECT_FULL_NAME: 'Debris',
         P_OBJECT_DESCRIPTION: 'Chunks of metal blown away from your ship',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_SPAWNED: {
                 P_CASE_EFFECTS: [
@@ -202,6 +209,7 @@ objects = {
     'wgenerator': {
         P_OBJECT_FULL_NAME: 'Wind generator',
         P_OBJECT_DESCRIPTION: 'It pushes everyone backwards',
+        P_OBJECT_HP: 3,
         P_OBJECT_CASES: {
             CASE_SPAWNED: {
                 P_CASE_EFFECTS: [

@@ -99,6 +99,16 @@ namespace Assets.Scripts.UI
 
             //var actionKey = isOffense ? Rules.PCardActionOffense : Rules.PCardActionDefense;
             //var action = cardInfo
+
+            /*
+            var shaker = GetComponent<UIShaker>();
+            if (shaker != null)
+                shaker.Shake();*/
+        }
+
+        void OnMouseOver()
+        {
+            Debug.Log("MOUSE OVER");
         }
     }
 }

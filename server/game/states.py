@@ -42,7 +42,7 @@ class EntityState(object):
         self.energy = 0
         self.max_energy = 10
         self.energy_gain = 0
-        self.hp = 10
+        self.hp = 3
         self.buffs = []  # type: List[BuffState]
         self.position = 0
         self.name = None

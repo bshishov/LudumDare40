@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using Assets.Scripts.UI;
+using SimpleJSON;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -6,14 +7,29 @@ namespace Assets.Scripts
     public class Entity : MonoBehaviour
     {
         public int Id { get { return _state[Rules.PStateId]; } }
+
+        public GameObject UIPrefab;
         public float MoveSpeed = 1f;
 
         private JSONObject _state;
         private Vector3 _velocity;
         private Vector3 _target;
 
+        private UIEntity _ui;
+
         void Start ()
         {
+            if (UIPrefab != null)
+            {
+                var go = (GameObject) GameObject.Instantiate(UIPrefab, BattleUIManager.Instance.transform);
+                _ui = go.GetComponent<UIEntity>();
+                if (_ui != null)
+                {
+                    var follow = _ui.GetComponent<UIFollowSceneObject>();
+                    follow.Target = gameObject;
+                }
+            }
+            
         }
 
         void Update()
@@ -36,8 +52,17 @@ namespace Assets.Scripts
                 transform.position = GameToWorldPosition(position);
                 _target = GameToWorldPosition(position);
             }
+            UpdateUI(eState);
 
             _state = eState;
+        }
+
+        private void UpdateUI(JSONObject state)
+        {
+            if(_ui == null)
+                return;
+
+            _ui.UpdateState(state);
         }
 
         private Vector3 GameToWorldPosition(int position)
@@ -48,6 +73,14 @@ namespace Assets.Scripts
         public void DestroyEntity()
         {
             Destroy(gameObject);
+        }
+
+        void OnDestroy()
+        {
+            if (_ui != null)
+            {
+                Destroy(_ui.gameObject);
+            }
         }
     }
 }
