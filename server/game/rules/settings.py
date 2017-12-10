@@ -19,6 +19,7 @@ SECTION_OBJECTS = 'objects'
 ACTION_PLAY_CARD = 'play_card'
 ACTION_FIRE_WEAPON = 'fire_weapon'
 ACTION_END_TURN = 'end_turn'
+ACTION_CHEAT_TAKE_CARD = 'take_card'
 
 # COMMON KEYS
 P_TYPE = 'type'
@@ -109,6 +110,7 @@ CASE_DESTROYED = 'entity_destroyed'
 CASE_OVERLOAD = 'entity_overload'
 CASE_ROUND_END = 'turn_end'
 CASE_ROUND_START = 'turn_start'
+CASE_SPAWNED = 'spawned'
 
 # Event properties
 P_CASE_ARG = 'arg'

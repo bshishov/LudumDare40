@@ -57,6 +57,7 @@ namespace Assets.Scripts
         public static string ActionPlayCard = "play_card";
         public static string ActionFireWeapon = "fire_weapon";
         public static string ActionEndTurn = "end_turn";
+        public static string ActionCheatTakeCard = "take_card";
 
         public static string TargetSelf = "self";
 

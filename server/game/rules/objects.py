@@ -31,7 +31,7 @@ objects = {
         P_OBJECT_DESCRIPTION: 'A flying electromagnetic grenade',
         P_OBJECT_CASES: {
             CASE_PLAY_CARD: {
-                P_CASE_ARG: 'detonate EMP',
+                P_CASE_ARG: 'detonate_emp',
                 P_CASE_EFFECTS: [
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
@@ -54,7 +54,7 @@ objects = {
                     {
                         P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
                         P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: -1
+                        P_EFFECT_VALUE: -1,
                     }
                 ]
             }
@@ -89,6 +89,16 @@ objects = {
         P_OBJECT_FULL_NAME: 'Wingdrone',
         P_OBJECT_DESCRIPTION: 'Simple attacking drone',
         P_OBJECT_CASES: {
+            CASE_SPAWNED: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: 'destroy',
+                        P_EFFECT_BUFF_DURATION: 3
+                    },
+                ]
+            },
             CASE_ROUND_END: {
                 P_CASE_EFFECTS: [
                     {
@@ -104,6 +114,16 @@ objects = {
         P_OBJECT_FULL_NAME: 'Helper drone',
         P_OBJECT_DESCRIPTION: 'Simple healing drone',
         P_OBJECT_CASES: {
+            CASE_SPAWNED: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: 'destroy',
+                        P_EFFECT_BUFF_DURATION: 3
+                    },
+                ]
+            },
             CASE_ROUND_END: {
                 P_CASE_EFFECTS: [
                     {
@@ -126,6 +146,15 @@ objects = {
                         P_EFFECT_TARGET: TARGET_ALL,
                         P_EFFECT_RANGE: 0,
                         P_EFFECT_VALUE: 2
+                    },
+                ]
+            },
+            CASE_ROUND_END: {
+                P_CASE_EFFECTS: [
+                    {
+                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
+                        P_EFFECT_TARGET: TARGET_SELF,
+                        P_EFFECT_VALUE: -1
                     },
                 ]
             }

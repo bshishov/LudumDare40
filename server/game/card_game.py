@@ -60,6 +60,9 @@ class CardGame(GameBase):
             self.fire_weapon(entity)
         elif action_type == ACTION_END_TURN:
             self.player_end_turn(entity)
+        elif action_type == ACTION_CHEAT_TAKE_CARD:
+            # TODO: CHECK CHEATS
+            self.effect_handler.gain_card(entity, action['card'])
         else:
             raise GameError('Unknown action: {0}'.format(action))
 
@@ -151,7 +154,7 @@ class CardGame(GameBase):
         for e in self.get_all_entities():  # type: EntityState
             self.invoke_case(e, case, arg)
 
-    def invoke_case(self, entity, case, arg):
+    def invoke_case(self, entity, case, arg=None):
         # Cases in buffs
         for b in entity.buffs:  # type: BuffState
             buff = get_buff(b.name)

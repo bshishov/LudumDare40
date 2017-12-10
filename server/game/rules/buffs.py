@@ -292,5 +292,18 @@ buffs = {
                 ]
             }
         }
-    }
+    },
+    'destroy': {
+        P_BUFF_FULL_NAME: 'Destroy',
+        P_BUFF_DESCRIPTION: 'Destroys the object after some time',
+        P_BUFF_DURATION: 3,
+        P_BUFF_ON_APPLY_EFFECTS: [],
+        P_BUFF_ON_ROUND_EFFECTS: [],
+        P_BUFF_ON_REMOVE_EFFECTS: [
+            {
+                P_EFFECT_TYPE: EFFECT_TYPE_DESTROY,
+                P_EFFECT_TARGET: TARGET_SELF,
+            }
+        ],
+    },
 }

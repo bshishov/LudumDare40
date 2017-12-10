@@ -193,6 +193,7 @@ class EffectHandler(object):
         self.game._last_entity_id += 1
         e.id = self.game._last_entity_id
         self.game.objects.append(e)
+        self.game.invoke_case(e, CASE_SPAWNED, None)
 
     @effect_handler(EFFECT_TYPE_DESTROY)
     def destroy(self, entity):

@@ -12,6 +12,8 @@ namespace Assets.Scripts
 {
     public class BattleManager : Singleton<BattleManager>
     {
+        private string _cheatCardName;
+
         public string MySide
         {
             get { return Client.Instance.Side; }
@@ -159,6 +161,18 @@ namespace Assets.Scripts
             Client.Instance.Send(m);
         }
 
+        public void CheatGainCard()
+        {
+            if(string.IsNullOrEmpty(_cheatCardName))
+                return;
+
+            var m = new Message(Protocol.MsgDomainGame, Protocol.MsgCliGameAction, "Take card");
+            m.Body["action"][Rules.PType] = Rules.ActionCheatTakeCard;
+            m.Body["action"]["card"] = _cheatCardName;
+            m.Body[Protocol.KeyGameId] = Client.Instance.GameId;
+            Client.Instance.Send(m);
+        }
+
         public JSONObject StateForPerspective(Perspective perspective)
         {
             if (_state == null)
@@ -186,5 +200,16 @@ namespace Assets.Scripts
 
             return myPos > opponentsPos;
         }
+
+#if DEBUG
+        void OnGUI()
+        {
+            _cheatCardName = GUI.TextField(new Rect(30, 0, 100, 20), _cheatCardName);
+            if (GUI.Button(new Rect(130, 0, 80, 20), "Take"))
+            {
+                CheatGainCard();
+            }
+        }
+#endif
     }
 }

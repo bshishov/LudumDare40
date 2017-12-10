@@ -247,7 +247,7 @@ namespace Assets.Scripts
                 StartQueue("scout", "harpoon");
 
             if (GUI.Button(new Rect(0, 160, 30, 20), "SM"))
-                StartQueue("scout", "mg");
+                StartQueue("scout", "mg");           
         }
 
         public JSONObject GetWeapon(string key)
