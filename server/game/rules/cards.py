@@ -2009,7 +2009,7 @@ cards = {
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
                     P_EFFECT_VALUE: 'disarm'
                 }
@@ -2020,7 +2020,7 @@ cards = {
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
                     P_EFFECT_VALUE: 'disarm'
                 }
@@ -2061,7 +2061,7 @@ cards = {
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
                     P_EFFECT_VALUE: 'mute'
                 }
@@ -2072,7 +2072,7 @@ cards = {
             P_CARD_COST: 0,
             P_CARD_EFFECTS: [
                 {
-                    P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
+                    P_EFFECT_TARGET: TARGET_ALL,
                     P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
                     P_EFFECT_VALUE: 'mute'
                 }
@@ -2100,6 +2100,60 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_ENEMY_SHIP,
                     P_EFFECT_TYPE: EFFECT_TYPE_UNMUTE
+                }
+            ]
+        }
+    },
+    'cheat_heal': {
+        P_CARD_FULL_NAME: 'cheat_heal',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Heal yourself',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Heal yourself',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        }
+    },
+    'cheat_energy': {
+        P_CARD_FULL_NAME: 'cheat_energy',
+        P_CARD_TYPE: CARD_TYPE_EVENT,
+        P_CARD_DECK: False,
+        P_CARD_ACTION_OFFENSE: {
+            P_CARD_DESCRIPTION: 'Give yourself energy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 1
+                }
+            ]
+        },
+        P_CARD_ACTION_DEFENSE: {
+            P_CARD_DESCRIPTION: 'Give yourself energy',
+            P_CARD_COST: 0,
+            P_CARD_EFFECTS: [
+                {
+                    P_EFFECT_TARGET: TARGET_SELF,
+                    P_EFFECT_TYPE: EFFECT_TYPE_EHEAL,
+                    P_EFFECT_VALUE: 1
                 }
             ]
         }
