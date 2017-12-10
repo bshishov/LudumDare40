@@ -1183,7 +1183,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_BUFF_DURATION: 'debris'
+                    P_EFFECT_VALUE: 'debris'
                 }
 
             ]
@@ -1205,7 +1205,7 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_BUFF_DURATION: 'debris'
+                    P_EFFECT_VALUE: 'debris'
                 }
             ]
         }
