@@ -135,29 +135,42 @@ class EffectHandler(object):
 
         new_pos = entity.position + amount
 
+        if new_pos not in range(self.game.board_size):
+            if self.game.is_player(entity):
+                # TODO: Add damage when out of the field
+                pass
+            else:
+                self.destroy(entity)
+                return
+
+            # Clamp new_pos
+            new_pos = max(min(new_pos, self.game.board_size - 1), 0)
+
+            # If position is not changed
+            if new_pos == entity.position:
+                return
+
         if self.game.is_player(entity):
             enemy = self.game.get_enemy_ship(entity)
-            # Side check to perform swap without recursion
-            if enemy.position == new_pos and enemy.side == SIDE_A:
+            if enemy.position == new_pos:
                 if enemy.locked:
                     self.logger.debug('Trying to move locked players')
                     return
                 else:
+                    # Move yourself first, then opponent
+                    entity.position = new_pos
                     self.move(enemy, -amount)
-                    self.game.invoke_case(enemy, CASE_COLLIDE, new_pos)
-                    self.game.invoke_case(entity, CASE_COLLIDE, new_pos)
-        else:
-            if new_pos not in range(self.game.board_size):
-                self.destroy(entity)
-                return
 
-        new_pos = max(min(new_pos, self.game.board_size - 1), 0)
+                    # Raise collision cases
+                    self.game.invoke_case(enemy, CASE_COLLIDE, entity.name)
+                    self.game.invoke_case(entity, CASE_COLLIDE, enemy.name)
+
         entity.position = new_pos
 
         es = self.game.get_entities_at(new_pos)
         if len(es) > 1:
             for e in es:
-                self.game.invoke_case(e, CASE_COLLIDE, entity.position)
+                self.game.invoke_case(e, CASE_COLLIDE, entity.name)
 
     @effect_handler(EFFECT_TYPE_DISARM)
     def disarm(self, entity):
@@ -311,8 +324,10 @@ class EffectHandler(object):
         if not isinstance(entity, PlayerState):
             raise GameError('Non-player entities does not have cards: {0}'.format(card_type), crucial=False)
         for card_state in entity.hand:
-            card_state.cost_defense += amount
-            card_state.cost_offense += amount
+            c = get_card(card_state.name)
+            if c.get(P_CARD_TYPE, None) == card_type:
+                card_state.cost_defense = max(card_state.cost_defense + amount, 0)
+                card_state.cost_offense = max(card_state.cost_offense + amount, 0)
 
     def _entity_modify_hp(self, entity, amount):
         entity.hp += amount

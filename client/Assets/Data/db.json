@@ -549,7 +549,7 @@
                 "description": "Disarm enemy",
                 "effects": [
                     {
-                        "target": "enemy_ship",
+                        "target": "all",
                         "type": "apply_buff",
                         "value": "disarm"
                     }
@@ -561,7 +561,7 @@
                 "description": "Disarm enemy",
                 "effects": [
                     {
-                        "target": "enemy_ship",
+                        "target": "all",
                         "type": "apply_buff",
                         "value": "disarm"
                     }
@@ -617,6 +617,60 @@
                     {
                         "target": "forward",
                         "type": "damage",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "cheat_energy": {
+            "deck": false,
+            "defense": {
+                "cost": 0,
+                "description": "Give yourself energy",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "eheal",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "cheat_energy",
+            "offense": {
+                "cost": 0,
+                "description": "Give yourself energy",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "eheal",
+                        "value": 1
+                    }
+                ]
+            },
+            "type": "event"
+        },
+        "cheat_heal": {
+            "deck": false,
+            "defense": {
+                "cost": 0,
+                "description": "Heal yourself",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "heal",
+                        "value": 1
+                    }
+                ]
+            },
+            "full_name": "cheat_heal",
+            "offense": {
+                "cost": 0,
+                "description": "Heal yourself",
+                "effects": [
+                    {
+                        "target": "self",
+                        "type": "heal",
                         "value": 1
                     }
                 ]
@@ -684,7 +738,7 @@
                 "description": "Mute enemy",
                 "effects": [
                     {
-                        "target": "enemy_ship",
+                        "target": "all",
                         "type": "apply_buff",
                         "value": "mute"
                     }
@@ -696,7 +750,7 @@
                 "description": "Mute enemy",
                 "effects": [
                     {
-                        "target": "enemy_ship",
+                        "target": "all",
                         "type": "apply_buff",
                         "value": "mute"
                     }
