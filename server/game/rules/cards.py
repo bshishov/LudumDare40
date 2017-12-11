@@ -193,7 +193,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'bomb'
+                    P_EFFECT_VALUE: 'bomb',
+                    P_EFFECT_SPAWN_POSITION: -1
                 },
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
@@ -1394,7 +1395,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'adrone'
+                    P_EFFECT_VALUE: 'adrone',
+                    P_EFFECT_SPAWN_POSITION: -1
                 }
 
             ]
@@ -1406,7 +1408,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'adrone'
+                    P_EFFECT_VALUE: 'adrone',
+                    P_EFFECT_SPAWN_POSITION: -1
                 }
             ]
         }
@@ -1523,7 +1526,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'mine'
+                    P_EFFECT_VALUE: 'mine',
+                    P_EFFECT_SPAWN_POSITION: 2
                 }
 
             ]
@@ -1535,7 +1539,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'mine'
+                    P_EFFECT_VALUE: 'mine',
+                    P_EFFECT_SPAWN_POSITION: -2
                 }
             ]
         }
@@ -1552,7 +1557,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'hdrone'
+                    P_EFFECT_VALUE: 'hdrone',
+                    P_EFFECT_SPAWN_POSITION: -1
                 }
 
             ]
@@ -1564,7 +1570,8 @@ cards = {
                 {
                     P_EFFECT_TARGET: TARGET_SELF,
                     P_EFFECT_TYPE: EFFECT_TYPE_SPAWN,
-                    P_EFFECT_VALUE: 'hdrone'
+                    P_EFFECT_VALUE: 'hdrone',
+                    P_EFFECT_SPAWN_POSITION: -1
                 }
             ]
         }
