@@ -5,7 +5,7 @@ import struct
 import sys, traceback
 
 from utils import EventSubscription
-from protocol import serialize, deserialize
+from protocol import serialize, deserialize, Message
 
 
 RECV_BUFFER_SIZE = 8192
@@ -86,7 +86,7 @@ class ClientChannel(asyncore.dispatcher):
                     self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
                     traceback.print_exc(file=sys.stdout)
 
-    def send_message(self, message):
+    def send_message(self, message: Message):
         try:
             data = serialize(message)
             self.write_buffer += struct.pack(HEADER_FMT, len(data)) + data

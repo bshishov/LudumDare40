@@ -445,6 +445,7 @@
                 "description": "Drop a bomb to detonate it later and deal damage to all objects in a small radius",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "bomb"
@@ -1546,6 +1547,7 @@
                 "description": "You summon a healing drone behind you. It will heal you for 3 turns",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "hdrone"
@@ -1558,6 +1560,7 @@
                 "description": "You summon a healing drone behind you. It will heal you for 3 turns",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "hdrone"
@@ -1863,6 +1866,7 @@
                 "description": "Place a floating mine in 2 positions behind you. Mine deals 5 damage on collide.",
                 "effects": [
                     {
+                        "spawn_position": -2,
                         "target": "self",
                         "type": "spawn",
                         "value": "mine"
@@ -1875,6 +1879,7 @@
                 "description": "Place a floating mine in 2 positions in front of you. Mine deals 5 damage on collide.",
                 "effects": [
                     {
+                        "spawn_position": 2,
                         "target": "self",
                         "type": "spawn",
                         "value": "mine"
@@ -2629,6 +2634,7 @@
                 "description": "Summon an attack drone behind you. It will attack enemy in front of you for 3 turns",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "adrone"
@@ -2641,6 +2647,7 @@
                 "description": "Summon an attack drone behind you. It will attack enemy in front of you for 3 turns",
                 "effects": [
                     {
+                        "spawn_position": -1,
                         "target": "self",
                         "type": "spawn",
                         "value": "adrone"
@@ -2867,15 +2874,6 @@
                             "target": "all",
                             "type": "damage",
                             "value": 5
-                        }
-                    ]
-                },
-                "turn_end": {
-                    "effects": [
-                        {
-                            "target": "self",
-                            "type": "position",
-                            "value": -1
                         }
                     ]
                 }

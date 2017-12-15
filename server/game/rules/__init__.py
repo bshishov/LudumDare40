@@ -9,6 +9,50 @@ from game.rules.objects import *
 from game.rules.buffs import *
 
 
+class GameStateProtocol(object):
+    P_ID = 'id'
+    P_TURN = 'turn'
+    P_OBJECTS = 'objects'
+
+
+class BuffStateProtocol(object):
+    P_NAME = 'name',
+    P_DURATION = 'duration'
+
+
+class CardStateProtocol(object):
+    P_NAME = 'name',
+    P_COST_OFFENSE = 'cost_offense'
+    P_COST_DEFENSE = 'cost_defense'
+
+
+class EntityStateProtocol(object):
+    P_ID = 'id'
+    P_NAME = 'name'
+    P_POSITION = 'position'
+    P_SIDE = 'side'
+    P_HP = 'hp'
+    P_ENERGY = 'energy'
+    P_MAX_ENERGY = 'max_energy'
+    P_ENERGY_GAIN = 'energy_gain'
+    P_BUFFS = 'buffs'
+    P_MUTED = 'muted'
+    P_ARMED = 'armed'
+    P_LOCKED = 'locked'
+    P_DAMAGE_MOD = 'damage_mod'
+    P_BUFFABLE = 'buffable'
+    P_IS_PLAYER = 'is_player'
+
+
+class PlayerEntityProtocol(object):
+    P_SHIP_NAME = 'ship_name'
+    P_WEAPON_NAME = 'weapon_name'
+    P_HAND = 'hand'
+    P_DECK = 'deck'
+    P_CARDS_IN_HAND = 'hand_cards'
+    P_CARDS_IN_DECK = 'deck_cards'
+
+
 def get_gb():
     return {
         SECTION_CARDS: cards,

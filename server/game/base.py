@@ -64,7 +64,7 @@ class Player(object):
 
 
 class GameBase(object):
-    def __init__(self, player_a, player_b):
+    def __init__(self, player_a: Player, player_b: Player):
         self.id = str(uuid.uuid4())
         self.is_active = True
 
@@ -88,7 +88,7 @@ class GameBase(object):
         self.notify_player(self.player_a, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_A)
         self.notify_player(self.player_b, MSG_SRV_GAME_BEGIN, status='Game begin', side=SIDE_B)
 
-    def _validate_message(self, player, message):
+    def _validate_message(self, player: Player, message: Message):
         if message is None:
             return False
 
@@ -102,30 +102,27 @@ class GameBase(object):
             return False
         return True
 
-    def _on_player_a_message(self, message):
+    def _on_player_a_message(self, message: Message):
         if self._validate_message(self.player_a, message):
             return self.on_player_a_message(message)
 
-    def _on_player_b_message(self, message):
+    def _on_player_b_message(self, message: Message):
         if self._validate_message(self.player_b, message):
             return self.on_player_b_message(message)
 
-    def on_player_a_message(self, message):
+    def on_player_a_message(self, message: Message):
         raise NotImplementedError
 
-    def on_player_b_message(self, message):
+    def on_player_b_message(self, message: Message):
         raise NotImplementedError
 
-    def _on_player_a_disconnect(self, channel):
+    def _on_player_a_disconnect(self, channel: connection.ClientChannel):
         self.notify_player(self.player_b, MSG_SRV_GAME_PLAYER_LEFT, status='opponent disconnected')
         self.end(interrupted=True)
 
-    def _on_player_b_disconnect(self, channel):
+    def _on_player_b_disconnect(self, channel: connection.ClientChannel):
         self.notify_player(self.player_a, MSG_SRV_GAME_PLAYER_LEFT, status='opponent disconnected')
         self.end(interrupted=True)
-
-    def _on_game_message(self, message, entity):
-        pass
 
     def end_turn(self):
         if self.turn == SIDE_A:
