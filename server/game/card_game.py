@@ -1,23 +1,32 @@
 from typing import Optional, List
 
-from game.base import *
+from framework.game import *
+from network.protocol import *
 from game.effects import EffectHandler
 from game.rules import *
 from game.states import *
+from game.protocol import *
 from utils import set_interval
 
 
-class CardGame(GameBase):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+__all__ = ['CardGame', ]
 
-        self.player_a_entity = PlayerState(SIDE_A, self.player_a.args)
-        self.player_b_entity = PlayerState(SIDE_B, self.player_b.args)
+
+class CardGame(GameBase):
+    def __init__(self, player_a, player_b):
+        super().__init__(players=[player_a, player_b])
+
+        self.player_a = player_a
+        self.player_b = player_b
+        self.player_a_entity = PlayerEntityState(Side.A, self.player_a.args)
+        self.player_b_entity = PlayerEntityState(Side.B, self.player_b.args)
 
         self.objects = []  # type: List[EntityState]
         self.board_size = BOARD_SIZE
         self.effect_handler = EffectHandler(self)
         self._last_entity_id = 1
+
+        self.cheats_enabled = True
 
     def begin(self):
         super().begin()
@@ -29,44 +38,46 @@ class CardGame(GameBase):
             self.effect_handler.draw_card(None, self.player_a_entity)
             self.effect_handler.draw_card(None, self.player_b_entity)
 
-    def on_player_a_message(self, message: Message):
-        self._on_game_message(message, self.player_a_entity)
+    def on_player_message(self, player: Player, message: Message):
+        if player is self.player_a:
+            self.on_game_message(message, self.player_a_entity)
+        elif player is self.player_a:
+            self.on_game_message(message, self.player_b_entity)
 
-    def on_player_b_message(self, message: Message):
-        self._on_game_message(message, self.player_b_entity)
-
-    def _on_game_message(self, message: Message, player_entity: PlayerState):
+    def on_game_message(self, message: Message, player_entity: PlayerEntityState):
         try:
-            if message.head == MSG_CLI_GAME_ACTION:
+            if message.head == MessageHead.CLI_GAME_ACTION:
                 if self.turn != player_entity.side:
                     raise GameError('Not your turn')
 
                 action = message.body.get('action', None)
                 if action is None:
                     raise GameError('Cannot interpret game action')
-                self._do_player_action(action, player_entity)
+                self.do_player_action(action, player_entity)
             else:
                 raise GameError('Not-action game message')
         except GameError as err:
             msg = 'Game error: {0}'.format(err)
             self.logger.warning(msg)
-            self.notify_entity(player_entity, MSG_SRV_ERROR, status=msg)
+            self.notify_entity(player_entity, MessageHead.SRV_ERROR, status=msg)
 
-    def _do_player_action(self, action: Dict, player_entity: PlayerState):
+    def do_player_action(self, action: dict, player_entity: PlayerEntityState):
         action_type = action['type']
-        if action_type == ACTION_PLAY_CARD:
+        if action_type == PlayerAction.PLAY_CARD:
             self.play_card(action['card'], player_entity)
-        elif action_type == ACTION_FIRE_WEAPON:
+        elif action_type == PlayerAction.FIRE_WEAPON:
             self.fire_weapon(player_entity)
-        elif action_type == ACTION_END_TURN:
+        elif action_type == PlayerAction.END_TURN:
             self.player_end_turn(player_entity)
-        elif action_type == ACTION_CHEAT_TAKE_CARD:
-            # TODO: CHECK CHEATS
-            self.effect_handler.gain_card(None, player_entity, action['card'])
+        elif action_type == PlayerAction.CHEAT_TAKE_CARD:
+            if self.cheats_enabled:
+                self.effect_handler.gain_card(None, player_entity, action['card'])
+            else:
+                raise GameError('Cheating: {0}'.format(action))
         else:
             raise GameError('Unknown action: {0}'.format(action))
 
-    def play_card(self, card_name: str, player_state: PlayerState):
+    def play_card(self, card_name: str, player_state: PlayerEntityState):
         if player_state.muted:
             raise GameError('You are muted')
 
@@ -75,10 +86,10 @@ class CardGame(GameBase):
         if card_state is None:
             raise GameError('Card is not in hand: {0}'.format(card_name))
         if self.is_offense(player_state):
-            card_action = card.get(P_CARD_ACTION_OFFENSE, card.get(P_CARD_ACTION_SAME, None))
+            card_action = card.get(Card.ACTION_OFFENSE, card.get(Card.ACTION_SAME, None))
             cost = card_state.cost_offense
         else:
-            card_action = card.get(P_CARD_ACTION_DEFENSE, card.get(P_CARD_ACTION_SAME, None))
+            card_action = card.get(Card.ACTION_DEFENSE, card.get(Card.ACTION_SAME, None))
             cost = card_state.cost_defense
         if card_action is None:
             raise GameError('Card does not have any actions: {0}'.format(card_name))
@@ -88,35 +99,35 @@ class CardGame(GameBase):
         # Play card
         self.effect_handler.remove_card(player_state, card_name)
         self.effect_handler.energy_damage(None, player_state, cost)
-        self.effect_handler.apply_effects(player_state, card_action.get(P_CARD_EFFECTS, []))
-        self.invoke_case(player_state, CASE_PLAY_CARD, card_name)
+        self.effect_handler.apply_effects(player_state, card_action.get(Card.EFFECTS, []))
+        self.invoke_case(player_state, CaseType.PLAY_CARD, card_name)
 
-    def fire_weapon(self, player_state: PlayerState):
+    def fire_weapon(self, player_state: PlayerEntityState):
         if not player_state.armed:
             raise GameError('You are not armed')
 
         w = get_weapon(player_state.weapon_name)
         if self.is_offense(player_state):
-            w_action = w.get(P_WEAPON_ACTION_OFFENSE, w.get(P_WEAPON_ACTION_SAME, None))
+            w_action = w.get(Weapon.ACTION_OFFENSE, w.get(Weapon.ACTION_SAME, None))
         else:
-            w_action = w.get(P_WEAPON_ACTION_DEFENSE, w.get(P_WEAPON_ACTION_SAME, None))
+            w_action = w.get(Weapon.ACTION_DEFENSE, w.get(Weapon.ACTION_SAME, None))
         if w_action is None:
             raise GameError('Weapon does not have actions: {0}'.format(player_state.weapon_name))
-        cost = w_action.get(P_WEAPON_COST, 0)
+        cost = w_action.get(Weapon.COST, 0)
         if cost > player_state.energy:
             raise GameError('Not enough energy to shoot: {0}'.format(player_state.weapon_name))
         self.effect_handler.energy_damage(None, player_state, cost)
-        self.effect_handler.apply_effects(player_state, w_action.get(P_WEAPON_EFFECTS, []))
+        self.effect_handler.apply_effects(player_state, w_action.get(Weapon.EFFECTS, []))
 
-    def player_end_turn(self, player_state: PlayerState):
-        if self.turn == SIDE_B:
+    def player_end_turn(self, player_state: PlayerEntityState):
+        if self.turn == Side.B:
             self.end_round()
         self.end_turn()
-        if self.turn == SIDE_A:
+        if self.turn == Side.A:
             self.start_round()
 
     def end_round(self):
-        self.invoke_case_global(CASE_ROUND_END)
+        self.invoke_case_global(CaseType.ROUND_END)
 
         # Process buffs
         for entity_state in self.get_all_entities():
@@ -126,13 +137,13 @@ class CardGame(GameBase):
                     self.effect_handler.remove_buff(None, entity_state, buff.name)
                 else:
                     buff = get_buff(buff.name)
-                    self.effect_handler.apply_effects(entity_state, buff.get(P_BUFF_ON_ROUND_EFFECTS, []))
+                    self.effect_handler.apply_effects(entity_state, buff.get(Buff.ON_ROUND_EFFECTS, []))
 
         self.effect_handler.draw_card(None, self.player_a_entity)
         self.effect_handler.draw_card(None, self.player_b_entity)
 
     def start_round(self):
-        self.invoke_case_global(CASE_ROUND_START)
+        self.invoke_case_global(Case.ROUND_START)
 
         # Process energy
         for entity_state in self.get_all_entities():
@@ -140,34 +151,34 @@ class CardGame(GameBase):
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
                 self.effect_handler.damage(None, entity_state, 1)
-                self.invoke_case(entity_state, CASE_OVERLOAD, entity_state.name)
+                self.invoke_case(entity_state, Case.OVERLOAD, entity_state.name)
 
-    def invoke_case_global(self, case: str, arg=None):
+    def invoke_case_global(self, case: CaseType, arg=None):
         for e in self.get_all_entities():  # type: EntityState
             self.invoke_case(e, case, arg)
 
-    def invoke_case(self, entity: EntityState, case: str, arg=None):
+    def invoke_case(self, target_entity: EntityState, case: CaseType, arg=None):
         # Cases in buffs
-        for b in entity.buffs:
+        for b in target_entity.buffs:
             buff = get_buff(b.name)
-            cases = buff.get(P_BUFF_CASES, {})
+            cases = buff.get(Buff.CASES, {})
             case = cases.get(case, None)
             if case is None:
                 continue
-            case_arg = case.get(P_CASE_ARG, None)
+            case_arg = case.get(Case.ARG, None)
             if case_arg is None or case_arg == arg:
-                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, []))
+                self.effect_handler.apply_effects(target_entity, case.get(Case.EFFECTS, []))
 
         # Cases in objects
-        if not self.is_player(entity):
-            obj = get_object(entity.name)
-            cases = obj.get(P_OBJECT_CASES, {})
+        if not self.is_player(target_entity):
+            obj = get_object(target_entity.name)
+            cases = obj.get(Entity.CASES, {})
             case = cases.get(case, None)
             if case is None:
                 return
-            case_arg = case.get(P_CASE_ARG, None)
+            case_arg = case.get(Case.ARG, None)
             if case_arg is None or case_arg == arg:
-                self.effect_handler.apply_effects(entity, case.get(P_CASE_EFFECTS, []))
+                self.effect_handler.apply_effects(target_entity, case.get(Case.EFFECTS, []))
 
     def is_offense(self, entity: EntityState) -> Optional[bool]:
         if not self.is_player(entity):
@@ -181,9 +192,9 @@ class CardGame(GameBase):
                    self.player_a_entity.position
 
     def get_enemy_ship(self, entity: EntityState) -> Optional[EntityState]:
-        if entity.side == SIDE_A:
+        if entity.side == Side.A:
             return self.player_b_entity
-        if entity.side == SIDE_B:
+        if entity.side == Side.B:
             return self.player_a_entity
         return None
 
@@ -316,8 +327,8 @@ class CardGame(GameBase):
         state = {
             SIDE_A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
             SIDE_B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
-            GameStateProtocol.P_OBJECTS: [s.get_state() for s in self.objects],
-            GameStateProtocol.P_TURN: self.turn,
+            GameStateProtocol.OBJECTS: [s.get_state() for s in self.objects],
+            GameStateProtocol.TURN: self.turn,
         }
         return state
 
@@ -345,7 +356,3 @@ class CardGame(GameBase):
 
         if entity == self.player_b_entity:
             self.notify_player(self.player_b, *args, **kwargs)
-
-
-def create(player_a, player_b) -> GameBase:
-    return CardGame(player_a, player_b)

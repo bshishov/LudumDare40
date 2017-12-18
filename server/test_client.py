@@ -9,9 +9,9 @@ import time
 
 from game.rules import *
 from main import DEFAULT_HOST, DEFAULT_PORT
-from protocol import *
-from utils import EventSubscription, set_interval
-from connection import ClientChannel
+from network.connection import ClientChannel
+from network.protocol import *
+from utils import set_interval
 
 
 class TestPlayer(object):
@@ -34,7 +34,7 @@ class TestPlayer(object):
 
         if self._is_in_game:
             if message.domain == MSG_DOMAIN_GAME:
-                game_id = message.body.get(P_MSG_GAME_ID, None)
+                game_id = message.body.get(GameMessageProtocol.P_GAME_ID, None)
                 if game_id != self._game_id:
                     self._logger.warning('Wrong game_id: {0}'.format(message))
                 else:
@@ -55,7 +55,7 @@ class TestPlayer(object):
         if message.head == MSG_SRV_QUEUE_GAME_CREATED:
             self._is_queue = False
             self._is_in_game = True
-            self._game_id = message.body[P_MSG_GAME_ID]
+            self._game_id = message.body.get(GameMessageProtocol.P_GAME_ID)
 
     def on_game_message(self, message):
         if message.head == MSG_SRV_GAME_BEGIN:

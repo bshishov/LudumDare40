@@ -1,19 +1,30 @@
-import threading
 import logging
+import threading
 import time
+from typing import List
 
-from protocol import *
-import game.base
-import game.card_game
-from game.rules import get_gb
-
+from framework.game import *
+from network import *
 
 MATCHMAKING_DELAY = 10  # seconds
 GAME_CHECK_DELAY = 10  # seconds
 
 
+__all__ = ['GameInitializer', 'Lobby', ]
+
+
+class GameInitializer(object):
+    def select_players(self, queued_players: List[Player]) -> List[Player]:
+        raise NotImplementedError
+
+    def create_game(self, players: List[Player]) -> GameBase:
+        raise NotImplementedError
+
+
 class Lobby(object):
-    def __init__(self):
+    def __init__(self, initializers: List[GameInitializer]):
+        self._initializers = initializers
+
         self._logger = logging.getLogger(self.__class__.__name__)
         self._players = {}
         self._players_lock = threading.Lock()
@@ -25,13 +36,12 @@ class Lobby(object):
         self._game_thread.start()
         self._matchmaking_thread.start()
 
-    def on_client_connect(self, channel):
-        # channel:type
-        player = game.base.Player(channel)  # type: game.base.Player
+    def on_client_connect(self, channel: ClientChannel):
+        player = Player(channel)  # type: Player
         with self._players_lock:
             self._players[channel] = player
-        player.send(LobbyMessage(MSG_SRV_HELLO, status='Welcome',
-                                 version=VERSION,
+        player.send(LobbyMessage(MessageHead.SRV_HELLO, status='Welcome',
+                                 version=PROTOCOL_VERSION,
                                  players=len(self._players)))
         self._logger.info('Player connected')
 
@@ -48,36 +58,35 @@ class Lobby(object):
     def matchmaking_worker(self):
         self._logger.info('Matchmaking started')
         while True:
-            time.sleep(MATCHMAKING_DELAY)
             with self._players_lock:
-                queued_players = [p for channel, p in self._players.items() if p.in_queue]
+                queued_players = [player for channel, player in self._players.items() if player.in_queue]
+
                 if len(queued_players) > 0:
                     self._logger.debug('Matchmaking: {0} players in queue'.format(len(queued_players)))
+                    time.sleep(MATCHMAKING_DELAY)
+                else:
+                    for initializer in self._initializers:
+                        players = initializer.select_players(queued_players)
+                        if players is not None and len(players) > 0:
+                            self.init_game(initializer, players)
 
-                if len(queued_players) >= 2:
-                    self.init_game(queued_players[0], queued_players[1])
-
-    def init_game(self, player_a, player_b):
+    def init_game(self, initializer, players):
         g = None
         try:
-            # Stop player queues
-            player_a.stop_queue()
-            player_b.stop_queue()
+            for player in players:
+                player.stop_queue()
 
-            self._logger.debug('Creating game for players: A:{0} B:{1}'.format(player_a, player_b))
-            g = game.card_game.create(player_a, player_b)
+            self._logger.debug('Creating game for players: {0}'.format(players))
+            g = initializer.create_game(players)
 
-            # Send that the game is started
-            player_a.send(LobbyMessage(MSG_SRV_QUEUE_GAME_CREATED,
-                                       status='Game created',
-                                       game_id=g.id))
-            player_b.send(LobbyMessage(MSG_SRV_QUEUE_GAME_CREATED,
-                                       status='Game created',
-                                       game_id=g.id))
+            for player in players:
+                # Send that the game is started
+                player.send(LobbyMessage(MessageHead.SRV_QUEUE_GAME_CREATED, status='Game created', game_id=g.id))
 
         except Exception as err:
-            player_a.send(LobbyMessage(MSG_SRV_ERROR, status='Failed to create a game', err=str(err)))
-            player_b.send(LobbyMessage(MSG_SRV_ERROR, status='Failed to create a game', err=str(err)))
+            for player in players:
+                player.send(LobbyMessage(MessageHead.SRV_ERROR, status='Failed to create a game', err=str(err)))
+                player.send(LobbyMessage(MessageHead.SRV_ERROR, status='Failed to create a game', err=str(err)))
             self._logger.debug('Failed to create a game: {0}'.format(str(err)))
             if g is not None:
                 g.close()

@@ -2748,7 +2748,8 @@
                             "type": "damage",
                             "value": 5
                         }
-                    ]
+                    ],
+                    "source_target": "all_allies"
                 },
                 "turn_end": {
                     "effects": [
@@ -2823,7 +2824,8 @@
                             "target": "self",
                             "type": "destroy"
                         }
-                    ]
+                    ],
+                    "source_target": "all_allies"
                 },
                 "turn_end": {
                     "effects": [

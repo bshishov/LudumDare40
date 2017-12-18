@@ -1,8 +1,13 @@
+import random
 from typing import List, Optional
 
-from game.base import *
+from framework.game import GameError
 from game.rules import *
-from game.utils import *
+from game.utils import select_cards
+from game.protocol import *
+
+
+__all__ = ['BuffState', 'CardState', 'EntityState', 'PlayerEntityState']
 
 
 class BuffState(object):
@@ -12,8 +17,8 @@ class BuffState(object):
 
     def get_state(self):
         return {
-            BuffState.P_NAME: self.name,
-            BuffState.P_DURATION: self.duration
+            BuffStateProtocol.NAME: self.name,
+            BuffStateProtocol.DURATION: self.duration
         }
 
 
@@ -37,9 +42,9 @@ class CardState(object):
 
     def get_state(self) -> dict:
         return {
-            CardState.P_NAME: self.name,
-            CardState.P_COST_DEFENSE: self.cost_defense,
-            CardState.P_COST_OFFENSE: self.cost_offense
+            CardStateProtocol.NAME: self.name,
+            CardStateProtocol.COST_DEFENSE: self.cost_defense,
+            CardStateProtocol.COST_OFFENSE: self.cost_offense
         }
 
 
@@ -69,25 +74,25 @@ class EntityState(object):
 
     def get_state(self) -> {}:
         return {
-            EntityStateProtocol.P_ID: self.id,
-            EntityStateProtocol.P_NAME: self.name,
-            EntityStateProtocol.P_POSITION: self.position,
-            EntityStateProtocol.P_SIDE: self.side,
-            EntityStateProtocol.P_HP: self.hp,
-            EntityStateProtocol.P_ENERGY: self.energy,
-            EntityStateProtocol.P_ENERGY_GAIN: self.energy_gain,
-            EntityStateProtocol.P_MAX_ENERGY: self.max_energy,
-            EntityStateProtocol.P_BUFFABLE: self.buffable,
-            EntityStateProtocol.P_BUFFS: [s.get_state() for s in self.buffs],
-            EntityStateProtocol.P_ARMED: self.armed,
-            EntityStateProtocol.P_MUTED: self.muted,
-            EntityStateProtocol.P_LOCKED: self.locked,
-            EntityStateProtocol.P_IS_PLAYER: self.is_player,
-            EntityStateProtocol.P_DAMAGE_MOD: self.damage_mod,
+            EntityStateProtocol.ID: self.id,
+            EntityStateProtocol.NAME: self.name,
+            EntityStateProtocol.POSITION: self.position,
+            EntityStateProtocol.SIDE: self.side,
+            EntityStateProtocol.HP: self.hp,
+            EntityStateProtocol.ENERGY: self.energy,
+            EntityStateProtocol.ENERGY_GAIN: self.energy_gain,
+            EntityStateProtocol.MAX_ENERGY: self.max_energy,
+            EntityStateProtocol.BUFFABLE: self.buffable,
+            EntityStateProtocol.BUFFS: [s.get_state() for s in self.buffs],
+            EntityStateProtocol.ARMED: self.armed,
+            EntityStateProtocol.MUTED: self.muted,
+            EntityStateProtocol.LOCKED: self.locked,
+            EntityStateProtocol.IS_PLAYER: self.is_player,
+            EntityStateProtocol.DAMAGE_MOD: self.damage_mod,
         }
 
 
-class PlayerState(EntityState):
+class PlayerEntityState(EntityState):
     def __init__(self, side, prefs, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.side = side
@@ -163,14 +168,14 @@ class PlayerState(EntityState):
     def get_state(self, hide_hand=False) -> {}:
         state = super().get_state()
         player_state = {
-            PlayerEntityProtocol.P_SHIP_NAME: self.ship_name,
-            PlayerEntityProtocol.P_WEAPON_NAME: self.weapon_name,
-            PlayerEntityProtocol.P_CARDS_IN_DECK: len(self.deck),
-            PlayerEntityProtocol.P_CARDS_IN_HAND: len(self.hand),
-            PlayerEntityProtocol.P_DECK: [],
-            PlayerEntityProtocol.P_HAND: [],
+            PlayerEntityProtocol.SHIP_NAME: self.ship_name,
+            PlayerEntityProtocol.WEAPON_NAME: self.weapon_name,
+            PlayerEntityProtocol.CARDS_IN_DECK: len(self.deck),
+            PlayerEntityProtocol.CARDS_IN_HAND: len(self.hand),
+            PlayerEntityProtocol.DECK: [],
+            PlayerEntityProtocol.HAND: [],
         }
         if not hide_hand:
-            player_state[PlayerEntityProtocol.P_HAND] = [c.get_state() for c in self.hand]
+            player_state[PlayerEntityProtocol.HAND] = [c.get_state() for c in self.hand]
         state.update(player_state)
         return state

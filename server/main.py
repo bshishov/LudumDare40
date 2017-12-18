@@ -1,9 +1,10 @@
 import argparse
 import logging
 
-from lobby import Lobby
+from framework.lobby import Lobby
 from game.rules import export_db
-import connection
+from game.initializer import CardGameInitializer
+from network import connection
 
 DEFAULT_HOST = 'localhost'
 DEFAULT_PORT = 8976
@@ -15,7 +16,7 @@ def main(args):
     logging.info('Exporting game database to: {0}'.format(DB_EXPORT_PATH))
     export_db(DB_EXPORT_PATH)
 
-    lobby = Lobby()
+    lobby = Lobby([CardGameInitializer(), ])
     server = connection.Server(args.host, args.port)
     server.on_client_connect.append(lobby.on_client_connect)
     server.on_client_disconnect.append(lobby.on_client_disconnect)

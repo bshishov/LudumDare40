@@ -1,3 +1,5 @@
+from enum import Enum, unique
+
 # SETTINGS
 BOARD_SIZE = 6
 INITIAL_A_POSITION = 4
@@ -8,160 +10,182 @@ SHIP_CARDS_EACH = 2
 EVENT_CARDS_FROM_POOL = 6
 MAX_EVENT_CARDS_OF_EACH_TYPE = 2
 
-# Sections
-SECTION_SHIPS = 'ships'
-SECTION_BUFFS = 'buffs'
-SECTION_WEAPONS = 'weapons'
-SECTION_CARDS = 'cards'
-SECTION_OBJECTS = 'objects'
 
-# Player actions
-ACTION_PLAY_CARD = 'play_card'
-ACTION_FIRE_WEAPON = 'fire_weapon'
-ACTION_END_TURN = 'end_turn'
-ACTION_CHEAT_TAKE_CARD = 'take_card'
+@unique
+class Section(Enum):
+    SHIPS = 'ships'
+    BUFFS = 'buffs'
+    WEAPONS = 'weapons'
+    CARDS = 'cards'
+    OBJECTS = 'objects'
 
-# COMMON KEYS
-P_TYPE = 'type'
-P_VALUE = 'value'
-P_TARGET = 'target'
 
-""" 
-    ===============================================  
-                        TARGETS 
-    ===============================================
-"""
-TARGET_SELF = 'self'
-# All
-TARGET_ALL = 'all'
-TARGET_ALL_EXCEPT_SELF = 'all_except'
-TARGET_ALL_ENEMIES = 'all_enemies'
-TARGET_ALL_ALLIES = 'all_allies'
-TARGET_ALL_SHIPS = 'all_ships'
+@unique
+class PlayerAction(Enum):
+    PLAY_CARD = 'play_card'
+    FIRE_WEAPON = 'fire_weapon'
+    END_TURN = 'end_turn'
+    CHEAT_TAKE_CARD = 'take_card'
 
-# Separate ships and objects
-TARGET_ENEMY_SHIP = 'enemy_ship'
-TARGET_ALLY_SHIP = 'ally_ship'
 
-# Special
-TARGET_MAX_HEALTH = 'max_health'
-TARGET_MIN_HEALTH = 'min_health'
-TARGET_MAX_ENERGY = 'max_energy'
+@unique
+class Target(Enum):
+    SELF = 'self'
+    ALL = 'all'
+    ALL_EXCEPT_SELF = 'all_except'
+    ALL_ENEMIES = 'all_enemies'
+    ALL_ALLIES = 'all_allies'
+    ALL_SHIPS = 'all_ships'
+    ENEMY_SHIP = 'enemy_ship'
+    ALLY_SHIP = 'ally_ship'
+    MAX_HEALTH = 'max_health'
+    MIN_HEALTH = 'min_health'
+    MAX_ENERGY = 'max_energy'
+    FORWARD = 'forward'
+    FORWARD_ALLY = 'forward_ally'
+    FORWARD_ENEMY = 'forward_enemy'
+    FORWARD_PIERCE = 'forward_pierce'
+    BACKWARD = 'backward'
+    BACKWARD_ALLY = 'backward_ally'
+    BACKWARD_ENEMY = 'backward_enemy'
+    BACKWARD_PIERCE = 'backward_pierce'
 
-# Directional
-TARGET_FORWARD = 'forward'
-TARGET_FORWARD_ALLY = 'forward_ally'
-TARGET_FORWARD_ENEMY = 'forward_enemy'
-TARGET_FORWARD_PIERCE = 'forward_pierce'
-TARGET_BACKWARD = 'backward'
-TARGET_BACKWARD_ALLY = 'backward_ally'
-TARGET_BACKWARD_ENEMY = 'backward_enemy'
-TARGET_BACKWARD_PIERCE = 'backward_pierce'
-""" ===============================================  """
 
-# EFFECTS
-EFFECT_TYPE_DAMAGE = 'damage'
-EFFECT_TYPE_EDAMAGE = 'edamage'
-EFFECT_TYPE_HEAL = 'heal'
-EFFECT_TYPE_EHEAL = 'eheal'
-EFFECT_TYPE_MOVE = 'position'
-EFFECT_TYPE_DISARM = 'disarm'
-EFFECT_TYPE_ARM = 'arm'
-EFFECT_TYPE_MUTE = 'mute'
-EFFECT_TYPE_UNMUTE = 'unmute'
-EFFECT_TYPE_LOCK_POSITION = 'lock_position'
-EFFECT_TYPE_UNLOCK_POSITION = 'unlock_position'
-EFFECT_TYPE_REDUCE_CARDCOST = 'reduce_cardcost'
-EFFECT_TYPE_ADD_CARDCOST = 'add_cardcost'
-EFFECT_TYPE_DRAW_CARD = 'draw_card'
-EFFECT_TYPE_DROP_CARD_OF_TYPE = 'drop_card'
-EFFECT_TYPE_REMOVE_CARD = 'remove_card'
-EFFECT_TYPE_GAIN_CARD = 'gain_card'
-EFFECT_TYPE_DAMAGE_REDUCE = 'damage_reduce'
-EFFECT_TYPE_DAMAGE_ADD = 'damage_add'
-EFFECT_TYPE_ENERGYGAIN_REDUCE = 'energygain_reduce'
-EFFECT_TYPE_ENERGYGAIN_ADD = 'energygain_add'
-EFFECT_TYPE_SPAWN = 'spawn'
-EFFECT_TYPE_DESTROY = 'destroy'
-EFFECT_TYPE_APPLY_BUFF = 'apply_buff'
-EFFECT_TYPE_REMOVE_BUFF = 'remove_buff'
-EFFECT_TYPE_ENERGY_TEST = 'energy_test'
+@unique
+class EffectType(Enum):
+    DAMAGE = 'damage'
+    EDAMAGE = 'edamage'
+    HEAL = 'heal'
+    EHEAL = 'eheal'
+    MOVE = 'position'
+    DISARM = 'disarm'
+    ARM = 'arm'
+    MUTE = 'mute'
+    UNMUTE = 'unmute'
+    LOCK_POSITION = 'lock_position'
+    UNLOCK_POSITION = 'unlock_position'
+    REDUCE_CARDCOST = 'reduce_cardcost'
+    ADD_CARDCOST = 'add_cardcost'
+    DRAW_CARD = 'draw_card'
+    DROP_CARD_OF_TYPE = 'drop_card'
+    REMOVE_CARD = 'remove_card'
+    GAIN_CARD = 'gain_card'
+    DAMAGE_REDUCE = 'damage_reduce'
+    DAMAGE_ADD = 'damage_add'
+    ENERGYGAIN_REDUCE = 'energygain_reduce'
+    ENERGYGAIN_ADD = 'energygain_add'
+    SPAWN = 'spawn'
+    DESTROY = 'destroy'
+    APPLY_BUFF = 'apply_buff'
+    REMOVE_BUFF = 'remove_buff'
+    ENERGY_TEST = 'energy_test'
 
-# Speacial effects
-EFFECT_TYPE_SPECIAL_SWAP = 'special_swap'
-EFFECT_TYPE_OFFENSE_APPROACH = 'approach'
+    # Speacial effects
+    SPECIAL_SWAP = 'special_swap'
+    OFFENSE_APPROACH = 'approach'
 
-# Effect properties
-P_EFFECT_TYPE = P_TYPE
-P_EFFECT_VALUE = P_VALUE
-P_EFFECT_TARGET = P_TARGET
-P_EFFECT_RANGE = 'range'
-P_EFFECT_RANGE_MOD = 'range_mod'
-P_EFFECT_SPAWN_POSITION = 'spawn_position'
-P_EFFECT_CARD_TYPE = 'card_type'
-P_EFFECT_BUFF_DURATION = 'buff_duration'
 
-# Cases
-CASE_COLLIDE = 'collide'
-CASE_DRAW_CARD = 'draw_card'
-CASE_PLAY_CARD = 'play_card'
-CASE_DROP_CARD = 'drop_card'
-CASE_DESTROYED = 'entity_destroyed'
-CASE_OVERLOAD = 'entity_overload'
-CASE_ROUND_END = 'turn_end'
-CASE_ROUND_START = 'turn_start'
-CASE_SPAWNED = 'spawned'
+@unique
+class Effect(Enum):
+    """
+        Effect properties
+    """
+    TYPE = 'type'
+    VALUE = 'value'
+    TARGET = 'target'
+    RANGE = 'range'
+    RANGE_MOD = 'range_mod'
+    SPAWN_POSITION = 'spawn_position'
+    CARD_TYPE = 'card_type'
+    BUFF_DURATION = 'buff_duration'
 
-# Event properties
-P_CASE_ARG = 'arg'
-P_CASE_EFFECTS = 'effects'
 
-# Ship properties
-P_SHIP_HP = 'hp'
-P_SHIP_MAX_ENERGY = 'max_energy'
-P_SHIP_ENERGY_PER_TURN = 'energy_per_turn'
-P_SHIP_CARDS = 'cards'
+@unique
+class CaseType(Enum):
+    COLLIDE = 'collide'
+    DRAW_CARD = 'draw_card'
+    PLAY_CARD = 'play_card'
+    DROP_CARD = 'drop_card'
+    DESTROYED = 'entity_destroyed'
+    OVERLOAD = 'entity_overload'
+    ROUND_END = 'turn_end'
+    ROUND_START = 'turn_start'
+    SPAWNED = 'spawned'
 
-# Weapon properties
-P_WEAPON_DESCRIPTION = 'description'
-P_WEAPON_FULL_NAME = 'full_name'
-P_WEAPON_COST = 'cost'
-P_WEAPON_EFFECT = 'effect'
-P_WEAPON_CARDS = 'cards'
-P_WEAPON_ACTION_OFFENSE = 'offense'
-P_WEAPON_ACTION_DEFENSE = 'defense'
-P_WEAPON_ACTION_SAME = 'same'
-P_WEAPON_TARGET = P_TARGET
-P_WEAPON_EFFECTS = 'effects'
 
-# Entities properties
-P_OBJECT_FULL_NAME = 'full_name'
-P_OBJECT_DESCRIPTION = 'description'
-P_OBJECT_HP = 'hp'
-P_OBJECT_CASES = 'cases'
+@unique
+class Case(Enum):
+    ARG = 'arg'
+    EFFECTS = 'effects'
+    SOURCE_TARGET = 'source_target'
 
-# Buff properties
-P_BUFF_FULL_NAME = 'full_name'
-P_BUFF_DESCRIPTION = 'description'
-P_BUFF_DURATION = 'duration'
-P_BUFF_ON_ROUND_EFFECTS = 'turn_effects'
-P_BUFF_ON_APPLY_EFFECTS = 'apply_effects'
-P_BUFF_ON_REMOVE_EFFECTS = 'remove_effects'
-P_BUFF_CASES = 'cases'
 
-# Card type
-CARD_TYPE_EVENT = 'event'
-CARD_TYPE_SHIP = 'ship'
-CARD_TYPE_WEAPON = 'weapon'
+@unique
+class Weapon(Enum):
+    # Weapon properties
+    DESCRIPTION = 'description'
+    FULL_NAME = 'full_name'
+    COST = 'cost'
+    EFFECT = 'effect'
+    CARDS = 'cards'
+    ACTION_OFFENSE = 'offense'
+    ACTION_DEFENSE = 'defense'
+    ACTION_SAME = 'same'
+    TARGET = 'target'
+    EFFECTS = 'effects'
 
-# Card properties
-P_CARD_ACTION_OFFENSE = 'offense'
-P_CARD_ACTION_DEFENSE = 'defense'
-P_CARD_ACTION_SAME = 'same'
-P_CARD_DECK = 'deck'
-P_CARD_TYPE = P_TYPE
-P_CARD_COST = 'cost'
-P_CARD_FULL_NAME = 'full_name'
-P_CARD_DESCRIPTION = 'description'
-P_CARD_FLAVOR = 'flavor'
-P_CARD_EFFECTS = 'effects'
+
+@unique
+class Ship(Enum):
+    # Ship properties
+    HP = 'hp'
+    MAX_ENERGY = 'max_energy'
+    ENERGY_PER_TURN = 'energy_per_turn'
+    CARDS = 'cards'
+
+
+@unique
+class Entity(Enum):
+    # Entities properties
+    FULL_NAME = 'full_name'
+    DESCRIPTION = 'description'
+    HP = 'hp'
+    CASES = 'cases'
+
+
+@unique
+class Buff(Enum):
+    """
+        Buff properties
+    """
+    FULL_NAME = 'full_name'
+    DESCRIPTION = 'description'
+    DURATION = 'duration'
+    ON_ROUND_EFFECTS = 'turn_effects'
+    ON_APPLY_EFFECTS = 'apply_effects'
+    ON_REMOVE_EFFECTS = 'remove_effects'
+    CASES = 'cases'
+
+
+@unique
+class CardType(Enum):
+    EVENT = 'event'
+    SHIP = 'ship'
+    WEAPON = 'weapon'
+
+
+@unique
+class Card(Enum):
+    """
+        Card properties
+    """
+    ACTION_OFFENSE = 'offense'
+    ACTION_DEFENSE = 'defense'
+    ACTION_SAME = 'same'
+    DECK = 'deck'
+    TYPE = 'type'
+    COST = 'cost'
+    FULL_NAME = 'full_name'
+    DESCRIPTION = 'description'
+    FLAVOR = 'flavor'
+    EFFECTS = 'effects'

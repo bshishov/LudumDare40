@@ -9,57 +9,52 @@ from game.rules.objects import *
 from game.rules.buffs import *
 
 
-class GameStateProtocol(object):
-    P_ID = 'id'
-    P_TURN = 'turn'
-    P_OBJECTS = 'objects'
+class RulesError(RuntimeError):
+    pass
 
 
-class BuffStateProtocol(object):
-    P_NAME = 'name',
-    P_DURATION = 'duration'
+def get_card(key: str) -> dict:
+    card = cards.get(key, None)
+    if card is None:
+        raise RulesError('No such card: {0}'.format(key))
+    return card
 
 
-class CardStateProtocol(object):
-    P_NAME = 'name',
-    P_COST_OFFENSE = 'cost_offense'
-    P_COST_DEFENSE = 'cost_defense'
+def get_buff(key: str) -> dict:
+    buff = buffs.get(key, None)
+    if buff is None:
+        raise RulesError('No such buff: {0}'.format(key))
+    return buff
 
 
-class EntityStateProtocol(object):
-    P_ID = 'id'
-    P_NAME = 'name'
-    P_POSITION = 'position'
-    P_SIDE = 'side'
-    P_HP = 'hp'
-    P_ENERGY = 'energy'
-    P_MAX_ENERGY = 'max_energy'
-    P_ENERGY_GAIN = 'energy_gain'
-    P_BUFFS = 'buffs'
-    P_MUTED = 'muted'
-    P_ARMED = 'armed'
-    P_LOCKED = 'locked'
-    P_DAMAGE_MOD = 'damage_mod'
-    P_BUFFABLE = 'buffable'
-    P_IS_PLAYER = 'is_player'
+def get_object(key: str) -> dict:
+    e = objects.get(key, None)
+    if e is None:
+        raise RulesError('No such entity: {0}'.format(key))
+    return e
 
 
-class PlayerEntityProtocol(object):
-    P_SHIP_NAME = 'ship_name'
-    P_WEAPON_NAME = 'weapon_name'
-    P_HAND = 'hand'
-    P_DECK = 'deck'
-    P_CARDS_IN_HAND = 'hand_cards'
-    P_CARDS_IN_DECK = 'deck_cards'
+def get_ship(key: str) -> dict:
+    e = ships.get(key, None)
+    if e is None:
+        raise RulesError('No such ship: {0}'.format(key))
+    return e
+
+
+def get_weapon(key: str) -> dict:
+    w = weapons.get(key, None)
+    if w is None:
+        raise RulesError('No such weapon: {0}'.format(key))
+    return w
 
 
 def get_gb():
     return {
-        SECTION_CARDS: cards,
-        SECTION_BUFFS: buffs,
-        SECTION_OBJECTS: objects,
-        SECTION_SHIPS: ships,
-        SECTION_WEAPONS: weapons
+        Section.CARDS: cards,
+        Section.BUFFS: buffs,
+        Section.OBJECTS: objects,
+        Section.SHIPS: ships,
+        Section.WEAPONS: weapons
     }
 
 
@@ -88,7 +83,7 @@ def export_cards_to_excel_csv(filename):
             if pp in ['0', '1', '2', '3', '4']:
                 pp = int(pp)
             if pp == 'effect':
-                del o[P_EFFECT_TARGET]
+                del o[Effect.TARGET]
             else:
                 try:
                     o = o[pp]
@@ -106,35 +101,35 @@ def export_cards_to_excel_csv(filename):
 
     with open(filename, 'w', newline='') as csv_file:
         fieldnames = ['id',
-                      P_CARD_FULL_NAME,
-                      P_CARD_TYPE,
-                      P_CARD_DECK,
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_DESCRIPTION),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_FLAVOR),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_COST),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '0', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '0', 'effect'),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '1', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '1', 'effect'),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '2', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '2', 'effect'),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '3', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '3', 'effect'),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '4', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_OFFENSE, P_CARD_EFFECTS, '4', 'effect'),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_DESCRIPTION),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_FLAVOR),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_COST),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '0', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '0', 'effect'),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '1', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '1', 'effect'),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '2', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '2', 'effect'),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '3', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '3', 'effect'),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '4', P_EFFECT_TARGET),
-                      p(P_CARD_ACTION_DEFENSE, P_CARD_EFFECTS, '4', 'effect'),
+                      Card.FULL_NAME,
+                      Card.TYPE,
+                      Card.DECK,
+                      p(Card.ACTION_OFFENSE, Card.DESCRIPTION),
+                      p(Card.ACTION_OFFENSE, Card.FLAVOR),
+                      p(Card.ACTION_OFFENSE, Card.COST),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '0', Effect.TARGET),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '0', 'effect'),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '1', Effect.TARGET),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '1', 'effect'),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '2', Effect.TARGET),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '2', 'effect'),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '3', Effect.TARGET),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '3', 'effect'),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '4', Effect.TARGET),
+                      p(Card.ACTION_OFFENSE, Card.EFFECTS, '4', 'effect'),
+                      p(Card.ACTION_DEFENSE, Card.DESCRIPTION),
+                      p(Card.ACTION_DEFENSE, Card.FLAVOR),
+                      p(Card.ACTION_DEFENSE, Card.COST),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '0', Effect.TARGET),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '0', 'effect'),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '1', Effect.TARGET),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '1', 'effect'),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '2', Effect.TARGET),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '2', 'effect'),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '3', Effect.TARGET),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '3', 'effect'),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '4', Effect.TARGET),
+                      p(Card.ACTION_DEFENSE, Card.EFFECTS, '4', 'effect'),
                       ]
         csv_file.write('sep=,\r\n')
         writer = csv.DictWriter(csv_file,

@@ -2,82 +2,84 @@ from game.rules.settings import *
 
 objects = {
     'bomb': {
-        P_OBJECT_FULL_NAME: 'Bomb',
-        P_OBJECT_DESCRIPTION: 'Just a flying c4',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_PLAY_CARD: {
-                P_CASE_ARG: 'detonate',
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Bomb',
+        Entity.DESCRIPTION: 'Just a flying c4',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.PLAY_CARD: {
+                Case.ARG: 'detonate',
+                Case.SOURCE_TARGET: Target.ALL_ALLIES,
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_VALUE: 5
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.VALUE: 5
                     }
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: -1
+                        Effect.TYPE: EffectType.MOVE,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: -1
                     }
                 ]
             }
         },
     },
     'emp': {
-        P_OBJECT_FULL_NAME: 'EMP',
-        P_OBJECT_DESCRIPTION: 'A flying electromagnetic grenade',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_PLAY_CARD: {
-                P_CASE_ARG: 'detonate_emp',
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'EMP',
+        Entity.DESCRIPTION: 'A flying electromagnetic grenade',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.PLAY_CARD: {
+                Case.ARG: 'detonate_emp',
+                Case.SOURCE_TARGET: Target.ALL_ALLIES,
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_VALUE: 2
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.VALUE: 2
                     },
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_EDAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_VALUE: 6
+                        Effect.TYPE: EffectType.EDAMAGE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.VALUE: 6
                     },
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MUTE,
-                        P_EFFECT_TARGET: TARGET_ALL
+                        Effect.TYPE: EffectType.MUTE,
+                        Effect.TARGET: Target.ALL
                     },
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DESTROY,
-                        P_EFFECT_TARGET: TARGET_SELF
+                        Effect.TYPE: EffectType.DESTROY,
+                        Effect.TARGET: Target.SELF
                     }
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: -1,
+                        Effect.TYPE: EffectType.MOVE,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: -1,
                     }
                 ]
             }
         },
     },
     'mine': {
-        P_OBJECT_FULL_NAME: 'Flying mine',
-        P_OBJECT_DESCRIPTION: 'A flying landmine',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_COLLIDE: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Flying mine',
+        Entity.DESCRIPTION: 'A flying landmine',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.COLLIDE: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_RANGE: 0,
-                        P_EFFECT_VALUE: 5
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.RANGE: 0,
+                        Effect.VALUE: 5
                     }
                 ]
             },
@@ -85,141 +87,141 @@ objects = {
         },
     },
     'adrone': {
-        P_OBJECT_FULL_NAME: 'Wingdrone',
-        P_OBJECT_DESCRIPTION: 'Simple attacking drone',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_SPAWNED: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Wingdrone',
+        Entity.DESCRIPTION: 'Simple attacking drone',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.SPAWNED: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: 'destroy',
-                        P_EFFECT_BUFF_DURATION: 3
+                        Effect.TYPE: EffectType.APPLY_BUFF,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: 'destroy',
+                        Effect.BUFF_DURATION: 3
                     },
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL_ENEMIES,
-                        P_EFFECT_VALUE: 2
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL_ENEMIES,
+                        Effect.VALUE: 2
                     },
                 ]
             }
         },
     },
     'hdrone': {
-        P_OBJECT_FULL_NAME: 'Helper drone',
-        P_OBJECT_DESCRIPTION: 'Simple healing drone',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_SPAWNED: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Helper drone',
+        Entity.DESCRIPTION: 'Simple healing drone',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.SPAWNED: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: 'destroy',
-                        P_EFFECT_BUFF_DURATION: 3
+                        Effect.TYPE: EffectType.APPLY_BUFF,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: 'destroy',
+                        Effect.BUFF_DURATION: 3
                     },
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_HEAL,
-                        P_EFFECT_TARGET: TARGET_ALLY_SHIP,
-                        P_EFFECT_VALUE: 2
+                        Effect.TYPE: EffectType.HEAL,
+                        Effect.TARGET: Target.ALLY_SHIP,
+                        Effect.VALUE: 2
                     },
                 ]
             }
         },
     },
     'birds': {
-        P_OBJECT_FULL_NAME: 'Birds!',
-        P_OBJECT_DESCRIPTION: 'A flock of birds',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_COLLIDE: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Birds!',
+        Entity.DESCRIPTION: 'A flock of birds',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.COLLIDE: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_RANGE: 0,
-                        P_EFFECT_VALUE: 2
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.RANGE: 0,
+                        Effect.VALUE: 2
                     },
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: -1
+                        Effect.TYPE: EffectType.MOVE,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: -1
                     },
                 ]
             }
         },
     },
     'debris': {
-        P_OBJECT_FULL_NAME: 'Debris',
-        P_OBJECT_DESCRIPTION: 'Chunks of metal blown away from your ship',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_SPAWNED: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Debris',
+        Entity.DESCRIPTION: 'Chunks of metal blown away from your ship',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.SPAWNED: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: 'destroy',
-                        P_EFFECT_BUFF_DURATION: 2
+                        Effect.TYPE: EffectType.APPLY_BUFF,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: 'destroy',
+                        Effect.BUFF_DURATION: 2
                     },
                 ]
             },
-            CASE_COLLIDE: {
-                P_CASE_EFFECTS: [
+            CaseType.COLLIDE: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_DAMAGE,
-                        P_EFFECT_TARGET: TARGET_ALL_EXCEPT_SELF,
-                        P_EFFECT_RANGE: 2,
-                        P_EFFECT_VALUE: 3
+                        Effect.TYPE: EffectType.DAMAGE,
+                        Effect.TARGET: Target.ALL_EXCEPT_SELF,
+                        Effect.RANGE: 2,
+                        Effect.VALUE: 3
                     }
                 ]
             },
-            CASE_ROUND_END: {
-                P_CASE_EFFECTS: [
+            CaseType.ROUND_END: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: -1
+                        Effect.TYPE: EffectType.MOVE,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: -1
                     },
                 ]
             }
         },
     },
     'wgenerator': {
-        P_OBJECT_FULL_NAME: 'Wind generator',
-        P_OBJECT_DESCRIPTION: 'It pushes everyone backwards',
-        P_OBJECT_HP: 3,
-        P_OBJECT_CASES: {
-            CASE_SPAWNED: {
-                P_CASE_EFFECTS: [
+        Entity.FULL_NAME: 'Wind generator',
+        Entity.DESCRIPTION: 'It pushes everyone backwards',
+        Entity.HP: 3,
+        Entity.CASES: {
+            CaseType.SPAWNED: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_APPLY_BUFF,
-                        P_EFFECT_TARGET: TARGET_SELF,
-                        P_EFFECT_VALUE: 'destroy',
-                        P_EFFECT_BUFF_DURATION: 3
+                        Effect.TYPE: EffectType.APPLY_BUFF,
+                        Effect.TARGET: Target.SELF,
+                        Effect.VALUE: 'destroy',
+                        Effect.BUFF_DURATION: 3
                     },
                 ]
             },
-            CASE_COLLIDE: {
-                P_CASE_EFFECTS: [
+            CaseType.COLLIDE: {
+                Case.EFFECTS: [
                     {
-                        P_EFFECT_TYPE: EFFECT_TYPE_MOVE,
-                        P_EFFECT_TARGET: TARGET_ALL,
-                        P_EFFECT_RANGE: 1,
-                        P_EFFECT_VALUE: -1
+                        Effect.TYPE: EffectType.MOVE,
+                        Effect.TARGET: Target.ALL,
+                        Effect.RANGE: 1,
+                        Effect.VALUE: -1
                     }
                 ]
             },

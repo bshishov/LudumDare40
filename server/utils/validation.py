@@ -55,7 +55,7 @@ class ValidationResult(object):
             if isinstance(self.param, int):
                 p = path + '[{0}]'.format(self.param)
             else:
-                p = path + ' -> ' + self.param
+                p = path + ' -> ' + str(self.param)
         else:
             p = path
         if len(self.inner_results) == 0 and not self.is_valid:
