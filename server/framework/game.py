@@ -96,19 +96,19 @@ class GameBase(object):
 
         # Send that the game is started
         for side, player in enumerate(self.players):
-            self.notify_player(player, MSG_SRV_GAME_BEGIN, status='Game begin', side=side)
+            self.notify_player(player, MessageHead.SRV_GAME_BEGIN, status='Game begin', side=side)
 
     def _validate_message(self, player: Player, message: Message):
         if message is None:
             return False
 
-        if message.domain != MSG_DOMAIN_GAME:
+        if message.domain != MessageHead.DOMAIN_GAME:
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
         if message.body.get(GameMessageProtocol.P_GAME_ID) != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
-            self.notify_player(player, MSG_SRV_ERROR, status='wrong game id')
+            self.notify_player(player, MessageHead.SRV_ERROR, status='wrong game id')
             return False
         return True
 
@@ -120,7 +120,7 @@ class GameBase(object):
         raise NotImplementedError
 
     def _on_player_disconnect(self, player: Player):
-        self.notify_players(MSG_SRV_GAME_PLAYER_LEFT, status='Player disconnected', player=player._id)
+        self.notify_players(MessageHead.SRV_GAME_PLAYER_LEFT, status='Player disconnected', player=player._id)
         self.end(interrupted=True)
 
     def end_turn(self):

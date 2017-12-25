@@ -30,15 +30,15 @@ class CardState(object):
         self.name = name
 
         card = get_card(self.name)
-        card_offense_core = card.get(P_CARD_ACTION_OFFENSE, card.get(P_CARD_ACTION_SAME))
-        card_defense_core = card.get(P_CARD_ACTION_OFFENSE, card.get(P_CARD_ACTION_SAME))
-        self.cost_offense = card_offense_core.get(P_CARD_COST)
-        self.cost_defense = card_defense_core.get(P_CARD_COST)
+        card_offense_core = card.get(Card.ACTION_OFFENSE, card.get(Card.ACTION_SAME))
+        card_defense_core = card.get(Card.ACTION_OFFENSE, card.get(Card.ACTION_SAME))
+        self.cost_offense = card_offense_core.get(Card.COST)
+        self.cost_defense = card_defense_core.get(Card.COST)
 
     @property
     def type(self) -> str:
         card = get_card(self.name)
-        return card.get(P_CARD_TYPE)
+        return card.get(Card.TYPE)
 
     def get_state(self) -> dict:
         return {
@@ -97,7 +97,7 @@ class PlayerEntityState(EntityState):
         super().__init__(*args, **kwargs)
         self.side = side
 
-        if side == SIDE_A:
+        if side == Side.A:
             self.position = INITIAL_A_POSITION
             self.name = 'player_a'
             self.id = 0
@@ -117,9 +117,9 @@ class PlayerEntityState(EntityState):
         self.buffable = True
 
         ship = get_ship(ship_name)
-        self.hp = ship.get(P_SHIP_HP)
-        self.max_energy = ship.get(P_SHIP_MAX_ENERGY)
-        self.energy_gain = ship.get(P_SHIP_ENERGY_PER_TURN)
+        self.hp = ship.get(Ship.HP)
+        self.max_energy = ship.get(Ship.MAX_ENERGY)
+        self.energy_gain = ship.get(Ship.ENERGY_PER_TURN)
 
         self.deck = []  # type: List[str]
         self.hand = []  # type: List[CardState]
@@ -134,25 +134,25 @@ class PlayerEntityState(EntityState):
 
     def build_deck(self):
         ship = get_ship(self.ship_name)
-        ship_cards = ship.get(P_SHIP_CARDS, [])
+        ship_cards = ship.get(Ship.CARDS, [])
         for c_name in ship_cards:
             card = get_card(c_name)
-            in_deck = card.get(P_CARD_DECK, True)
+            in_deck = card.get(Card.DECK, True)
             if in_deck:
                 self.deck += [c_name, ] * SHIP_CARDS_EACH
 
         weapon = get_weapon(self.weapon_name)
-        weapon_cards = weapon.get(P_WEAPON_CARDS, [])
+        weapon_cards = weapon.get(Weapon.CARDS, [])
 
         for c_name in weapon_cards:
             card = get_card(c_name)
-            in_deck = card.get(P_CARD_DECK, True)
+            in_deck = card.get(Card.DECK, True)
             if in_deck:
                 self.deck += [c_name, ] * WEAPON_CARDS_EACH
 
         event_cards = []
         for card_key, card in cards.items():
-            if card.get(P_CARD_DECK, False) and card[P_TYPE] == CARD_TYPE_EVENT:
+            if card.get(Card.DECK, False) and card[Card.TYPE] == CardType.EVENT:
                 event_cards.append(card_key)
 
         self.deck += select_cards(event_cards, EVENT_CARDS_FROM_POOL, MAX_EVENT_CARDS_OF_EACH_TYPE)

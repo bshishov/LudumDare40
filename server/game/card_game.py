@@ -97,7 +97,7 @@ class CardGame(GameBase):
             raise GameError('Not enough energy to play card: {0}'.format(card_name))
 
         # Play card
-        self.effect_handler.remove_card(player_state, card_name)
+        self.effect_handler.remove_card(None, player_state, card_name)
         self.effect_handler.energy_damage(None, player_state, cost)
         self.effect_handler.apply_effects(player_state, card_action.get(Card.EFFECTS, []))
         self.invoke_case(player_state, CaseType.PLAY_CARD, card_name)

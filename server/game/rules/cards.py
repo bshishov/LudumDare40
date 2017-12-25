@@ -1708,7 +1708,8 @@ cards = {
         Card.TYPE: CardType.SHIP,
         Card.DECK: True,
         Card.ACTION_OFFENSE: {
-            Card.DESCRIPTION: 'Spawn a wind generator behind enemy ship that pushes everyone in a small radius backwards',
+            Card.DESCRIPTION: 'Spawn a wind generator behind enemy ship that pushes everyone in a small radius '
+                              'backwards',
             Card.COST: 2,
             Card.EFFECTS: [
                 {
@@ -1721,7 +1722,8 @@ cards = {
         },
 
         Card.ACTION_DEFENSE: {
-            Card.DESCRIPTION: 'Spawn a wind generator before enemy ship that pushes everyone in a small radius backwards',
+            Card.DESCRIPTION: 'Spawn a wind generator before enemy ship that pushes everyone in a small radius '
+                              'backwards',
             Card.COST: 2,
             Card.EFFECTS: [
                 {

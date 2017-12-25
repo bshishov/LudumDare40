@@ -13,7 +13,7 @@ __all__ = ['EffectHandler', ]
 
 def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
     def effect_handler(effect_type: str, *args_def):
-        def decorator(fn: Callable):
+        def decorator(fn: Callable[['EffectHandler', EntityState, EntityState], None]):
             def wrapper(self: 'EffectHandler', source_entity: EntityState, target_entity: EntityState, *args, **kwargs):
                 if source_entity is None:
                     source_id = None
@@ -98,7 +98,8 @@ class EffectHandler(object):
         self._entity_modify_energy(target_entity, amount)
 
     @effect_handler(EffectType.APPLY_BUFF, (Effect.VALUE, None), (Effect.BUFF_DURATION, None))
-    def apply_buff(self, source_entity: Optional[EntityState], target_entity: EntityState, buff_name: str, buff_duration: Optional[int]=None):
+    def apply_buff(self, source_entity: Optional[EntityState], target_entity: EntityState,
+                   buff_name: str, buff_duration: Optional[int]=None):
         if target_entity.buffable:
             buff = get_buff(buff_name)
             if buff_duration is None:
@@ -123,11 +124,13 @@ class EffectHandler(object):
             self.apply_effects(target_entity, buff.get(Buff.ON_REMOVE_EFFECTS, []))
 
     @effect_handler(EffectType.ADD_CARDCOST, (Effect.VALUE, 0), (Effect.CARD_TYPE, None))
-    def add_card_cost(self, source_entity: Optional[EntityState], target_entity: EntityState, amount: int, card_type: str):
+    def add_card_cost(self, source_entity: Optional[EntityState], target_entity: EntityState,
+                      amount: int, card_type: str):
         self._change_card_cost(target_entity, card_type, amount)
 
     @effect_handler(EffectType.REDUCE_CARDCOST, (Effect.VALUE, 0), (Effect.CARD_TYPE, None))
-    def reduce_card_cost(self, source_entity: Optional[EntityState], target_entity: EntityState, amount: int, card_type: str):
+    def reduce_card_cost(self, source_entity: Optional[EntityState], target_entity: EntityState,
+                         amount: int, card_type: str):
         self._change_card_cost(target_entity, card_type, -amount)
 
     @effect_handler(EffectType.MOVE, (Effect.VALUE, 0))
@@ -248,7 +251,7 @@ class EffectHandler(object):
                 target_entity.deck.remove(card)
                 self.gain_card(source_entity, target_entity, card)
 
-    @effect_handler(EffectType.DROCard.OF_TYPE, (Effect.VALUE, None))
+    @effect_handler(EffectType.DROP_CARD_OF_TYPE, (Effect.VALUE, None))
     def drop_card(self, source_entity: Optional[EntityState], target_entity: EntityState, card_type: str):
         if not self.game.is_player(target_entity):
             raise GameError('Non-player entities cannot have cards: {0}'.format(target_entity.name), crucial=False)
