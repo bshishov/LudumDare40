@@ -1,28 +1,33 @@
-from enum import Enum
+from enum import Enum, unique
 
 
+@unique
 class Side(Enum):
     A = 'a'
     B = 'b'
 
 
+@unique
 class GameStateProtocol(Enum):
     ID = 'id'
     TURN = 'turn'
     OBJECTS = 'objects'
 
 
+@unique
 class BuffStateProtocol(Enum):
     NAME = 'name',
     DURATION = 'duration'
 
 
+@unique
 class CardStateProtocol(Enum):
     NAME = 'name',
     COST_OFFENSE = 'cost_offense'
     COST_DEFENSE = 'cost_defense'
 
 
+@unique
 class EntityStateProtocol(Enum):
     ID = 'id'
     NAME = 'name'
@@ -41,6 +46,7 @@ class EntityStateProtocol(Enum):
     IS_PLAYER = 'is_player'
 
 
+@unique
 class PlayerEntityProtocol(Enum):
     SHIP_NAME = 'ship_name'
     WEAPON_NAME = 'weapon_name'

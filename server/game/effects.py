@@ -3,7 +3,7 @@ import logging
 import random
 
 from framework.game import GameError
-from network.protocol import *
+from network.protocol_old import *
 from game.rules import *
 from game.states import *
 
@@ -27,7 +27,7 @@ def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
                 fn(self, source_entity, target_entity, *args, **kwargs)
 
                 # Notify players about hte effect
-                self.game.notify_players(MessageHead.MSG_SRV_GAME_EFFECT,
+                self.game.notify_players(MessageHead.SRV_GAME_EFFECT,
                                          status='effect',
                                          source_entity=source_id,
                                          target_entity=target_entity.id,
@@ -46,8 +46,8 @@ class EffectHandler(object):
     handlers = {}
     effect_handler = collect_handler(handlers)
 
-    def __init__(self, game: 'game.card_game.CardGame'):
-        self.game = game  # type: game.card_game.CardGame
+    def __init__(self, g: 'game.card_game.CardGame'):
+        self.game = g  # type: game.card_game.CardGame
         self.logger = logging.getLogger(self.__class__.__name__)
 
     def apply_effects(self, source_entity: EntityState, effects: List[Dict]):

@@ -61,14 +61,15 @@ class Lobby(object):
             with self._players_lock:
                 queued_players = [player for channel, player in self._players.items() if player.in_queue]
 
-                if len(queued_players) > 0:
-                    self._logger.debug('Matchmaking: {0} players in queue'.format(len(queued_players)))
-                    time.sleep(MATCHMAKING_DELAY)
-                else:
-                    for initializer in self._initializers:
-                        players = initializer.select_players(queued_players)
-                        if players is not None and len(players) > 0:
-                            self.init_game(initializer, players)
+            self._logger.debug('Matchmaking: {0} players in queue'.format(len(queued_players)))
+
+            if len(queued_players) <= 0:
+                time.sleep(MATCHMAKING_DELAY)
+
+            for initializer in self._initializers:
+                players = initializer.select_players(queued_players)
+                if players is not None and len(players) > 0:
+                    self.init_game(initializer, players)
 
     def init_game(self, initializer, players):
         g = None

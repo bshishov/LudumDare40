@@ -21,7 +21,7 @@ class Section(Enum):
 
 
 @unique
-class PlayerAction(Enum):
+class PlayerActionType(Enum):
     PLAY_CARD = 'play_card'
     FIRE_WEAPON = 'fire_weapon'
     END_TURN = 'end_turn'

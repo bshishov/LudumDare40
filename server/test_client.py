@@ -10,7 +10,7 @@ import time
 from game.rules import *
 from main import DEFAULT_HOST, DEFAULT_PORT
 from network.connection import ClientChannel
-from network.protocol import *
+from network.protocol_old import *
 from utils import set_interval
 
 
@@ -27,14 +27,14 @@ class TestPlayer(object):
 
     def on_message(self, message):
         if not self._is_in_game:
-            if message.domain == MSG_DOMAIN_LOBBY:
+            if message.domain == MessageDomain.LOBBY:
                 self.on_lobby_message(message)
             else:
                 self._logger.warning('Received non-lobby message while in lobby: {0}'.format(message))
 
         if self._is_in_game:
-            if message.domain == MSG_DOMAIN_GAME:
-                game_id = message.body.get(GameMessageProtocol.P_GAME_ID, None)
+            if message.domain == MessageDomain.GAME:
+                game_id = message.body.get(GameMessageProtocol.GAME_ID, None)
                 if game_id != self._game_id:
                     self._logger.warning('Wrong game_id: {0}'.format(message))
                 else:
@@ -44,34 +44,34 @@ class TestPlayer(object):
         print(message.status)
 
     def on_lobby_message(self, message):
-        if message.head == MSG_SRV_QUEUE_STARTED:
+        if message.head == MessageHead.SRV_QUEUE_STARTED:
             self._is_queue = True
             self._logger.info('Queue started')
 
-        if message.head == MSG_SRV_QUEUE_STOPPED:
+        if message.head == MessageHead.SRV_QUEUE_STOPPED:
             self._is_queue = False
             self._logger.info('Queue stopped')
 
-        if message.head == MSG_SRV_QUEUE_GAME_CREATED:
+        if message.head == MessageHead.SRV_QUEUE_GAME_CREATED:
             self._is_queue = False
             self._is_in_game = True
-            self._game_id = message.body.get(GameMessageProtocol.P_GAME_ID)
+            self._game_id = message.body.get(GameMessageProtocol.GAME_ID)
 
     def on_game_message(self, message):
-        if message.head == MSG_SRV_GAME_BEGIN:
+        if message.head == MessageHead.SRV_GAME_BEGIN:
             self._side = message.body.get('side')
             self._logger.info('Game started: id={0} side={1}'.format(
                 self._game_id, self._side))
 
-        if message.head == MSG_SRV_GAME_END:
+        if message.head == MessageHead.SRV_GAME_END:
             self._is_in_game = False
             self._game_id = None
             self._logger.info('Game ended')
 
-        if message.head == MSG_SRV_GAME_ACTION:
+        if message.head == MessageHead.SRV_GAME_ACTION:
             self._logger.info('Game action')
 
-        if message.head == MSG_SRV_GAME_EFFECT:
+        if message.head == MessageHead.SRV_GAME_EFFECT:
             ef_name = message.body.get('effect', None)
             ef_entity = message.body.get('entity', None)
             ef_args = message.body.get('args', None)
@@ -80,10 +80,10 @@ class TestPlayer(object):
                 self._logger.info('Applied [{0}] {2} to entity {1}  (kwargs: {3})'.format(
                     ef_name, ef_entity, ef_args, ef_kwargs))
 
-        if message.head == MSG_SRV_GAME_TURN:
+        if message.head == MessageHead.SRV_GAME_TURN:
             self._logger.info('Game turn')
 
-        if message.head == MSG_SRV_GAME_PLAYER_LEFT:
+        if message.head == MessageHead.SRV_GAME_PLAYER_LEFT:
             self._logger.info('Player left')
 
         self._last_state = message.body.get('state', None)
@@ -123,24 +123,24 @@ class TestPlayer(object):
 
     def play_card(self, card):
         if self._is_in_game:
-            self.send(GameMessage(MSG_CLI_GAME_ACTION,
+            self.send(GameMessage(MessageHead.CLI_GAME_ACTION,
                                   game_id=self._game_id,
                                   status='action',
-                                  action={'type': ACTION_PLAY_CARD, 'card': card}))
+                                  action={'type': PlayerActionType.PLAY_CARD, 'card': card}))
 
     def fire(self):
         if self._is_in_game:
-            self.send(GameMessage(MSG_CLI_GAME_ACTION,
+            self.send(GameMessage(MessageHead.CLI_GAME_ACTION,
                                   game_id=self._game_id,
                                   status='action',
-                                  action={'type': ACTION_FIRE_WEAPON}))
+                                  action={'type': PlayerActionType.FIRE_WEAPON}))
 
     def end_turn(self):
         if self._is_in_game:
-            self.send(GameMessage(MSG_CLI_GAME_ACTION,
+            self.send(GameMessage(MessageHead.CLI_GAME_ACTION,
                                   game_id=self._game_id,
                                   status='action',
-                                  action={'type': ACTION_END_TURN}))
+                                  action={'type': PlayerActionType.END_TURN}))
 
     def state(self, print_all=False):
         if self._last_state is None:
@@ -158,11 +158,11 @@ class TestPlayer(object):
 
     def start_queue(self, ship, weapon):
         self._is_queue = True
-        self.send(LobbyMessage(MSG_CLI_QUEUE_START, status='Start Queue',
+        self.send(LobbyMessage(MessageHead.CLI_QUEUE_START, status='Start Queue',
                                ship=ship, weapon=weapon))
 
     def stop_queue(self):
-        self.send(LobbyMessage(MSG_CLI_QUEUE_STOP, status='Stop queue'))
+        self.send(LobbyMessage(MessageHead.CLI_QUEUE_STOP, status='Stop queue'))
         self._is_queue = False
 
 

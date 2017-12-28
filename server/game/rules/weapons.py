@@ -6,7 +6,7 @@ weapons = {
         Weapon.CARDS: ['fire_all', 'hamstring', 'irounds', 'leak', 'bomb', 'detonate', 'cool'],
         Weapon.ACTION_OFFENSE: {
             Weapon.DESCRIPTION: 'Deals 2 damage',
-            #This sturdy machine gun has seen thousands of battles and you are more than likely not her first.
+            # This sturdy machine gun has seen thousands of battles and you are more than likely not her first.
 
             Weapon.COST: 2,
             Weapon.EFFECTS: [
@@ -85,7 +85,9 @@ weapons = {
         Weapon.FULL_NAME: 'Harpoon',
         Weapon.CARDS: ['grapple', 'lighting_rod', 'impale', 'electrocute', 'still', 'grab', 'fix', 'spare'],
         Weapon.ACTION_OFFENSE: {
-            Weapon.DESCRIPTION: 'Deals 1 damage',  #We used to hunt with those for sky creatures, but now it seeks a different prey.
+            Weapon.DESCRIPTION: 'Deals 1 damage',
+            # We used to hunt with those for sky creatures,
+            # but now it seeks a different prey.
             Weapon.COST: 2,
             Weapon.EFFECTS: [
                 {

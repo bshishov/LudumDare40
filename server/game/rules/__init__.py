@@ -8,6 +8,8 @@ from game.rules.cards import *
 from game.rules.objects import *
 from game.rules.buffs import *
 
+from utils import unroll_enum_dict
+
 
 class RulesError(RuntimeError):
     pass
@@ -58,27 +60,9 @@ def get_gb():
     }
 
 
-def __to_dict(o):
-    if isinstance(o, dict):
-        out = {}
-        for k in o:
-            out[__to_dict(k)] = __to_dict(o[k])
-        return out
-    elif isinstance(o, list):
-        out = []
-        for v in o:
-            out.append(__to_dict(v))
-        return out
-    elif isinstance(o, Enum):
-        return o.value
-    elif isinstance(o, (str, int, float)):
-        return o
-    raise RulesError('Can\'t convert type of object {0}'.format(o))
-
-
 def export_db(filename):
     db = get_gb()
-    db_dict = __to_dict(db)
+    db_dict = unroll_enum_dict(db)
     data = json.dumps(db_dict, sort_keys=True, indent=4)
     with open(filename, 'w') as f:
         f.write(data)

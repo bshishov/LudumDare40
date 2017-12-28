@@ -295,7 +295,8 @@ class Schema(Validator):
                         print('Validator exception: {0}'.format(err))
             else:
                 if self.schema[SCHEMA_FIELDS][field_name][SCHEMA_REQUIRED]:
-                    inner_res = ValidationResult(False, 'Missing required field: {0}'.format(field_name), obj, param, val)
+                    inner_res = ValidationResult(False, 'Missing required field: {0}'.format(field_name),
+                                                 obj, param, val)
                     inner.append(inner_res)
                     valid = False
         res = ValidationResult(valid, 'Schema check', obj, param, val)

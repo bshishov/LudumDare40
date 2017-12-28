@@ -1,25 +1,27 @@
-from typing import Optional, List
+from typing import Optional
 
 from framework.game import *
-from network.protocol import *
+from network.protocol_old import *
+from utils import set_interval
+
 from game.effects import EffectHandler
 from game.rules import *
 from game.states import *
 from game.protocol import *
-from utils import set_interval
+from game.target_filters import *
 
 
 __all__ = ['CardGame', ]
 
 
 class CardGame(GameBase):
-    def __init__(self, player_a, player_b):
+    def __init__(self, player_a: Player, player_b: Player):
         super().__init__(players=[player_a, player_b])
 
         self.player_a = player_a
         self.player_b = player_b
-        self.player_a_entity = PlayerEntityState(Side.A, self.player_a.args)
-        self.player_b_entity = PlayerEntityState(Side.B, self.player_b.args)
+        self.player_a_entity = PlayerEntityState(Side.A, self.player_a.queue_args)
+        self.player_b_entity = PlayerEntityState(Side.B, self.player_b.queue_args)
 
         self.objects = []  # type: List[EntityState]
         self.board_size = BOARD_SIZE
@@ -53,7 +55,8 @@ class CardGame(GameBase):
                 action = message.body.get('action', None)
                 if action is None:
                     raise GameError('Cannot interpret game action')
-                self.do_player_action(action, player_entity)
+                else:
+                    self.do_player_action(player_entity, action)
             else:
                 raise GameError('Not-action game message')
         except GameError as err:
@@ -61,15 +64,15 @@ class CardGame(GameBase):
             self.logger.warning(msg)
             self.notify_entity(player_entity, MessageHead.SRV_ERROR, status=msg)
 
-    def do_player_action(self, action: dict, player_entity: PlayerEntityState):
-        action_type = action['type']
-        if action_type == PlayerAction.PLAY_CARD:
-            self.play_card(action['card'], player_entity)
-        elif action_type == PlayerAction.FIRE_WEAPON:
+    def do_player_action(self, player_entity: PlayerEntityState, action: dict):
+        action_type = PlayerActionType(action['type'])
+        if action_type == PlayerActionType.PLAY_CARD:
+            self.play_card(player_entity, action['card'])
+        elif action_type == PlayerActionType.FIRE_WEAPON:
             self.fire_weapon(player_entity)
-        elif action_type == PlayerAction.END_TURN:
+        elif action_type == PlayerActionType.END_TURN:
             self.player_end_turn(player_entity)
-        elif action_type == PlayerAction.CHEAT_TAKE_CARD:
+        elif action_type == PlayerActionType.CHEAT_TAKE_CARD:
             if self.cheats_enabled:
                 self.effect_handler.gain_card(None, player_entity, action['card'])
             else:
@@ -77,7 +80,7 @@ class CardGame(GameBase):
         else:
             raise GameError('Unknown action: {0}'.format(action))
 
-    def play_card(self, card_name: str, player_state: PlayerEntityState):
+    def play_card(self, player_state: PlayerEntityState, card_name: str):
         if player_state.muted:
             raise GameError('You are muted')
 
@@ -143,7 +146,7 @@ class CardGame(GameBase):
         self.effect_handler.draw_card(None, self.player_b_entity)
 
     def start_round(self):
-        self.invoke_case_global(Case.ROUND_START)
+        self.invoke_case_global(CaseType.ROUND_START)
 
         # Process energy
         for entity_state in self.get_all_entities():
@@ -151,7 +154,7 @@ class CardGame(GameBase):
             if entity_state.energy > entity_state.max_energy:
                 entity_state.energy = entity_state.max_energy
                 self.effect_handler.damage(None, entity_state, 1)
-                self.invoke_case(entity_state, Case.OVERLOAD, entity_state.name)
+                self.invoke_case(entity_state, CaseType.OVERLOAD, entity_state.name)
 
     def invoke_case_global(self, case: CaseType, arg=None):
         for e in self.get_all_entities():  # type: EntityState
@@ -185,11 +188,9 @@ class CardGame(GameBase):
             return None
 
         if entity == self.player_a_entity:
-            return self.player_a_entity.position < \
-                   self.player_b_entity.position
+            return self.player_a_entity.position < self.player_b_entity.position
         else:
-            return self.player_b_entity.position < \
-                   self.player_a_entity.position
+            return self.player_b_entity.position < self.player_a_entity.position
 
     def get_enemy_ship(self, entity: EntityState) -> Optional[EntityState]:
         if entity.side == Side.A:
@@ -198,90 +199,76 @@ class CardGame(GameBase):
             return self.player_a_entity
         return None
 
-    def get_enemies(self, entity: EntityState) -> List[EntityState]:
-        enemies = []
-        for e in self.get_all_entities():
-            if e != entity and is_enemies(entity, e):
-                enemies.append(e)
-        return enemies
-
-    def get_allies(self, entity: EntityState) -> List[EntityState]:
-        allies = []
-        for e in self.get_all_entities():
-            if e != entity and is_allies(entity, e):
-                allies.append(e)
-        return allies
-
     def get_targets(self, entity: EntityState, target: str, target_range: int=10) -> List[EntityState]:
         es = self.get_targets_no_range(entity, target)
         return filter_position_range(es, entity.position - target_range, entity.position + target_range)
 
     def get_targets_no_range(self, entity: EntityState, target: str) -> List[EntityState]:
-        if target == TARGET_SELF:
+        if target == Target.SELF:
             return [entity, ]
 
-        if target == TARGET_ALL:
+        if target == Target.ALL:
             return self.get_all_entities()
 
-        if target == TARGET_ALL_EXCEPT_SELF:
+        if target == Target.ALL_EXCEPT_SELF:
             return filter_exclude(self.get_all_entities(), entity)
 
-        if target == TARGET_ALL_ENEMIES:
+        if target == Target.ALL_ENEMIES:
             return filter_enemy(self.get_all_entities(), entity)
 
-        if target == TARGET_ALL_ALLIES:
+        if target == Target.ALL_ALLIES:
             return filter_ally(self.get_all_entities(), entity)
 
-        if target == TARGET_ALL_SHIPS:
+        if target == Target.ALL_SHIPS:
             return filter_ship(self.get_all_entities())
 
-        if target == TARGET_ENEMY_SHIP:
+        if target == Target.ENEMY_SHIP:
             return filter_enemy(filter_ship(self.get_all_entities()), entity)
 
-        if target == TARGET_ALLY_SHIP:
+        if target == Target.ALLY_SHIP:
             return filter_ally(filter_ship(self.get_all_entities()), entity)
 
-        if target == TARGET_FORWARD:
+        if target == Target.FORWARD:
             return filter_direction(self.get_all_entities(),
                                     entity.position + 1,
                                     direction=+1, pierce=False)
 
-        if target == TARGET_FORWARD_ALLY:
+        if target == Target.FORWARD_ALLY:
             return filter_direction(filter_ally(self.get_all_entities(), entity),
                                     entity.position + 1,
                                     direction=+1, pierce=False)
 
-        if target == TARGET_FORWARD_ENEMY:
+        if target == Target.FORWARD_ENEMY:
             return filter_direction(filter_enemy(self.get_all_entities(), entity),
                                     entity.position + 1,
                                     direction=+1, pierce=False)
 
-        if target == TARGET_FORWARD_PIERCE:
+        if target == Target.FORWARD_PIERCE:
             return filter_direction(self.get_all_entities(),
                                     entity.position - 1,
                                     direction=-1, pierce=True)
 
-        if target == TARGET_BACKWARD:
+        if target == Target.BACKWARD:
             return filter_direction(self.get_all_entities(),
                                     entity.position - 1,
                                     direction=-1, pierce=False)
 
-        if target == TARGET_BACKWARD_ALLY:
+        if target == Target.BACKWARD_ALLY:
             return filter_direction(filter_ally(self.get_all_entities(), entity),
                                     entity.position - 1,
                                     direction=-1, pierce=False)
 
-        if target == TARGET_BACKWARD_ENEMY:
+        if target == Target.BACKWARD_ENEMY:
             return filter_direction(filter_enemy(self.get_all_entities(), entity),
                                     entity.position - 1,
                                     direction=-1, pierce=False)
 
-        if target == TARGET_BACKWARD_PIERCE:
+        if target == Target.BACKWARD_PIERCE:
             return filter_direction(self.get_all_entities(),
                                     entity.position - 1,
                                     direction=-1, pierce=True)
 
-        if target == TARGET_MAX_ENERGY:
+        if target == Target.MAX_ENERGY:
             enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
@@ -290,7 +277,7 @@ class CardGame(GameBase):
             else:
                 return [entity, ]
 
-        if target == TARGET_MAX_HEALTH:
+        if target == Target.MAX_HEALTH:
             enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
@@ -299,7 +286,7 @@ class CardGame(GameBase):
             else:
                 return [entity, ]
 
-        if target == TARGET_MIN_HEALTH:
+        if target == Target.MIN_HEALTH:
             enemy = self.get_enemy_ship(entity)
             if enemy is None:
                 return []
@@ -316,17 +303,13 @@ class CardGame(GameBase):
     def get_all_entities(self) -> List[EntityState]:
         return [self.player_a_entity, self.player_b_entity] + self.objects
 
-    def get_state(self, perspective_player=None) -> dict:
-        """
-            @:type perspective_player: Player
-        """
-
+    def get_state(self, perspective_player: Player=None) -> dict:
         hide_hand_a = perspective_player != self.player_a
         hide_hand_b = perspective_player != self.player_b
 
         state = {
-            SIDE_A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
-            SIDE_B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
+            Side.A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
+            Side.B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
             GameStateProtocol.OBJECTS: [s.get_state() for s in self.objects],
             GameStateProtocol.TURN: self.turn,
         }

@@ -60,13 +60,13 @@ class Player(object):
         if self.in_game:
             return
         self.in_queue = True
-        self.send(LobbyMessage(MessageHead.MSG_SRV_QUEUE_STARTED, status='queue started'))
+        self.send(LobbyMessage(MessageHead.SRV_QUEUE_STARTED, status='queue started'))
 
     def stop_queue(self):
         if self.in_game:
             return
         self.in_queue = False
-        self.send(LobbyMessage(MessageHead.MSG_SRV_QUEUE_STOPPED, status='queue stopped'))
+        self.send(LobbyMessage(MessageHead.SRV_QUEUE_STOPPED, status='queue stopped'))
 
     def __del__(self):
         self._channel.on_message.remove(self._on_message)
@@ -106,7 +106,7 @@ class GameBase(object):
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
-        if message.body.get(GameMessageProtocol.P_GAME_ID) != self.id:
+        if message.body.get(GameMessageProtocol.GAME_ID) != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
             self.notify_player(player, MessageHead.SRV_ERROR, status='wrong game id')
             return False
@@ -137,8 +137,8 @@ class GameBase(object):
     def notify_player(self, player, head, status='', *args, **kwargs):
         try:
             kwargs.update({
-                GameMessageProtocol.P_STATE: self.get_state(perspective_player=player),
-                GameMessageProtocol.P_YOUR_SIDE: self.players.index(player)
+                GameMessageProtocol.STATE: self.get_state(perspective_player=player),
+                GameMessageProtocol.YOUR_SIDE: self.players.index(player)
             })
             msg = GameMessage(head, game_id=self.id, status=status, *args, **kwargs)
             player.send(msg)

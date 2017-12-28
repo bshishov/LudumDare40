@@ -1,7 +1,6 @@
 import random
 from typing import List
 
-#from game.states import EntityState
 
 __all__ = ['select_cards', 'is_allies', 'is_enemies', 'filter_side', 'filter_enemy', 'filter_ally', 'filter_ship',
            'filter_position', 'filter_position_range', 'filter_direction', 'filter_exclude']

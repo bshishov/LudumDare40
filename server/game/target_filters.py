@@ -1,9 +1,5 @@
 from typing import List
 from game.states import EntityState
-from game.rules import *
-
-
-
 
 
 def is_allies(e1: EntityState, e2: EntityState) -> bool:
@@ -38,7 +34,8 @@ def filter_position_range(entities: List[EntityState], fr: int, to: int) -> List
     return [e for e in entities if e.position in range(min(fr, to), max(fr, to) + 1)]
 
 
-def filter_direction(entities: List[EntityState], start: int, direction: int=+1, pierce: bool=True) -> List[EntityState]:
+def filter_direction(entities: List[EntityState], start: int, direction: int=+1,
+                     pierce: bool=True) -> List[EntityState]:
     es = filter_position_range(entities, start, start + direction * 10)
     if not pierce and len(es) > 0:
         return [es[0], ]
