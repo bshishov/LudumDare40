@@ -57,7 +57,6 @@ class MessageProtocol(Enum):
 
 
 class Message(object):
-    type = ''
     status = ''
     body = {}
 

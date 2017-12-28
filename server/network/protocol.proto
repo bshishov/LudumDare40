@@ -110,11 +110,12 @@ message Message {
     message BodyGameMessage {
         string game_id = 1;
         GameState state = 2;
+        Side your_side = 3;
         oneof payload {
             // Client action
-            BodyAction action = 3;
+            BodyAction action = 4;
             // Server response (game state changers)
-            BodyEffect effect = 4;
+            BodyEffect effect = 5;
         }
     }
 
