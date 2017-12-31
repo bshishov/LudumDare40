@@ -1,8 +1,11 @@
 import logging
 import uuid
+import traceback
+import sys
 from typing import List
 
-from network import *
+from network.connection import *
+import network.protocol_tools as proto
 from utils import EventSubscription
 
 __all__ = ['GameError', 'Player', 'GameBase']
@@ -35,16 +38,16 @@ class Player(object):
         self._channel.on_message.append(self._on_message)
         self._channel.on_disconnect.append(self._on_disconnect)
 
-    def _on_message(self, message: Message):
+    def _on_message(self, message: proto.Message):
         if message is None:
             return
 
         if not self.in_game:
-            if message.domain == Domain.LOBBY:
-                if message.head == Head.CLI_QUEUE_START and not self.in_queue:
-                    self.queue_args = get_message_body(message, MessageBody.QUEUE_PREFS)
+            if message.domain == proto.Domain.LOBBY:
+                if message.head == proto.Head.CLI_QUEUE_START and not self.in_queue:
+                    self.queue_args = proto.get_message_body(message)
                     self.start_queue()
-                elif message.head == Head.CLI_QUEUE_STOP and self.in_queue:
+                elif message.head == proto.Head.CLI_QUEUE_STOP and self.in_queue:
                     self.stop_queue()
 
         self.on_message(self, message)
@@ -60,13 +63,13 @@ class Player(object):
         if self.in_game:
             return
         self.in_queue = True
-        self.send(lobby_message(Head.SRV_QUEUE_STARTED, status='queue started'))
+        self.send(proto.lobby_message(proto.Head.SRV_QUEUE_STARTED, status='queue started'))
 
     def stop_queue(self):
         if self.in_game:
             return
         self.in_queue = False
-        self.send(lobby_message(Head.SRV_QUEUE_STOPPED, status='queue stopped'))
+        self.send(proto.lobby_message(proto.Head.SRV_QUEUE_STOPPED, status='queue stopped'))
 
     def __del__(self):
         self._channel.on_message.remove(self._on_message)
@@ -84,7 +87,7 @@ class GameBase(object):
             raise GameError('Could not create a game, no players specified')
 
         self.players = players
-        self.turn = 0  # index of the player which turn it is
+        self.turn = proto.Side.A  # index of the player which turn it is
 
     def begin(self):
         for player in self.players:
@@ -96,39 +99,39 @@ class GameBase(object):
 
         # Send that the game is started
         for idx, player in enumerate(self.players):
-            self.notify_player(player, Head.SRV_GAME_STARTED, status='Game started', your_side=get_side(idx))
+            self.notify_player(player, proto.Head.SRV_GAME_STARTED, status='Game started', your_side=proto.get_side(idx))
 
-    def _validate_message(self, player: Player, message: Message):
+    def _validate_message(self, player: Player, message: proto.Message):
         if message is None:
             return False
 
-        if message.domain != Head.DOMAIN_GAME:
+        if message.domain != proto.Head.DOMAIN_GAME:
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
         if message.game.game_id != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
-            self.notify_player(player, Head.SRV_ERROR, status='wrong game id')
+            self.notify_player(player, proto.Head.SRV_ERROR, status='wrong game id')
             return False
         return True
 
-    def _on_player_message(self, player: Player, message: Message):
+    def _on_player_message(self, player: Player, message: proto.Message):
         if self._validate_message(player, message):
             self.on_player_message(player, message)
 
-    def on_player_message(self, player: Player, message: Message):
+    def on_player_message(self, player: Player, message: proto.Message):
         raise NotImplementedError
 
     def _on_player_disconnect(self, player: Player):
-        self.notify_players(Head.SRV_GAME_PLAYER_LEFT, status='Player disconnected', player_id=player._id)
+        self.notify_players(proto.Head.SRV_GAME_PLAYER_LEFT, status='Player disconnected', player_id=player._id)
         self.end(interrupted=True)
 
     def end_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
-        self.notify_players(Head.SRV_GAME_TURN, status='End of turn', turn=self.turn)
+        self.notify_players(proto.Head.SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
-    def get_state(self, perspective_player=None) -> dict:
-        return {}
+    def get_state(self, perspective_player=None) -> proto.GameState:
+        return None
 
     def notify_players(self, head, status='', **kwargs):
         for player in self.players:
@@ -139,16 +142,17 @@ class GameBase(object):
             kwargs.update({
                 'game_id': self.id,
                 'state': self.get_state(perspective_player=player),
-                'your_side': get_side(self.players.index(player)),
+                'your_side': proto.get_side(self.players.index(player)),
             })
-            msg = game_message(head, status=status, **kwargs)
+            msg = proto.game_message(head, status=status, **kwargs)
             player.send(msg)
         except Exception as err:
             self.logger.error(err)
+            traceback.print_exc(file=sys.stderr)
 
     def end(self, interrupted=False):
         self.logger.info('Game finished, interrupted={0}'.format(interrupted))
-        self.notify_players(Head.SRV_GAME_ENDED, status='finished', interrupted=interrupted)
+        self.notify_players(proto.Head.SRV_GAME_ENDED, status='finished', interrupted=interrupted)
         self.is_active = False
 
     def close(self):

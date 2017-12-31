@@ -1,3 +1,5 @@
+import traceback
+import sys
 from typing import Optional
 
 from framework.game import *
@@ -62,6 +64,7 @@ class CardGame(GameBase):
             msg = 'Game error: {0}'.format(err)
             self.logger.warning(msg)
             self.notify_entity(player_entity, proto.Head.SRV_ERROR, status=msg)
+            traceback.print_exc(file=sys.stderr)
 
     def do_player_action(self, player_entity: PlayerEntityState, action: dict):
         action_type = PlayerActionType(action['type'])
@@ -306,12 +309,18 @@ class CardGame(GameBase):
         hide_hand_a = perspective_player != self.player_a
         hide_hand_b = perspective_player != self.player_b
 
-        state = {
-            #Side.A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
-            #Side.B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
-            GameStateProtocol.OBJECTS: [s.get_state() for s in self.objects],
-            GameStateProtocol.TURN: self.turn,
-        }
+        state = proto.GameState()
+        state.id = self.id
+        state.turn = self.turn
+
+        # Player states
+        state.objects.append(self.player_a_entity.get_state(hide_hand_a))
+        state.objects.append(self.player_b_entity.get_state(hide_hand_b))
+
+        # Object states
+        for entity in self.objects:
+            state.objects.append(entity.get_state())
+
         return state
 
     def get_player_state(self, player: Player, hide_hand: bool=False) -> dict:

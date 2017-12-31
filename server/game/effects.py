@@ -3,7 +3,7 @@ import logging
 import random
 
 from framework.game import GameError
-from network.protocol_old import *
+import network.protocol_tools as proto
 from game.rules import *
 from game.states import *
 
@@ -12,7 +12,7 @@ __all__ = ['EffectHandler', ]
 
 
 def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
-    def effect_handler(effect_type: str, *args_def):
+    def effect_handler(effect_type: EffectType, *args_def):
         def decorator(fn: Callable[['EffectHandler', EntityState, EntityState], None]):
             def wrapper(self: 'EffectHandler', source_entity: EntityState, target_entity: EntityState, *args, **kwargs):
                 if source_entity is None:
@@ -26,14 +26,20 @@ def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
                 # Apply effect
                 fn(self, source_entity, target_entity, *args, **kwargs)
 
+                ef = proto.GameEffect()
+                if source_entity is not None:
+                    ef.source_entity = source_entity.id
+                ef.target_entity = target_entity.id
+                ef.effect_name = effect_type.value
+                for arg in args:
+                    a = proto.GameEffectArgument()
+                    a.key = str(arg)
+                    ef.arguments.append(a)
+
                 # Notify players about hte effect
-                self.game.notify_players(MessageHead.SRV_GAME_EFFECT,
+                self.game.notify_players(proto.Head.SRV_GAME_EFFECT,
                                          status='effect',
-                                         source_entity=source_id,
-                                         target_entity=target_entity.id,
-                                         effect=effect_type,
-                                         args=args,
-                                         kwargs=kwargs)
+                                         effect=ef)
             handlers[effect_type] = (wrapper, args_def)
             return wrapper
 

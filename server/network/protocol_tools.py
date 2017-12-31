@@ -20,7 +20,10 @@ head_to_body_map = {
     Head.SRV_QUEUE_STARTED: MessageBody.NONE,
     Head.SRV_QUEUE_STOPPED: MessageBody.NONE,
     Head.SRV_GAME_STARTED: MessageBody.GAME_STARTED,
-    Head.SRV_GAME_PLAYER_LEFT: MessageBody.PLAYER_LEFT
+    Head.SRV_GAME_PLAYER_LEFT: MessageBody.PLAYER_LEFT,
+    Head.CLI_QUEUE_START: MessageBody.QUEUE_PREFS,
+    Head.CLI_QUEUE_STOP: MessageBody.NONE,
+    Head.SRV_GAME_EFFECT: MessageBody.GAME
 }
 
 
@@ -53,7 +56,7 @@ def get_message_body(message: Message, body: MessageBody = MessageBody.NONE):
     return getattr(message, body.value)
 
 
-def get_side(player_index):
+def get_side(player_index: int) -> Side:
     if player_index is 0:
         return Side.A
     if player_index is 1:

@@ -1,6 +1,8 @@
 import logging
 import threading
 import time
+import sys
+import traceback
 from typing import List
 
 from framework.game import *
@@ -64,7 +66,7 @@ class Lobby(object):
 
             self._logger.debug('Matchmaking: {0} players in queue'.format(len(queued_players)))
 
-            if len(queued_players) <= 0:
+            if len(queued_players) < 2:
                 time.sleep(MATCHMAKING_DELAY)
 
             for initializer in self._initializers:
@@ -86,6 +88,7 @@ class Lobby(object):
                 player.send(lobby_message(Head.SRV_QUEUE_GAME_CREATED, status='Game created', game_id=g.id))
 
         except Exception as err:
+            traceback.print_exc(file=sys.stderr)
             for player in players:
                 player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))
                 player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))

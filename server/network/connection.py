@@ -89,7 +89,7 @@ class ClientChannel(asyncore.dispatcher):
                     self.on_message(msg)
                 except Exception as err:
                     self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
-                    traceback.print_exc(file=sys.stdout)
+                    traceback.print_exc(file=sys.stderr)
 
     def send_message(self, message: Message):
         try:

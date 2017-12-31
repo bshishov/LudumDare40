@@ -4,7 +4,6 @@ from typing import List, Optional
 from framework.game import GameError
 from game.rules import *
 from game.utils import select_cards
-from game.protocol import *
 import network.protocol as proto
 
 
@@ -97,11 +96,11 @@ class EntityState(object):
 
 
 class PlayerEntityState(EntityState):
-    def __init__(self, side, prefs, *args, **kwargs):
+    def __init__(self, side, prefs: proto.CliQueuePreferences, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.side = side
 
-        if side == Side.A:
+        if side == proto.Side.A:
             self.position = INITIAL_A_POSITION
             self.name = 'player_a'
             self.id = 0
@@ -112,8 +111,8 @@ class PlayerEntityState(EntityState):
 
         self.is_player = True
 
-        ship_name = prefs.get('ship')
-        weapon_name = prefs.get('weapon')
+        ship_name = prefs.ship
+        weapon_name = prefs.weapon
 
         self.ship_name = ship_name
         self.weapon_name = weapon_name
