@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Data;
-using SimpleJSON;
+using Protocol;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -24,14 +24,14 @@ namespace Assets.Scripts.UI
             BattleManager.Instance.StateUpdated += OnStateUpdated;
         }
 
-        private void OnStateUpdated(JSONObject state)
+        private void OnStateUpdated(GameState gameState)
         {
-            var s = BattleManager.Instance.StateForPerspective(Perspective);
+            var s = BattleManager.Instance.PlayerEntityState(Perspective);
             if (s == null)
                 return;
 
-            var weaponName = s[Rules.PStateWeaponName].Value;
-            var damageMod = s[Rules.PStateDamageMod].AsInt;
+            var weaponName = s.WeaponName;
+            var damageMod = s.DamageMod;
 
             var weapon = Client.Instance.GetWeapon(weaponName);
             var baseDamage = 0;

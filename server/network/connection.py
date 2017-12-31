@@ -5,8 +5,7 @@ import struct
 import sys
 import traceback
 
-#from network.protocol import serialize, deserialize, Message
-from network.protocol_pb2 import Message
+from network.protocol import Message
 from utils import EventSubscription
 
 
@@ -85,7 +84,7 @@ class ClientChannel(asyncore.dispatcher):
             if len(data) > 0:
                 try:
                     msg = Message()
-                    msg.ParseFromString(data)
+                    msg.parse_from_bytes(data)
                     self.logger.debug('Got a message: {0}'.format(msg))
                     self.on_message(msg)
                 except Exception as err:
@@ -94,7 +93,7 @@ class ClientChannel(asyncore.dispatcher):
 
     def send_message(self, message: Message):
         try:
-            data = message.SerializeToString()
+            data = message.encode_to_bytes()
             self.write_buffer += struct.pack(HEADER_FMT, len(data)) + data
         except Exception as err:
             self.logger.error('Could not send message: {0}\nmessage: {1}'.format(err, message))

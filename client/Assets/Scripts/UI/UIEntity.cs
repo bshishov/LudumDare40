@@ -1,4 +1,4 @@
-﻿using SimpleJSON;
+﻿using Protocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,23 +11,23 @@ namespace Assets.Scripts.UI
         public Text EnergyText;
 
 
-        public void UpdateState(JSONObject entityState)
+        public void UpdateState(EntityState state)
         {
-            if(entityState == null)
+            if(state == null)
                 return;
 
             if (HpText != null)
-                HpText.text = entityState[Rules.PStateHp];
+                HpText.text = state.Hp.ToString();
 
             if (EnergyText != null)
-                EnergyText.text = entityState[Rules.PStateEnergy];
+                EnergyText.text = state.Energy.ToString();
 
             var shaker = GetComponent<UIShaker>();
             if(shaker != null)
                 shaker.Shake();
 
             if(BuffCollection != null)
-                BuffCollection.EntityId = entityState[Rules.PStateId].AsInt;
+                BuffCollection.EntityId = state.Id;
         }
     }
 }

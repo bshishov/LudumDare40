@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using Assets.Scripts.Data;
+using Protocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,13 +17,13 @@ namespace Assets.Scripts.UI
             BattleManager.Instance.StateUpdated += OnStateUpdated;
         }
 
-        private void OnStateUpdated(JSONObject obj)
+        private void OnStateUpdated(GameState gameState)
         {
-            var state = BattleManager.Instance.StateForPerspective(Perspective);
-            var hp = state[Rules.PStateHp].AsInt;
-            var energy = state[Rules.PStateEnergy].AsInt;
-            var energyMax = state[Rules.PStateMaxEnergy].AsInt;
-            var energyGain = state[Rules.PStateEnergyGain].AsInt;
+            var state = BattleManager.Instance.PlayerEntityState(Perspective);
+            var hp = state.Hp;
+            var energy = state.Energy;
+            var energyMax = state.MaxEnergy;
+            var energyGain = state.EnergyGain;
 
             if (HpText != null)
                 HpText.text = hp.ToString();

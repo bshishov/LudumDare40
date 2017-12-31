@@ -1,13 +1,12 @@
 from typing import Optional
 
 from framework.game import *
-from network.protocol_old import *
+import network.protocol_tools as proto
 from utils import set_interval
 
 from game.effects import EffectHandler
 from game.rules import *
 from game.states import *
-from game.protocol import *
 from game.target_filters import *
 
 
@@ -20,8 +19,8 @@ class CardGame(GameBase):
 
         self.player_a = player_a
         self.player_b = player_b
-        self.player_a_entity = PlayerEntityState(Side.A, self.player_a.queue_args)
-        self.player_b_entity = PlayerEntityState(Side.B, self.player_b.queue_args)
+        self.player_a_entity = PlayerEntityState(proto.Side.A, self.player_a.queue_args)
+        self.player_b_entity = PlayerEntityState(proto.Side.B, self.player_b.queue_args)
 
         self.objects = []  # type: List[EntityState]
         self.board_size = BOARD_SIZE
@@ -40,19 +39,19 @@ class CardGame(GameBase):
             self.effect_handler.draw_card(None, self.player_a_entity)
             self.effect_handler.draw_card(None, self.player_b_entity)
 
-    def on_player_message(self, player: Player, message: Message):
+    def on_player_message(self, player: Player, message: proto.Message):
         if player is self.player_a:
             self.on_game_message(message, self.player_a_entity)
         elif player is self.player_a:
             self.on_game_message(message, self.player_b_entity)
 
-    def on_game_message(self, message: Message, player_entity: PlayerEntityState):
+    def on_game_message(self, message: proto.Message, player_entity: PlayerEntityState):
         try:
-            if message.head == MessageHead.CLI_GAME_ACTION:
+            if message.head == proto.Head.CLI_GAME_ACTION:
                 if self.turn != player_entity.side:
                     raise GameError('Not your turn')
 
-                action = message.body.get('action', None)
+                action = proto.get_message_body(message).action
                 if action is None:
                     raise GameError('Cannot interpret game action')
                 else:
@@ -62,7 +61,7 @@ class CardGame(GameBase):
         except GameError as err:
             msg = 'Game error: {0}'.format(err)
             self.logger.warning(msg)
-            self.notify_entity(player_entity, MessageHead.SRV_ERROR, status=msg)
+            self.notify_entity(player_entity, proto.Head.SRV_ERROR, status=msg)
 
     def do_player_action(self, player_entity: PlayerEntityState, action: dict):
         action_type = PlayerActionType(action['type'])
@@ -123,10 +122,10 @@ class CardGame(GameBase):
         self.effect_handler.apply_effects(player_state, w_action.get(Weapon.EFFECTS, []))
 
     def player_end_turn(self, player_state: PlayerEntityState):
-        if self.turn == Side.B:
+        if self.turn == proto.Side.B:
             self.end_round()
         self.end_turn()
-        if self.turn == Side.A:
+        if self.turn == proto.Side.A:
             self.start_round()
 
     def end_round(self):
@@ -193,9 +192,9 @@ class CardGame(GameBase):
             return self.player_b_entity.position < self.player_a_entity.position
 
     def get_enemy_ship(self, entity: EntityState) -> Optional[EntityState]:
-        if entity.side == Side.A:
+        if entity.side == proto.Side.A:
             return self.player_b_entity
-        if entity.side == Side.B:
+        if entity.side == proto.Side.B:
             return self.player_a_entity
         return None
 
@@ -303,13 +302,13 @@ class CardGame(GameBase):
     def get_all_entities(self) -> List[EntityState]:
         return [self.player_a_entity, self.player_b_entity] + self.objects
 
-    def get_state(self, perspective_player: Player=None) -> dict:
+    def get_state(self, perspective_player: Player=None) -> proto.GameState:
         hide_hand_a = perspective_player != self.player_a
         hide_hand_b = perspective_player != self.player_b
 
         state = {
-            Side.A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
-            Side.B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
+            #Side.A: self.get_player_state(self.player_a, hide_hand=hide_hand_a),
+            #Side.B: self.get_player_state(self.player_b, hide_hand=hide_hand_b),
             GameStateProtocol.OBJECTS: [s.get_state() for s in self.objects],
             GameStateProtocol.TURN: self.turn,
         }

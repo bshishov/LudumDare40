@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using Google.Protobuf;
+using Protocol;
 
 namespace Assets.Scripts.Network
 {
@@ -7,13 +9,20 @@ namespace Assets.Scripts.Network
     {
         public byte[] Serialize(Message message)
         {
-            return Encoding.UTF8.GetBytes(message.ToString());
+            return message.ToByteArray();
         }
 
         public Message Deserialize(ArraySegment<byte> data)
         {
-            var str = Encoding.UTF8.GetString(data.Array, data.Offset, data.Count);
-            return new Message(str);
+            if (data.Array == null)
+                return null;
+
+            var msgBuffer = new byte[data.Count];
+            Array.Copy(data.Array, data.Offset, msgBuffer, 0, data.Count);
+
+            var message = new Message();
+            message.MergeFrom(msgBuffer);
+            return message;
         }
     }
 }

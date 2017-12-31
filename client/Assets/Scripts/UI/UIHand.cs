@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using SimpleJSON;
+using Assets.Scripts.Data;
+using Protocol;
 using UnityEngine;
 
 namespace Assets.Scripts.UI
@@ -17,9 +18,9 @@ namespace Assets.Scripts.UI
 		    BattleManager.Instance.StateUpdated += OnStateUpdated;
         }
 
-        private void OnStateUpdated(JSONObject gameState)
+        private void OnStateUpdated(GameState gameState)
         {
-            var state = BattleManager.Instance.StateForPerspective(Perspective);
+            var state = BattleManager.Instance.PlayerEntityState(Perspective);
             if (state == null)
                 return;
 
@@ -27,15 +28,14 @@ namespace Assets.Scripts.UI
                 Destroy(uiCard.gameObject);
 
             _cards.Clear();
-
-            var hand = state[Rules.PStateHand];
-            foreach (var cardState in hand.Children)
+            
+            foreach (var cardState in state.Hand)
             {
-                AddCard(cardState.AsObject);
+                AddCard(cardState);
             }
         }
 
-        private void AddCard(JSONObject cardState)
+        private void AddCard(CardState cardState)
         {
             var go = (GameObject)GameObject.Instantiate(CardPrefab, transform);
             var uicard = go.GetComponent<UICard>();

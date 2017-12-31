@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Assets.Scripts.Network;
 using Assets.Scripts.Utils;
+using Protocol;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -22,7 +23,7 @@ namespace Assets.Scripts
         public bool IsGameStarted { get; private set; }
         public bool IsInQueue { get; private set; }
         public string GameId { get; private set; }
-        public string Side { get; private set; }
+        public Side Side { get; private set; }
         
         public string Host = "127.0.0.1";
         public int Port = 8976;
@@ -34,8 +35,8 @@ namespace Assets.Scripts
         public event Messagehandler GameMessageReceived;
         public event Messagehandler LobbyMessageReceived;
         
-        private readonly Dictionary<string, List<Messagehandler>> _messageSubscribers = 
-            new Dictionary<string, List<Messagehandler>>(); 
+        private readonly Dictionary<Head, List<Messagehandler>> _messageSubscribers = 
+            new Dictionary<Head, List<Messagehandler>>(); 
 
         private readonly NetworkChannel<Message> _channel = 
             new NetworkChannel<Message>(new MessageSerializer());
@@ -79,46 +80,46 @@ namespace Assets.Scripts
 
             MessageReceived += OnMessageReceive;
 
-            Subscribe(Protocol.MsgSrvHello, message =>
+            Subscribe(Head.SrvHello, message =>
             {
                 Debug.LogFormat("Hello: {0}", message);
             });
 
-            Subscribe(Protocol.MsgSrvGameBegin, message =>
+            Subscribe(Head.SrvGameStarted, message =>
             {
                 IsGameStarted = true;
-                Side = message.Body[Protocol.KeySide].Value;
+                Side = message.GameStarted.YourSide;
                 Debug.LogFormat("Game begin, side: {0}", Side);
             });
 
-            Subscribe(Protocol.MsgSrvQueueStarted, message =>
+            Subscribe(Head.SrvQueueStarted, message =>
             {
                 IsInQueue = true;
                 Debug.Log("Queue started");
             });
 
-            Subscribe(Protocol.MsgSrvQueueStopped, message =>
+            Subscribe(Head.SrvQueueStopped, message =>
             {
                 IsInQueue = false;
                 Debug.Log("Queue stopped");
             });
 
-            Subscribe(Protocol.MsgSrvQueueGameCreated, message =>
+            Subscribe(Head.SrvQueueGameCreated, message =>
             {
                 IsInQueue = false;
                 IsInGame = true;
-                GameId = message.Body[Protocol.KeyGameId].Value;
+                GameId = message.GameCreated.GameId;
                 Debug.LogFormat("Game started, id: {0}", GameId);
                 if(SceneManager.GetActiveScene().name != GameSceneName)
                     SceneManager.LoadScene(GameSceneName);
             });
 
-            Subscribe(Protocol.MsgSrvGameEffect, message =>
+            Subscribe(Head.SrvGameEffect, message =>
             {
                 Debug.LogFormat("Effect: {0}", message);
             });
 
-            Subscribe(Protocol.MsgSrvGameEnd, message =>
+            Subscribe(Head.SrvGameEnded, message =>
             {
                 IsInGame = false;
                 IsGameStarted = false;
@@ -129,12 +130,12 @@ namespace Assets.Scripts
         private void OnMessageReceive(Message message)
         {
             // Message domain dispatching
-            if (message.DomainIs(Protocol.MsgDomainLobby))
+            if (message.Domain == Domain.Lobby)
             {
                 if(LobbyMessageReceived != null)
                     LobbyMessageReceived.Invoke(message);
             }
-            else if (message.DomainIs(Protocol.MsgDomainGame))
+            else if (message.Domain == Domain.Game)
             {
                 if (GameMessageReceived != null)
                     GameMessageReceived.Invoke(message);
@@ -163,7 +164,7 @@ namespace Assets.Scripts
                 SceneManager.LoadScene(LobbySceneName);
         }
 
-        public void Subscribe(string head, Messagehandler handler)
+        public void Subscribe(Head head, Messagehandler handler)
         {
             if (_messageSubscribers.ContainsKey(head))
             {
@@ -179,7 +180,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void UnSubscribe(string head, Messagehandler handler)
+        public void UnSubscribe(Head head, Messagehandler handler)
         {
             if(!_messageSubscribers.ContainsKey(head))
                 return;
@@ -199,15 +200,27 @@ namespace Assets.Scripts
 
         public void StartQueue(string ship, string weapon)
         {
-            var msg = new Message(Protocol.MsgDomainLobby, Protocol.MsgCliQueueStart, "Start queue");
-            msg.Body[Protocol.KeyShip] = ship;
-            msg.Body[Protocol.KeyWeapon] = weapon;
+            var msg = new Message
+            {
+                Domain = Domain.Lobby,
+                Head = Head.CliQueueStart,
+                QueuePrefs =
+                {
+                    Ship = ship,
+                    Weapon = weapon
+                }
+            }; 
             Send(msg);
         }
 
         public void StopQueue()
         {
-            Send(new Message(Protocol.MsgDomainLobby, Protocol.MsgCliQueueStop, "Stop queue"));
+            var message = new Message()
+            {
+                Domain = Domain.Lobby,
+                Head = Head.CliQueueStop
+            };
+            Send(message);
         }
 
         void OnApplicationQuit()

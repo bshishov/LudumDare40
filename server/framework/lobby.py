@@ -40,9 +40,10 @@ class Lobby(object):
         player = Player(channel)  # type: Player
         with self._players_lock:
             self._players[channel] = player
-        player.send(LobbyMessage(MessageHead.SRV_HELLO, status='Welcome',
-                                 version=PROTOCOL_VERSION,
-                                 players=len(self._players)))
+        player.send(lobby_message(Head.SRV_HELLO,
+                                  status='Welcome',
+                                  version=VERSION,
+                                  players=len(self._players)))
         self._logger.info('Player connected')
 
     def on_client_disconnect(self, channel):
@@ -82,12 +83,12 @@ class Lobby(object):
 
             for player in players:
                 # Send that the game is started
-                player.send(LobbyMessage(MessageHead.SRV_QUEUE_GAME_CREATED, status='Game created', game_id=g.id))
+                player.send(lobby_message(Head.SRV_QUEUE_GAME_CREATED, status='Game created', game_id=g.id))
 
         except Exception as err:
             for player in players:
-                player.send(LobbyMessage(MessageHead.SRV_ERROR, status='Failed to create a game', err=str(err)))
-                player.send(LobbyMessage(MessageHead.SRV_ERROR, status='Failed to create a game', err=str(err)))
+                player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))
+                player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))
             self._logger.debug('Failed to create a game: {0}'.format(str(err)))
             if g is not None:
                 g.close()

@@ -1,6 +1,5 @@
-﻿using System;
-using Assets.Scripts.Network;
-using Assets.Scripts.Utils;
+﻿using Assets.Scripts.Utils;
+using Protocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,17 +11,18 @@ namespace Assets.Scripts.UI
         
         void Start ()
         {
-            Client.Instance.Subscribe(Protocol.MsgSrvGameEffect, EffectHandler);
-            Client.Instance.Subscribe(Protocol.MsgSrvError, ErrorHandler);
-            Client.Instance.Subscribe(Protocol.MsgSrvGameTurn, TurnHandler);
+            Client.Instance.Subscribe(Head.SrvGameEffect, EffectHandler);
+            Client.Instance.Subscribe(Head.SrvError, ErrorHandler);
+            Client.Instance.Subscribe(Head.SrvGameTurn, TurnHandler);
         }
 
         private void EffectHandler(Message message)
         {
-            var effect = message.Body["effect"].Value;
-            var argument0 = message.Body["args"][0].Value;
-            var argument1 = message.Body["args"][1].Value;
-            Show(string.Format("Effect <color=yellow>{0}</color> {1} {2}", effect, argument0, argument1));
+            var effect = message.Game.Effect;
+            //var argument0 = message.Body["args"][0].Value;
+            //var argument1 = message.Body["args"][1].Value;
+            //Show(string.Format("Effect <color=yellow>{0}</color> {1} {2}", effect, argument0, argument1));
+            Show(string.Format("Effect <color=yellow>{0}</color>", effect));
         }
 
         private void ErrorHandler(Message message)

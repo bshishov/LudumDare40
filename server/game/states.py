@@ -5,6 +5,7 @@ from framework.game import GameError
 from game.rules import *
 from game.utils import select_cards
 from game.protocol import *
+import network.protocol as proto
 
 
 __all__ = ['BuffState', 'CardState', 'EntityState', 'PlayerEntityState']
@@ -15,11 +16,11 @@ class BuffState(object):
         self.name = name
         self.duration = duration
 
-    def get_state(self):
-        return {
-            BuffStateProtocol.NAME: self.name,
-            BuffStateProtocol.DURATION: self.duration
-        }
+    def get_state(self) -> proto.BuffState:
+        state = proto.BuffState()
+        state.duration = self.duration
+        state.name = self.name
+        return state
 
 
 class CardState(object):
@@ -40,12 +41,12 @@ class CardState(object):
         card = get_card(self.name)
         return card.get(Card.TYPE)
 
-    def get_state(self) -> dict:
-        return {
-            CardStateProtocol.NAME: self.name,
-            CardStateProtocol.COST_DEFENSE: self.cost_defense,
-            CardStateProtocol.COST_OFFENSE: self.cost_offense
-        }
+    def get_state(self) -> proto.CardState:
+        state = proto.CardState()
+        state.name = self.name
+        state.cost_offense = self.cost_offense
+        state.cost_defense = self.cost_defense
+        return state
 
 
 class EntityState(object):
@@ -72,24 +73,27 @@ class EntityState(object):
                 return b
         return default
 
-    def get_state(self) -> {}:
-        return {
-            EntityStateProtocol.ID: self.id,
-            EntityStateProtocol.NAME: self.name,
-            EntityStateProtocol.POSITION: self.position,
-            EntityStateProtocol.SIDE: self.side,
-            EntityStateProtocol.HP: self.hp,
-            EntityStateProtocol.ENERGY: self.energy,
-            EntityStateProtocol.ENERGY_GAIN: self.energy_gain,
-            EntityStateProtocol.MAX_ENERGY: self.max_energy,
-            EntityStateProtocol.BUFFABLE: self.buffable,
-            EntityStateProtocol.BUFFS: [s.get_state() for s in self.buffs],
-            EntityStateProtocol.ARMED: self.armed,
-            EntityStateProtocol.MUTED: self.muted,
-            EntityStateProtocol.LOCKED: self.locked,
-            EntityStateProtocol.IS_PLAYER: self.is_player,
-            EntityStateProtocol.DAMAGE_MOD: self.damage_mod,
-        }
+    def get_state(self) -> proto.EntityState:
+        state = proto.EntityState()
+        state.id = self.id
+        state.side = self.side
+        state.hp = self.hp
+        state.name = self.name
+        state.energy = self.energy
+        state.energy_gain = self.energy_gain
+        state.max_energy = self.max_energy
+        state.muted = self.muted
+        state.armed = self.armed
+        state.locked = self.locked
+        state.damage_mod = self.damage_mod
+        state.buffable = self.buffable
+        state.is_player = self.is_player
+        state.position = self.position
+
+        for b in self.buffs:
+            state.buffs.append(b.get_state())
+
+        return state
 
 
 class PlayerEntityState(EntityState):
@@ -165,17 +169,17 @@ class PlayerEntityState(EntityState):
             return CardState(card_name)
         return None
 
-    def get_state(self, hide_hand=False) -> {}:
+    def get_state(self, hide_hand=False) -> proto.EntityState:
         state = super().get_state()
-        player_state = {
-            PlayerEntityProtocol.SHIP_NAME: self.ship_name,
-            PlayerEntityProtocol.WEAPON_NAME: self.weapon_name,
-            PlayerEntityProtocol.CARDS_IN_DECK: len(self.deck),
-            PlayerEntityProtocol.CARDS_IN_HAND: len(self.hand),
-            PlayerEntityProtocol.DECK: [],
-            PlayerEntityProtocol.HAND: [],
-        }
+
+        state.weapon_name = self.weapon_name
+        state.ship_name = self.ship_name
+
+        state.hand_cards = len(self.hand)
+        state.deck_cards = len(self.deck)
+
         if not hide_hand:
-            player_state[PlayerEntityProtocol.HAND] = [c.get_state() for c in self.hand]
-        state.update(player_state)
+            for c in self.hand:
+                state.hand.append(c.get_state())
+
         return state

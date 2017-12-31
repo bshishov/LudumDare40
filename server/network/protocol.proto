@@ -1,136 +1,167 @@
 syntax = "proto3";
-import "google/protobuf/struct.proto";
 package protocol;
 
-message Message {
-    enum Domain {
-        LOBBY = 0;
-        GAME = 1;
+
+enum Domain {
+    LOBBY = 0;
+    GAME = 1;
+}
+
+enum Head {
+    //[SERVER] Base server messages
+    SRV_HELLO = 0;
+    SRV_ERROR = 1;
+
+    //[SERVER] Queue message
+    SRV_QUEUE_STARTED = 2;
+    SRV_QUEUE_STOPPED = 3;
+    SRV_QUEUE_GAME_CREATED = 4;
+
+    //[SERVER] Game messages
+    SRV_GAME_STARTED = 5;
+    SRV_GAME_ENDED = 6;
+    SRV_GAME_PLAYER_LEFT = 7;
+    SRV_GAME_TURN = 8;
+    SRV_GAME_ACTION = 9;  // redirect player action
+    SRV_GAME_EFFECT = 10;
+
+    //[CLIENT] Messages
+    CLI_QUEUE_START = 11;
+    CLI_QUEUE_STOP = 12;
+    CLI_GAME_ACTION = 13;
+}
+
+enum Side {
+    NEUTRAL = 0;
+    A = 1;
+    B = 2;
+}
+
+enum PlayerAction {
+    PLAY_CARD = 0;
+    FIRE_WEAPON = 1;
+    END_TURN = 2;
+    CHEAT_GAIN_CARD = 3;
+}
+
+message BuffState {
+    string name = 1;
+    int32 duration = 2;
+}
+
+message CardState {
+    string name = 1;
+    int32 cost_offense = 2;
+    int32 cost_defense = 3;
+}
+
+message EntityState {
+    int32 id = 1;
+    string name = 2;
+    Side side = 3;
+    int32 hp = 4;
+    int32 energy = 5;
+    int32 max_energy = 6;
+    int32 energy_gain = 7;
+    bool muted = 8;
+    bool armed = 9;
+    bool locked = 10;
+    int32 damage_mod = 11;
+    bool buffable = 12;
+    bool is_player = 13;
+    int32 position = 14;
+
+    repeated BuffState buffs = 15;
+
+    string weapon_name = 16;
+    string ship_name = 17;
+
+    int32 hand_cards = 18;
+    int32 deck_cards = 19;
+
+    repeated CardState hand = 20;
+}
+
+message GameState {
+    string id = 1;
+    Side turn = 2;
+    repeated EntityState objects = 3;
+}
+
+message GameAction {
+    PlayerAction action = 1;
+    string card = 2;
+}
+
+message GameEffectArgument {
+    oneof kind {
+        int32 value = 1;
+        string key = 2;
     }
+}
 
-    enum Head {
-        //[SERVER] Base server messages
-        SRV_HELLO = 0;
-        SRV_ERROR = 1;
+message GameEffect {
+    int32 source_entity = 1;
+    int32 target_entity = 2;
+    GameAction action = 3;
+    string effect_name = 4;
+    repeated GameEffectArgument arguments = 5;
+}
 
-        //[SERVER] Queue message
-        SRV_QUEUE_STARTED = 2;
-        SRV_QUEUE_STOPPED = 3;
-        SRV_QUEUE_GAME_CREATED = 4;
+message SrvHello {
+    string version = 1;
+    int32 players = 2;
+}
 
-        //[SERVER] Game messages
-        SRV_GAME_BEGIN = 5;
-        SRV_GAME_END = 6;
-        SRV_GAME_PLAYER_LEFT = 7;
-        SRV_GAME_TURN = 8;
-        SRV_GAME_ACTION = 9;  // redirect player action
-        SRV_GAME_EFFECT = 10;
+message CliQueuePreferences {
+    string ship = 1;
+    string weapon = 2;
+}
 
-        //[CLIENT] Messages
-        CLI_QUEUE_START = 11;
-        CLI_QUEUE_STOP = 12;
-        CLI_GAME_ACTION = 13;
-    }
+message SrvQueueGameCreated {
+    string game_id = 1;
+    Side side = 2;
+}
 
-    enum Side {
-        NEUTRAL = 0;
-        A = 1;
-        B = 2;
-    }
+message SrvGameStarted {
+    string game_id = 1;
+    Side your_side = 2;
+}
 
-    enum PlayerAction {
-        PLAY_CARD = 0;
-        FIRE_WEAPON = 1;
-        END_TURN = 2;
-    }
-
-    message BuffState {
-        string game = 1;
-        int32 duration = 2;
-    }
-
-    message CardState {
-        string name = 1;
-        int32 cost_offense = 2;
-        int32 cost_defense = 3;
-    }
-
-    message EntityState {
-        int32 id = 1;
-        string name = 2;
-        Side side = 3;
-        int32 hp = 4;
-        int32 energy = 5;
-        int32 max_energy = 6;
-        int32 energy_gain = 7;
-        bool muted = 8;
-        bool armed = 9;
-        bool locked = 10;
-        int32 damage_mod = 11;
-        bool buffable = 12;
-        bool is_player = 13;
-        int32 position = 14;
-
-        repeated BuffState buffs = 15;
-
-        string weapon_name = 16;
-        string ship_name = 17;
-
-        int32 hand_cards = 18;
-        int32 deck_cards = 19;
-
-        repeated CardState hand = 20;
-    }
-
-    message GameState {
-        string id = 1;
-        Side turn = 2;
-        repeated EntityState objects = 3;
-    }
-
-    message BodyAction {
-        PlayerAction action = 1;
-        string card = 2;
-    }
-
-    message BodyEffect {
-        int32 source_entity = 1;
-        int32 target_entity = 2;
+message SrvGameMessage {
+    string game_id = 1;
+    GameState state = 2;
+    oneof payload {
         // Client action
-        BodyAction action = 3;
-        string effect_name = 4;
-        google.protobuf.Struct arguments = 5;
+        GameAction action = 4;
+        // Server response (game state changers)
+        GameEffect effect = 5;
     }
+    Side your_side = 6;
+}
 
-    message BodyHello {
-        string version = 1;
-        int32 players = 2;
-    }
+message SrvGameEnded {
+    string game_id = 1;
+    bool interrupted = 2;
+}
 
-    message BodyGameMessage {
-        string game_id = 1;
-        GameState state = 2;
-        Side your_side = 3;
-        oneof payload {
-            // Client action
-            BodyAction action = 4;
-            // Server response (game state changers)
-            BodyEffect effect = 5;
-        }
-    }
+message SrvPlayerLeft {
+    string game_id = 1;
+    int32 player_id = 2;
+}
 
-    message BodyQueuePreferences {
-        string ship = 1;
-        string weapon = 2;
-    }
-
+message Message {
     Domain domain = 1;
     Head head = 2;
     string status = 3;
     oneof body {
         string error = 4;
-        BodyHello hello = 5;
-        BodyGameMessage game = 6;
-        BodyQueuePreferences queue_prefs = 7;
+        SrvHello hello = 5;
+        SrvQueueGameCreated game_created = 6;
+        SrvGameStarted game_started = 7;
+        SrvGameEnded game_ended = 8;
+        SrvGameMessage game = 9;
+        CliQueuePreferences queue_prefs = 10;
+        SrvPlayerLeft player_left = 11;
     }
 }

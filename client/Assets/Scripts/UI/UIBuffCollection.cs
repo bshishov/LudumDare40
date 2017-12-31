@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using SimpleJSON;
+using Assets.Scripts.Data;
+using Protocol;
 using UnityEngine;
 
 namespace Assets.Scripts.UI
@@ -17,7 +18,7 @@ namespace Assets.Scripts.UI
             BattleManager.Instance.StateUpdated += OnStateUpdated;
         }
 
-        private void OnStateUpdated(JSONObject gameState)
+        private void OnStateUpdated(GameState gameState)
         {
             var state = GetEntityState();
             if(state == null)
@@ -28,14 +29,13 @@ namespace Assets.Scripts.UI
 
             _buffs.Clear();
 
-            var buffs = state[Rules.PStateBuffs];
-            foreach (var buffState in buffs.Children)
+            foreach (var buffState in state.Buffs)
             {
-                AddBuff(buffState.AsObject);
+                AddBuff(buffState);
             }
         }
 
-        private void AddBuff(JSONObject buffState)
+        private void AddBuff(BuffState buffState)
         {
             var go = (GameObject)GameObject.Instantiate(BuffPrefab, transform);
             var buff = go.GetComponent<UIBuff>();
@@ -43,12 +43,12 @@ namespace Assets.Scripts.UI
             _buffs.Add(buff);
         }
 
-        private JSONObject GetEntityState()
+        private EntityState GetEntityState()
         {
             if (Perspective == Perspective.Neutral)
                 return BattleManager.Instance.GetEntityState(EntityId);
 
-            return BattleManager.Instance.StateForPerspective(Perspective);
+            return BattleManager.Instance.PlayerEntityState(Perspective);
         }
     }
 }

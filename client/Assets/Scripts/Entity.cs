@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.UI;
-using SimpleJSON;
+using Protocol;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -7,12 +7,12 @@ namespace Assets.Scripts
 
     public class Entity : MonoBehaviour
     {
-        public int Id { get { return _state[Rules.PStateId]; } }
+        public int Id { get { return _state.Id; } }
 
         public GameObject UIPrefab;
         public float MoveSpeed = 1f;
 
-        private JSONObject _state;
+        private EntityState _state;
         private Vector3 _velocity;
         private Vector3 _target;
 
@@ -43,9 +43,9 @@ namespace Assets.Scripts
             _target = GameToWorldPosition(position);
         }
 
-        public void UpdateState(JSONObject eState)
+        public void UpdateState(EntityState eState)
         { 
-            var position = eState[Rules.PStatePosition].AsInt;
+            var position = eState.Position;
             MoveTo(position);
 
             if (_state == null)
@@ -58,7 +58,7 @@ namespace Assets.Scripts
             _state = eState;
         }
 
-        private void UpdateUI(JSONObject state)
+        private void UpdateUI(EntityState state)
         {
             if(_ui == null)
                 return;
@@ -88,7 +88,7 @@ namespace Assets.Scripts
         {
             var tooltip = UITooltip.Instance;
             if(tooltip != null)
-                tooltip.Show("Entity", _state.ToString(4));
+                tooltip.Show("Entity", _state.ToString());
         }
 
         void OnMouseExit()

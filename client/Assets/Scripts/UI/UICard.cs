@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Data;
+using Protocol;
 using SimpleJSON;
 using UnityEngine;
 using UnityEngine.Events;
@@ -69,12 +70,11 @@ namespace Assets.Scripts.UI
             _targetRotation = targetRotation;
         }
 
-        public void UpdateState(JSONObject cardState, bool isOffense)
+        public void UpdateState(CardState cardState, bool isOffense)
         {
-            var cardName = cardState[Rules.PStateCardName].Value;
-            _name = cardName;
+            _name = cardState.Name;
 
-            var cardInfo = Client.Instance.GetCard(cardName);
+            var cardInfo = Client.Instance.GetCard(_name);
 
             if (NameText != null)
                 NameText.text = cardInfo[Rules.PCardFullName];
@@ -82,9 +82,9 @@ namespace Assets.Scripts.UI
             if (CostText != null)
             {
                 if (isOffense)
-                    CostText.text = cardState[Rules.PStateCardCostOffense].AsInt.ToString();
+                    CostText.text = cardState.CostOffense.ToString();
                 else
-                    CostText.text = cardState[Rules.PStateCardCostDefense].AsInt.ToString();
+                    CostText.text = cardState.CostDefense.ToString();
             }
 
             if (ActionTypeIcon != null)

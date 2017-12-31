@@ -40,11 +40,11 @@ class Player(object):
             return
 
         if not self.in_game:
-            if message.domain == MessageDomain.LOBBY:
-                if message.head == MessageHead.CLI_QUEUE_START and not self.in_queue:
-                    self.queue_args = message.body
+            if message.domain == Domain.LOBBY:
+                if message.head == Head.CLI_QUEUE_START and not self.in_queue:
+                    self.queue_args = get_message_body(message, MessageBody.QUEUE_PREFS)
                     self.start_queue()
-                elif message.head == MessageHead.CLI_QUEUE_STOP and self.in_queue:
+                elif message.head == Head.CLI_QUEUE_STOP and self.in_queue:
                     self.stop_queue()
 
         self.on_message(self, message)
@@ -60,13 +60,13 @@ class Player(object):
         if self.in_game:
             return
         self.in_queue = True
-        self.send(LobbyMessage(MessageHead.SRV_QUEUE_STARTED, status='queue started'))
+        self.send(lobby_message(Head.SRV_QUEUE_STARTED, status='queue started'))
 
     def stop_queue(self):
         if self.in_game:
             return
         self.in_queue = False
-        self.send(LobbyMessage(MessageHead.SRV_QUEUE_STOPPED, status='queue stopped'))
+        self.send(lobby_message(Head.SRV_QUEUE_STOPPED, status='queue stopped'))
 
     def __del__(self):
         self._channel.on_message.remove(self._on_message)
@@ -95,20 +95,20 @@ class GameBase(object):
             player.on_disconnect.append(self._on_player_disconnect)
 
         # Send that the game is started
-        for side, player in enumerate(self.players):
-            self.notify_player(player, MessageHead.SRV_GAME_BEGIN, status='Game begin', side=side)
+        for idx, player in enumerate(self.players):
+            self.notify_player(player, Head.SRV_GAME_STARTED, status='Game started', your_side=get_side(idx))
 
     def _validate_message(self, player: Player, message: Message):
         if message is None:
             return False
 
-        if message.domain != MessageHead.DOMAIN_GAME:
+        if message.domain != Head.DOMAIN_GAME:
             self.logger.warning('Expected game message: {0}'.format(message))
             return False
 
-        if message.body.get(GameMessageProtocol.GAME_ID) != self.id:
+        if message.game.game_id != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
-            self.notify_player(player, MessageHead.SRV_ERROR, status='wrong game id')
+            self.notify_player(player, Head.SRV_ERROR, status='wrong game id')
             return False
         return True
 
@@ -120,34 +120,35 @@ class GameBase(object):
         raise NotImplementedError
 
     def _on_player_disconnect(self, player: Player):
-        self.notify_players(MessageHead.SRV_GAME_PLAYER_LEFT, status='Player disconnected', player=player._id)
+        self.notify_players(Head.SRV_GAME_PLAYER_LEFT, status='Player disconnected', player_id=player._id)
         self.end(interrupted=True)
 
     def end_turn(self):
         self.turn = (self.turn + 1) % len(self.players)
-        self.notify_players(MessageHead.SRV_GAME_TURN, status='End of turn', turn=self.turn)
+        self.notify_players(Head.SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
     def get_state(self, perspective_player=None) -> dict:
         return {}
 
-    def notify_players(self, head, status='', *args, **kwargs):
+    def notify_players(self, head, status='', **kwargs):
         for player in self.players:
-            self.notify_player(player, head, status=status, *args, **kwargs)
+            self.notify_player(player, head, status=status, **kwargs)
 
-    def notify_player(self, player, head, status='', *args, **kwargs):
+    def notify_player(self, player, head, status='', **kwargs):
         try:
             kwargs.update({
-                GameMessageProtocol.STATE: self.get_state(perspective_player=player),
-                GameMessageProtocol.YOUR_SIDE: self.players.index(player)
+                'game_id': self.id,
+                'state': self.get_state(perspective_player=player),
+                'your_side': get_side(self.players.index(player)),
             })
-            msg = GameMessage(head, game_id=self.id, status=status, *args, **kwargs)
+            msg = game_message(head, status=status, **kwargs)
             player.send(msg)
         except Exception as err:
             self.logger.error(err)
 
     def end(self, interrupted=False):
         self.logger.info('Game finished, interrupted={0}'.format(interrupted))
-        self.notify_players(MessageHead.SRV_GAME_END, status='finished', interrupted=interrupted)
+        self.notify_players(Head.SRV_GAME_ENDED, status='finished', interrupted=interrupted)
         self.is_active = False
 
     def close(self):

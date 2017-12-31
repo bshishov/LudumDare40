@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.Data;
-using Assets.Scripts.Network;
-using Assets.Scripts.UI;
 using Assets.Scripts.Utils;
-using SimpleJSON;
+using Protocol;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -14,33 +12,33 @@ namespace Assets.Scripts
     {
         private string _cheatCardName;
 
-        public string MySide
+        public Side MySide
         {
             get { return Client.Instance.Side; }
         }
-        public string OpponentsSide
+        public Side OpponentsSide
         {
-            get { return MySide == Rules.SideA ? Rules.SideB : Rules.SideA; }
+            get { return MySide == Side.A ? Side.B : Side.A; }
         }
 
-        public JSONObject MyState
+        public EntityState MyState
         {
             get
             {
-                return StateForPerspective(Perspective.My);
+                return PlayerEntityState(Perspective.My);
             }
         }
 
-        public JSONObject OpponentsState
+        public EntityState OpponentsState
         {
-            get { return StateForPerspective(Perspective.Opponent); }
+            get { return PlayerEntityState(Perspective.Opponent); }
         }
 
-        public event Action<JSONObject> StateUpdated;
+        public event Action<GameState> StateUpdated;
 
         public EntitiesAppearence EntitiesAppearence;
 
-        private JSONObject _state;
+        private GameState _state;
         private readonly List<Entity> _entities = new List<Entity>();
 
         void Start ()
@@ -49,7 +47,7 @@ namespace Assets.Scripts
             StateUpdated += OnStateUpdated;
         }
 
-        private void OnStateUpdated(JSONObject newState)
+        private void OnStateUpdated(GameState newState)
         {
             var myState = MyState;
             if (myState != null)
@@ -60,23 +58,22 @@ namespace Assets.Scripts
                 UpdatePlayerEntity(opState);
 
             var objectIds = new List<int>{0, 1};
-            var objects = newState[Rules.PStateObjects];
+            var objects = newState.Objects;
             if (objects != null)
             {
-                foreach (var o in objects.Children)
+                foreach (var entityState in objects)
                 {
-                    var id = o[Rules.PStateId].AsInt;
+                    var id = entityState.Id;
                     objectIds.Add(id);
                     var existing = _entities.FirstOrDefault(e => e.Id == id);
                     if (existing == null)
                     {
-                        var ename = o[Rules.PStateName].Value;
-                        var ei = EntitiesAppearence.GetPrefab(ename);
-                        SpawnEntity(ei, o.AsObject);
+                        var ei = EntitiesAppearence.GetPrefab(entityState.Name);
+                        SpawnEntity(ei, entityState);
                     }
                     else
                     {
-                        existing.UpdateState(o.AsObject);
+                        existing.UpdateState(entityState);
                     }
                 }
             }
@@ -89,13 +86,13 @@ namespace Assets.Scripts
             _entities.RemoveAll(e => !objectIds.Contains(e.Id));
         }
 
-        private void UpdatePlayerEntity(JSONObject state)
+        private void UpdatePlayerEntity(EntityState state)
         {
-            var entityId = state[Rules.PStateId];
+            var entityId = state.Id;
             var existing = _entities.FirstOrDefault(e => e.Id == entityId);
             if (existing == null)
             {
-                var shipName = state[Rules.PStateShipName].Value;
+                var shipName = state.ShipName;
                 var ei = EntitiesAppearence.GetPrefab(shipName);
                 SpawnEntity(ei, state);
             }
@@ -105,7 +102,7 @@ namespace Assets.Scripts
             }
         }
 
-        public void SpawnEntity(GameObject prefab, JSONObject state)
+        public void SpawnEntity(GameObject prefab, EntityState state)
         {
             var go = (GameObject)GameObject.Instantiate(prefab, Vector3.zero, Quaternion.identity);
             var entity = go.GetComponent<Entity>();
@@ -120,10 +117,10 @@ namespace Assets.Scripts
             if (!Client.Instance.IsGameStarted)
                 return;
 
-            var state = message.Body[Protocol.KeyState];
+            var state = message.Game.State;
             if (state != null)
             {
-                _state = state.AsObject;
+                _state = state;
                 
                 // TODO: CHECK CONDITION
                 if (StateUpdated != null)
@@ -143,85 +140,111 @@ namespace Assets.Scripts
 
         public void FireWeapon()
         {
-            var m = new Message(Protocol.MsgDomainGame, Protocol.MsgCliGameAction, "Fire weapon");
-            m.Body[Protocol.KeyGameId] = Client.Instance.GameId;
-            m.Body["action"][Rules.PType] = Rules.ActionFireWeapon;
-            Client.Instance.Send(m);
+            var message = new Message()
+            {
+                Domain = Domain.Game,
+                Head = Head.CliGameAction,
+                Status = "Fire weapon",
+                Game =
+                {
+                    GameId = Client.Instance.GameId,
+                    Action =
+                    {
+                        Action = PlayerAction.FireWeapon
+                    }
+                }
+            };
+            Client.Instance.Send(message);
         }
 
         public void PlayCard(string cardId)
         {
-            var m = new Message(Protocol.MsgDomainGame, Protocol.MsgCliGameAction, "Play card");
-            m.Body["action"][Rules.PType] = Rules.ActionPlayCard;
-            m.Body["action"]["card"] = cardId;
-            m.Body[Protocol.KeyGameId] = Client.Instance.GameId;
-            Client.Instance.Send(m);
+            var message = new Message()
+            {
+                Domain = Domain.Game,
+                Head = Head.CliGameAction,
+                Status = "Play card",
+                Game =
+                {
+                    GameId = Client.Instance.GameId,
+                    Action =
+                    {
+                        Action = PlayerAction.FireWeapon,
+                        Card = cardId
+                    }
+                }
+            };
+            Client.Instance.Send(message);
         }
 
         public void EndTurn()
         {
-            var m = new Message(Protocol.MsgDomainGame, Protocol.MsgCliGameAction, "End turn");
-            m.Body["action"][Rules.PType] = Rules.ActionEndTurn;
-            m.Body[Protocol.KeyGameId] = Client.Instance.GameId;
-            Client.Instance.Send(m);
+            var message = new Message()
+            {
+                Domain = Domain.Game,
+                Head = Head.CliGameAction,
+                Status = "Play card",
+                Game =
+                {
+                    GameId = Client.Instance.GameId,
+                    Action =
+                    {
+                        Action = PlayerAction.EndTurn,
+                    }
+                }
+            };
+            Client.Instance.Send(message);
         }
 
-        public void CheatGainCard()
+        public void CheatGainCard(string cardId)
         {
             if(string.IsNullOrEmpty(_cheatCardName))
                 return;
 
-            var m = new Message(Protocol.MsgDomainGame, Protocol.MsgCliGameAction, "Take card");
-            m.Body["action"][Rules.PType] = Rules.ActionCheatTakeCard;
-            m.Body["action"]["card"] = _cheatCardName;
-            m.Body[Protocol.KeyGameId] = Client.Instance.GameId;
-            Client.Instance.Send(m);
+            var message = new Message()
+            {
+                Domain = Domain.Game,
+                Head = Head.CliGameAction,
+                Status = "Take cheat card",
+                Game =
+                {
+                    GameId = Client.Instance.GameId,
+                    Action =
+                    {
+                        Action = PlayerAction.CheatGainCard,
+                        Card = cardId
+                    }
+                }
+            };
+            
+            Client.Instance.Send(message);
         }
 
-        public JSONObject StateForPerspective(Perspective perspective)
+        public EntityState PlayerEntityState(Perspective perspective = Perspective.My)
         {
             if (_state == null)
                 return null;
 
-            if (string.IsNullOrEmpty(MySide))
-                return null;
-
             if (perspective == Perspective.My)
-                return _state[MySide].AsObject;
-
+                return _state.Objects.FirstOrDefault(e => e.IsPlayer && e.Side == MySide);
+            
             if (perspective == Perspective.Opponent)
-                return _state[OpponentsSide].AsObject;
+                return _state.Objects.FirstOrDefault(e => e.IsPlayer && e.Side == OpponentsSide);
 
             return null;
         }
 
-        public JSONObject GetEntityState(int id)
+        public EntityState GetEntityState(int id)
         {
-            var objects = _state[Rules.PStateObjects];
-            foreach (var o in objects.Children)
-            {
-                if (id == o[Rules.PStateId].AsInt)
-                    return o.AsObject;
-            }
-
-            if (id == MyState[Rules.PStateId].AsInt)
-                return MyState;
-
-            if (id == OpponentsState[Rules.PStateId].AsInt)
-                return OpponentsState;
-
-            return null;
+            return _state.Objects.FirstOrDefault(entityState => id == entityState.Id);
         }
 
         public bool IsOffense(Perspective perspective)
         {
-            var myPos = MyState[Rules.PStatePosition].AsInt;
-            var opponentsPos = OpponentsState[Rules.PStatePosition].AsInt;
-
             if (perspective == Perspective.My)
-                return myPos < opponentsPos;
+                return MyState.Position < OpponentsState.Position;
 
-            return myPos > opponentsPos;
+            return MyState.Position > OpponentsState.Position;
         }
 
 #if DEBUG
@@ -230,7 +253,7 @@ namespace Assets.Scripts
             _cheatCardName = GUI.TextField(new Rect(30, 0, 100, 20), _cheatCardName);
             if (GUI.Button(new Rect(130, 0, 80, 20), "Take"))
             {
-                CheatGainCard();
+                CheatGainCard(_cheatCardName);
             }
         }
 #endif

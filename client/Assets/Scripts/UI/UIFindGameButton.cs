@@ -1,4 +1,4 @@
-﻿using Assets.Scripts.Network;
+﻿using Protocol;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,19 +23,19 @@ namespace Assets.Scripts.UI
                 LobbyUIManager.Instance.StartQueue();
             });
             
-            Client.Instance.Subscribe(Protocol.MsgSrvQueueStarted, message =>
+            Client.Instance.Subscribe(Head.SrvQueueStarted, message =>
             {
                 _text.text = SearchingText;
                 _button.interactable = false;
             });
 
-            Client.Instance.Subscribe(Protocol.MsgSrvQueueStopped, message =>
+            Client.Instance.Subscribe(Head.SrvQueueStopped, message =>
             {
                 _text.text = IdleText;
                 _button.interactable = true;
             });
 
-            Client.Instance.Subscribe(Protocol.MsgSrvQueueGameCreated, message =>
+            Client.Instance.Subscribe(Head.SrvQueueGameCreated, message =>
             {
                 _text.text = CreatedText;
             });

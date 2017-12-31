@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Data;
-using SimpleJSON;
+using Protocol;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -14,22 +14,20 @@ namespace Assets.Scripts.UI
         public Image Icon;
         public Text Duration;
 
-        private JSONObject _state;
+        private BuffState _state;
 
         void Start ()
         {
         }
 
-        public void UpdateState(JSONObject buffState)
+        public void UpdateState(BuffState buffState)
         {
-            var buffName = buffState[Rules.PStateBuffName].Value;
-            var duration = buffState[Rules.PStateBuffDuration].AsInt;
 
             if (Icon != null)
-                Icon.sprite = Appearance.GetIcon(buffName);
+                Icon.sprite = Appearance.GetIcon(buffState.Name);
 
             if (Duration != null)
-                Duration.text = duration.ToString();
+                Duration.text = buffState.Duration.ToString();
 
             _state = buffState;
         }
@@ -38,7 +36,7 @@ namespace Assets.Scripts.UI
         {
             var tooltip = UITooltip.Instance;
             if (tooltip != null)
-                tooltip.Show("Buff", _state.ToString(4));
+                tooltip.Show("Buff", _state.ToString());
         }
 
         public void OnPointerExit(PointerEventData eventData)
