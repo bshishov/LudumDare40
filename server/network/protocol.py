@@ -1,7 +1,7 @@
-from enum import Enum
-from protobuf3.fields import StringField, Int32Field, BoolField, MessageField, EnumField
-from protobuf3.message import Message
+from protobuf3.fields import MessageField, Int32Field, StringField, BoolField, EnumField
 from typing import List
+from protobuf3.message import Message
+from enum import Enum
 
 
 class BuffState(Message):
@@ -50,8 +50,8 @@ class GameAction(Message):
 
 
 class GameEffectArgument(Message):
-    value = None  # type: int
     key = None  # type: str
+    value = None  # type: str
 
 
 class GameEffect(Message):
@@ -77,16 +77,12 @@ class SrvQueueGameCreated(Message):
     side = None  # type: Side
 
 
-class SrvGameStarted(Message):
-    game_id = None  # type: str
-    your_side = None  # type: Side
-
-
 class SrvGameMessage(Message):
     game_id = None  # type: str
     state = None  # type: GameState
     action = None  # type: GameAction
     effect = None  # type: GameEffect
+    error = None  # type: str
     your_side = None  # type: Side
 
 
@@ -107,7 +103,6 @@ class Message(Message):
     error = None  # type: str
     hello = None  # type: SrvHello
     game_created = None  # type: SrvQueueGameCreated
-    game_started = None  # type: SrvGameStarted
     game_ended = None  # type: SrvGameEnded
     game = None  # type: SrvGameMessage
     queue_prefs = None  # type: CliQueuePreferences
@@ -122,6 +117,7 @@ class Domain(Enum):
 class Head(Enum):
     SRV_HELLO = 0
     SRV_ERROR = 1
+    SRV_GAME_ERROR = 14
     SRV_QUEUE_STARTED = 2
     SRV_QUEUE_STOPPED = 3
     SRV_QUEUE_GAME_CREATED = 4
@@ -178,8 +174,8 @@ GameState.add_field('turn', EnumField(field_number=2, optional=True, enum_cls=Si
 GameState.add_field('objects', MessageField(field_number=3, repeated=True, message_cls=EntityState))
 GameAction.add_field('action', EnumField(field_number=1, optional=True, enum_cls=PlayerAction))
 GameAction.add_field('card', StringField(field_number=2, optional=True))
-GameEffectArgument.add_field('value', Int32Field(field_number=1, optional=True))
-GameEffectArgument.add_field('key', StringField(field_number=2, optional=True))
+GameEffectArgument.add_field('key', StringField(field_number=1, optional=True))
+GameEffectArgument.add_field('value', StringField(field_number=2, optional=True))
 GameEffect.add_field('source_entity', Int32Field(field_number=1, optional=True))
 GameEffect.add_field('target_entity', Int32Field(field_number=2, optional=True))
 GameEffect.add_field('action', MessageField(field_number=3, optional=True, message_cls=GameAction))
@@ -191,12 +187,11 @@ CliQueuePreferences.add_field('ship', StringField(field_number=1, optional=True)
 CliQueuePreferences.add_field('weapon', StringField(field_number=2, optional=True))
 SrvQueueGameCreated.add_field('game_id', StringField(field_number=1, optional=True))
 SrvQueueGameCreated.add_field('side', EnumField(field_number=2, optional=True, enum_cls=Side))
-SrvGameStarted.add_field('game_id', StringField(field_number=1, optional=True))
-SrvGameStarted.add_field('your_side', EnumField(field_number=2, optional=True, enum_cls=Side))
 SrvGameMessage.add_field('game_id', StringField(field_number=1, optional=True))
 SrvGameMessage.add_field('state', MessageField(field_number=2, optional=True, message_cls=GameState))
 SrvGameMessage.add_field('action', MessageField(field_number=4, optional=True, message_cls=GameAction))
 SrvGameMessage.add_field('effect', MessageField(field_number=5, optional=True, message_cls=GameEffect))
+SrvGameMessage.add_field('error', StringField(field_number=7, optional=True))
 SrvGameMessage.add_field('your_side', EnumField(field_number=6, optional=True, enum_cls=Side))
 SrvGameEnded.add_field('game_id', StringField(field_number=1, optional=True))
 SrvGameEnded.add_field('interrupted', BoolField(field_number=2, optional=True))
@@ -208,7 +203,6 @@ Message.add_field('status', StringField(field_number=3, optional=True))
 Message.add_field('error', StringField(field_number=4, optional=True))
 Message.add_field('hello', MessageField(field_number=5, optional=True, message_cls=SrvHello))
 Message.add_field('game_created', MessageField(field_number=6, optional=True, message_cls=SrvQueueGameCreated))
-Message.add_field('game_started', MessageField(field_number=7, optional=True, message_cls=SrvGameStarted))
 Message.add_field('game_ended', MessageField(field_number=8, optional=True, message_cls=SrvGameEnded))
 Message.add_field('game', MessageField(field_number=9, optional=True, message_cls=SrvGameMessage))
 Message.add_field('queue_prefs', MessageField(field_number=10, optional=True, message_cls=CliQueuePreferences))

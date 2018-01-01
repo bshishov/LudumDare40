@@ -21,14 +21,6 @@ class Section(Enum):
 
 
 @unique
-class PlayerActionType(Enum):
-    PLAY_CARD = 'play_card'
-    FIRE_WEAPON = 'fire_weapon'
-    END_TURN = 'end_turn'
-    CHEAT_TAKE_CARD = 'take_card'
-
-
-@unique
 class Target(Enum):
     SELF = 'self'
     ALL = 'all'

@@ -11,6 +11,7 @@ enum Head {
     //[SERVER] Base server messages
     SRV_HELLO = 0;
     SRV_ERROR = 1;
+    SRV_GAME_ERROR = 14;
 
     //[SERVER] Queue message
     SRV_QUEUE_STARTED = 2;
@@ -94,10 +95,8 @@ message GameAction {
 }
 
 message GameEffectArgument {
-    oneof kind {
-        int32 value = 1;
-        string key = 2;
-    }
+    string key = 1;
+    string value = 2;
 }
 
 message GameEffect {
@@ -123,11 +122,6 @@ message SrvQueueGameCreated {
     Side side = 2;
 }
 
-message SrvGameStarted {
-    string game_id = 1;
-    Side your_side = 2;
-}
-
 message SrvGameMessage {
     string game_id = 1;
     GameState state = 2;
@@ -136,6 +130,7 @@ message SrvGameMessage {
         GameAction action = 4;
         // Server response (game state changers)
         GameEffect effect = 5;
+        string error = 7;
     }
     Side your_side = 6;
 }
@@ -158,7 +153,6 @@ message Message {
         string error = 4;
         SrvHello hello = 5;
         SrvQueueGameCreated game_created = 6;
-        SrvGameStarted game_started = 7;
         SrvGameEnded game_ended = 8;
         SrvGameMessage game = 9;
         CliQueuePreferences queue_prefs = 10;

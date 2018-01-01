@@ -117,6 +117,9 @@ namespace Assets.Scripts
             if (!Client.Instance.IsGameStarted)
                 return;
 
+            if (message.Game == null)
+                return;
+
             var state = message.Game.State;
             if (state != null)
             {
@@ -140,83 +143,44 @@ namespace Assets.Scripts
 
         public void FireWeapon()
         {
-            var message = new Message()
-            {
-                Domain = Domain.Game,
-                Head = Head.CliGameAction,
-                Status = "Fire weapon",
-                Game =
-                {
-                    GameId = Client.Instance.GameId,
-                    Action =
-                    {
-                        Action = PlayerAction.FireWeapon
-                    }
-                }
-            };
-            Client.Instance.Send(message);
+            DoAction(PlayerAction.FireWeapon);
         }
 
         public void PlayCard(string cardId)
         {
-            var message = new Message()
-            {
-                Domain = Domain.Game,
-                Head = Head.CliGameAction,
-                Status = "Play card",
-                Game =
-                {
-                    GameId = Client.Instance.GameId,
-                    Action =
-                    {
-                        Action = PlayerAction.FireWeapon,
-                        Card = cardId
-                    }
-                }
-            };
-            Client.Instance.Send(message);
+            DoAction(PlayerAction.PlayCard, cardId);
         }
 
         public void EndTurn()
         {
-            var message = new Message()
-            {
-                Domain = Domain.Game,
-                Head = Head.CliGameAction,
-                Status = "Play card",
-                Game =
-                {
-                    GameId = Client.Instance.GameId,
-                    Action =
-                    {
-                        Action = PlayerAction.EndTurn,
-                    }
-                }
-            };
-            Client.Instance.Send(message);
+            DoAction(PlayerAction.EndTurn);
         }
 
         public void CheatGainCard(string cardId)
         {
-            if(string.IsNullOrEmpty(_cheatCardName))
-                return;
+            DoAction(PlayerAction.CheatGainCard, cardId);
+        }
 
+        private void DoAction(PlayerAction action, string cardId = null)
+        {
             var message = new Message()
             {
                 Domain = Domain.Game,
                 Head = Head.CliGameAction,
-                Status = "Take cheat card",
-                Game =
+                Status = action.ToString(),
+                Game = new SrvGameMessage
                 {
                     GameId = Client.Instance.GameId,
-                    Action =
+                    Action = new GameAction
                     {
-                        Action = PlayerAction.CheatGainCard,
-                        Card = cardId
+                        Action = action,
                     }
                 }
             };
-            
+
+            if (!string.IsNullOrEmpty(cardId))
+                message.Game.Action.Card = cardId;
+
             Client.Instance.Send(message);
         }
 

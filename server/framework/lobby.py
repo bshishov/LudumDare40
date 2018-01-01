@@ -60,7 +60,7 @@ class Lobby(object):
         self._logger.info('Matchmaking started')
         while True:
             with self._players_lock:
-                queued_players = [player for channel, player in self._players.items() if player.in_queue]
+                queued_players = [player for channel, player in self._players.items() if player.status == PlayerStatus.IN_QUEUE]
 
             self._logger.debug('Matchmaking: {0} players in queue'.format(len(queued_players)))
 

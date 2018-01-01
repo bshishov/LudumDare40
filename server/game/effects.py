@@ -35,9 +35,11 @@ def collect_handler(handlers: Dict[EffectType, Tuple[Callable, Tuple]]):
                     ef.source_entity = source_entity.id
                 ef.target_entity = target_entity.id
                 ef.effect_name = effect_type.value
-                for arg in args:
+                for arg, arg_def in zip(args, args_def):
+                    arg_name, _ = arg_def  # type: Tuple[EffectType, obj]
                     a = proto.GameEffectArgument()
-                    a.key = str(arg)
+                    a.key = str(arg_name.value)
+                    a.value = str(arg)
                     ef.arguments.append(a)
 
                 # Notify players about the effect
@@ -84,7 +86,7 @@ class EffectHandler(object):
                source_entity: Optional[EntityState],
                target_entity: EntityState,
                amount: int,
-               ef_range: 10,
+               ef_range: int=10,
                range_mod: int=0):
         dmg_source_mod = 0
         if source_entity is not None:

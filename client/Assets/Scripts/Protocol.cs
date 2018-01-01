@@ -37,45 +37,43 @@ namespace Protocol {
             "dG9jb2wuQ2FyZFN0YXRlIl0KCUdhbWVTdGF0ZRIKCgJpZBgBIAEoCRIcCgR0",
             "dXJuGAIgASgOMg4ucHJvdG9jb2wuU2lkZRImCgdvYmplY3RzGAMgAygLMhUu",
             "cHJvdG9jb2wuRW50aXR5U3RhdGUiQgoKR2FtZUFjdGlvbhImCgZhY3Rpb24Y",
-            "ASABKA4yFi5wcm90b2NvbC5QbGF5ZXJBY3Rpb24SDAoEY2FyZBgCIAEoCSI8",
-            "ChJHYW1lRWZmZWN0QXJndW1lbnQSDwoFdmFsdWUYASABKAVIABINCgNrZXkY",
-            "AiABKAlIAEIGCgRraW5kIqYBCgpHYW1lRWZmZWN0EhUKDXNvdXJjZV9lbnRp",
-            "dHkYASABKAUSFQoNdGFyZ2V0X2VudGl0eRgCIAEoBRIkCgZhY3Rpb24YAyAB",
-            "KAsyFC5wcm90b2NvbC5HYW1lQWN0aW9uEhMKC2VmZmVjdF9uYW1lGAQgASgJ",
-            "Ei8KCWFyZ3VtZW50cxgFIAMoCzIcLnByb3RvY29sLkdhbWVFZmZlY3RBcmd1",
-            "bWVudCIsCghTcnZIZWxsbxIPCgd2ZXJzaW9uGAEgASgJEg8KB3BsYXllcnMY",
-            "AiABKAUiMwoTQ2xpUXVldWVQcmVmZXJlbmNlcxIMCgRzaGlwGAEgASgJEg4K",
-            "BndlYXBvbhgCIAEoCSJEChNTcnZRdWV1ZUdhbWVDcmVhdGVkEg8KB2dhbWVf",
-            "aWQYASABKAkSHAoEc2lkZRgCIAEoDjIOLnByb3RvY29sLlNpZGUiRAoOU3J2",
-            "R2FtZVN0YXJ0ZWQSDwoHZ2FtZV9pZBgBIAEoCRIhCgl5b3VyX3NpZGUYAiAB",
-            "KA4yDi5wcm90b2NvbC5TaWRlIsMBCg5TcnZHYW1lTWVzc2FnZRIPCgdnYW1l",
-            "X2lkGAEgASgJEiIKBXN0YXRlGAIgASgLMhMucHJvdG9jb2wuR2FtZVN0YXRl",
-            "EiYKBmFjdGlvbhgEIAEoCzIULnByb3RvY29sLkdhbWVBY3Rpb25IABImCgZl",
-            "ZmZlY3QYBSABKAsyFC5wcm90b2NvbC5HYW1lRWZmZWN0SAASIQoJeW91cl9z",
-            "aWRlGAYgASgOMg4ucHJvdG9jb2wuU2lkZUIJCgdwYXlsb2FkIjQKDFNydkdh",
-            "bWVFbmRlZBIPCgdnYW1lX2lkGAEgASgJEhMKC2ludGVycnVwdGVkGAIgASgI",
-            "IjMKDVNydlBsYXllckxlZnQSDwoHZ2FtZV9pZBgBIAEoCRIRCglwbGF5ZXJf",
-            "aWQYAiABKAUivgMKB01lc3NhZ2USIAoGZG9tYWluGAEgASgOMhAucHJvdG9j",
-            "b2wuRG9tYWluEhwKBGhlYWQYAiABKA4yDi5wcm90b2NvbC5IZWFkEg4KBnN0",
-            "YXR1cxgDIAEoCRIPCgVlcnJvchgEIAEoCUgAEiMKBWhlbGxvGAUgASgLMhIu",
-            "cHJvdG9jb2wuU3J2SGVsbG9IABI1CgxnYW1lX2NyZWF0ZWQYBiABKAsyHS5w",
-            "cm90b2NvbC5TcnZRdWV1ZUdhbWVDcmVhdGVkSAASMAoMZ2FtZV9zdGFydGVk",
-            "GAcgASgLMhgucHJvdG9jb2wuU3J2R2FtZVN0YXJ0ZWRIABIsCgpnYW1lX2Vu",
-            "ZGVkGAggASgLMhYucHJvdG9jb2wuU3J2R2FtZUVuZGVkSAASKAoEZ2FtZRgJ",
-            "IAEoCzIYLnByb3RvY29sLlNydkdhbWVNZXNzYWdlSAASNAoLcXVldWVfcHJl",
-            "ZnMYCiABKAsyHS5wcm90b2NvbC5DbGlRdWV1ZVByZWZlcmVuY2VzSAASLgoL",
-            "cGxheWVyX2xlZnQYCyABKAsyFy5wcm90b2NvbC5TcnZQbGF5ZXJMZWZ0SABC",
-            "BgoEYm9keSodCgZEb21haW4SCQoFTE9CQlkQABIICgRHQU1FEAEqrQIKBEhl",
-            "YWQSDQoJU1JWX0hFTExPEAASDQoJU1JWX0VSUk9SEAESFQoRU1JWX1FVRVVF",
-            "X1NUQVJURUQQAhIVChFTUlZfUVVFVUVfU1RPUFBFRBADEhoKFlNSVl9RVUVV",
-            "RV9HQU1FX0NSRUFURUQQBBIUChBTUlZfR0FNRV9TVEFSVEVEEAUSEgoOU1JW",
-            "X0dBTUVfRU5ERUQQBhIYChRTUlZfR0FNRV9QTEFZRVJfTEVGVBAHEhEKDVNS",
-            "Vl9HQU1FX1RVUk4QCBITCg9TUlZfR0FNRV9BQ1RJT04QCRITCg9TUlZfR0FN",
-            "RV9FRkZFQ1QQChITCg9DTElfUVVFVUVfU1RBUlQQCxISCg5DTElfUVVFVUVf",
-            "U1RPUBAMEhMKD0NMSV9HQU1FX0FDVElPThANKiEKBFNpZGUSCwoHTkVVVFJB",
-            "TBAAEgUKAUEQARIFCgFCEAIqUQoMUGxheWVyQWN0aW9uEg0KCVBMQVlfQ0FS",
-            "RBAAEg8KC0ZJUkVfV0VBUE9OEAESDAoIRU5EX1RVUk4QAhITCg9DSEVBVF9H",
-            "QUlOX0NBUkQQA2IGcHJvdG8z"));
+            "ASABKA4yFi5wcm90b2NvbC5QbGF5ZXJBY3Rpb24SDAoEY2FyZBgCIAEoCSIw",
+            "ChJHYW1lRWZmZWN0QXJndW1lbnQSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIg",
+            "ASgJIqYBCgpHYW1lRWZmZWN0EhUKDXNvdXJjZV9lbnRpdHkYASABKAUSFQoN",
+            "dGFyZ2V0X2VudGl0eRgCIAEoBRIkCgZhY3Rpb24YAyABKAsyFC5wcm90b2Nv",
+            "bC5HYW1lQWN0aW9uEhMKC2VmZmVjdF9uYW1lGAQgASgJEi8KCWFyZ3VtZW50",
+            "cxgFIAMoCzIcLnByb3RvY29sLkdhbWVFZmZlY3RBcmd1bWVudCIsCghTcnZI",
+            "ZWxsbxIPCgd2ZXJzaW9uGAEgASgJEg8KB3BsYXllcnMYAiABKAUiMwoTQ2xp",
+            "UXVldWVQcmVmZXJlbmNlcxIMCgRzaGlwGAEgASgJEg4KBndlYXBvbhgCIAEo",
+            "CSJEChNTcnZRdWV1ZUdhbWVDcmVhdGVkEg8KB2dhbWVfaWQYASABKAkSHAoE",
+            "c2lkZRgCIAEoDjIOLnByb3RvY29sLlNpZGUi1AEKDlNydkdhbWVNZXNzYWdl",
+            "Eg8KB2dhbWVfaWQYASABKAkSIgoFc3RhdGUYAiABKAsyEy5wcm90b2NvbC5H",
+            "YW1lU3RhdGUSJgoGYWN0aW9uGAQgASgLMhQucHJvdG9jb2wuR2FtZUFjdGlv",
+            "bkgAEiYKBmVmZmVjdBgFIAEoCzIULnByb3RvY29sLkdhbWVFZmZlY3RIABIP",
+            "CgVlcnJvchgHIAEoCUgAEiEKCXlvdXJfc2lkZRgGIAEoDjIOLnByb3RvY29s",
+            "LlNpZGVCCQoHcGF5bG9hZCI0CgxTcnZHYW1lRW5kZWQSDwoHZ2FtZV9pZBgB",
+            "IAEoCRITCgtpbnRlcnJ1cHRlZBgCIAEoCCIzCg1TcnZQbGF5ZXJMZWZ0Eg8K",
+            "B2dhbWVfaWQYASABKAkSEQoJcGxheWVyX2lkGAIgASgFIowDCgdNZXNzYWdl",
+            "EiAKBmRvbWFpbhgBIAEoDjIQLnByb3RvY29sLkRvbWFpbhIcCgRoZWFkGAIg",
+            "ASgOMg4ucHJvdG9jb2wuSGVhZBIOCgZzdGF0dXMYAyABKAkSDwoFZXJyb3IY",
+            "BCABKAlIABIjCgVoZWxsbxgFIAEoCzISLnByb3RvY29sLlNydkhlbGxvSAAS",
+            "NQoMZ2FtZV9jcmVhdGVkGAYgASgLMh0ucHJvdG9jb2wuU3J2UXVldWVHYW1l",
+            "Q3JlYXRlZEgAEiwKCmdhbWVfZW5kZWQYCCABKAsyFi5wcm90b2NvbC5TcnZH",
+            "YW1lRW5kZWRIABIoCgRnYW1lGAkgASgLMhgucHJvdG9jb2wuU3J2R2FtZU1l",
+            "c3NhZ2VIABI0CgtxdWV1ZV9wcmVmcxgKIAEoCzIdLnByb3RvY29sLkNsaVF1",
+            "ZXVlUHJlZmVyZW5jZXNIABIuCgtwbGF5ZXJfbGVmdBgLIAEoCzIXLnByb3Rv",
+            "Y29sLlNydlBsYXllckxlZnRIAEIGCgRib2R5Kh0KBkRvbWFpbhIJCgVMT0JC",
+            "WRAAEggKBEdBTUUQASrBAgoESGVhZBINCglTUlZfSEVMTE8QABINCglTUlZf",
+            "RVJST1IQARISCg5TUlZfR0FNRV9FUlJPUhAOEhUKEVNSVl9RVUVVRV9TVEFS",
+            "VEVEEAISFQoRU1JWX1FVRVVFX1NUT1BQRUQQAxIaChZTUlZfUVVFVUVfR0FN",
+            "RV9DUkVBVEVEEAQSFAoQU1JWX0dBTUVfU1RBUlRFRBAFEhIKDlNSVl9HQU1F",
+            "X0VOREVEEAYSGAoUU1JWX0dBTUVfUExBWUVSX0xFRlQQBxIRCg1TUlZfR0FN",
+            "RV9UVVJOEAgSEwoPU1JWX0dBTUVfQUNUSU9OEAkSEwoPU1JWX0dBTUVfRUZG",
+            "RUNUEAoSEwoPQ0xJX1FVRVVFX1NUQVJUEAsSEgoOQ0xJX1FVRVVFX1NUT1AQ",
+            "DBITCg9DTElfR0FNRV9BQ1RJT04QDSohCgRTaWRlEgsKB05FVVRSQUwQABIF",
+            "CgFBEAESBQoBQhACKlEKDFBsYXllckFjdGlvbhINCglQTEFZX0NBUkQQABIP",
+            "CgtGSVJFX1dFQVBPThABEgwKCEVORF9UVVJOEAISEwoPQ0hFQVRfR0FJTl9D",
+            "QVJEEANiBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(new[] {typeof(global::Protocol.Domain), typeof(global::Protocol.Head), typeof(global::Protocol.Side), typeof(global::Protocol.PlayerAction), }, new pbr::GeneratedClrTypeInfo[] {
@@ -84,16 +82,15 @@ namespace Protocol {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.EntityState), global::Protocol.EntityState.Parser, new[]{ "Id", "Name", "Side", "Hp", "Energy", "MaxEnergy", "EnergyGain", "Muted", "Armed", "Locked", "DamageMod", "Buffable", "IsPlayer", "Position", "Buffs", "WeaponName", "ShipName", "HandCards", "DeckCards", "Hand" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GameState), global::Protocol.GameState.Parser, new[]{ "Id", "Turn", "Objects" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GameAction), global::Protocol.GameAction.Parser, new[]{ "Action", "Card" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GameEffectArgument), global::Protocol.GameEffectArgument.Parser, new[]{ "Value", "Key" }, new[]{ "Kind" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GameEffectArgument), global::Protocol.GameEffectArgument.Parser, new[]{ "Key", "Value" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GameEffect), global::Protocol.GameEffect.Parser, new[]{ "SourceEntity", "TargetEntity", "Action", "EffectName", "Arguments" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvHello), global::Protocol.SrvHello.Parser, new[]{ "Version", "Players" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.CliQueuePreferences), global::Protocol.CliQueuePreferences.Parser, new[]{ "Ship", "Weapon" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvQueueGameCreated), global::Protocol.SrvQueueGameCreated.Parser, new[]{ "GameId", "Side" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvGameStarted), global::Protocol.SrvGameStarted.Parser, new[]{ "GameId", "YourSide" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvGameMessage), global::Protocol.SrvGameMessage.Parser, new[]{ "GameId", "State", "Action", "Effect", "YourSide" }, new[]{ "Payload" }, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvGameMessage), global::Protocol.SrvGameMessage.Parser, new[]{ "GameId", "State", "Action", "Effect", "Error", "YourSide" }, new[]{ "Payload" }, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvGameEnded), global::Protocol.SrvGameEnded.Parser, new[]{ "GameId", "Interrupted" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.SrvPlayerLeft), global::Protocol.SrvPlayerLeft.Parser, new[]{ "GameId", "PlayerId" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Message), global::Protocol.Message.Parser, new[]{ "Domain", "Head", "Status", "Error", "Hello", "GameCreated", "GameStarted", "GameEnded", "Game", "QueuePrefs", "PlayerLeft" }, new[]{ "Body" }, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Message), global::Protocol.Message.Parser, new[]{ "Domain", "Head", "Status", "Error", "Hello", "GameCreated", "GameEnded", "Game", "QueuePrefs", "PlayerLeft" }, new[]{ "Body" }, null, null)
           }));
     }
     #endregion
@@ -111,6 +108,7 @@ namespace Protocol {
     /// </summary>
     [pbr::OriginalName("SRV_HELLO")] SrvHello = 0,
     [pbr::OriginalName("SRV_ERROR")] SrvError = 1,
+    [pbr::OriginalName("SRV_GAME_ERROR")] SrvGameError = 14,
     /// <summary>
     /// [SERVER] Queue message
     /// </summary>
@@ -1438,15 +1436,8 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public GameEffectArgument(GameEffectArgument other) : this() {
-      switch (other.KindCase) {
-        case KindOneofCase.Value:
-          Value = other.Value;
-          break;
-        case KindOneofCase.Key:
-          Key = other.Key;
-          break;
-      }
-
+      key_ = other.key_;
+      value_ = other.value_;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1454,45 +1445,26 @@ namespace Protocol {
       return new GameEffectArgument(this);
     }
 
-    /// <summary>Field number for the "value" field.</summary>
-    public const int ValueFieldNumber = 1;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Value {
-      get { return kindCase_ == KindOneofCase.Value ? (int) kind_ : 0; }
-      set {
-        kind_ = value;
-        kindCase_ = KindOneofCase.Value;
-      }
-    }
-
     /// <summary>Field number for the "key" field.</summary>
-    public const int KeyFieldNumber = 2;
+    public const int KeyFieldNumber = 1;
+    private string key_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public string Key {
-      get { return kindCase_ == KindOneofCase.Key ? (string) kind_ : ""; }
+      get { return key_; }
       set {
-        kind_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-        kindCase_ = KindOneofCase.Key;
+        key_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
-    private object kind_;
-    /// <summary>Enum of possible cases for the "kind" oneof.</summary>
-    public enum KindOneofCase {
-      None = 0,
-      Value = 1,
-      Key = 2,
-    }
-    private KindOneofCase kindCase_ = KindOneofCase.None;
+    /// <summary>Field number for the "value" field.</summary>
+    public const int ValueFieldNumber = 2;
+    private string value_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public KindOneofCase KindCase {
-      get { return kindCase_; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void ClearKind() {
-      kindCase_ = KindOneofCase.None;
-      kind_ = null;
+    public string Value {
+      get { return value_; }
+      set {
+        value_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1508,18 +1480,16 @@ namespace Protocol {
       if (ReferenceEquals(other, this)) {
         return true;
       }
-      if (Value != other.Value) return false;
       if (Key != other.Key) return false;
-      if (KindCase != other.KindCase) return false;
+      if (Value != other.Value) return false;
       return true;
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override int GetHashCode() {
       int hash = 1;
-      if (kindCase_ == KindOneofCase.Value) hash ^= Value.GetHashCode();
-      if (kindCase_ == KindOneofCase.Key) hash ^= Key.GetHashCode();
-      hash ^= (int) kindCase_;
+      if (Key.Length != 0) hash ^= Key.GetHashCode();
+      if (Value.Length != 0) hash ^= Value.GetHashCode();
       return hash;
     }
 
@@ -1530,24 +1500,24 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public void WriteTo(pb::CodedOutputStream output) {
-      if (kindCase_ == KindOneofCase.Value) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Value);
-      }
-      if (kindCase_ == KindOneofCase.Key) {
-        output.WriteRawTag(18);
+      if (Key.Length != 0) {
+        output.WriteRawTag(10);
         output.WriteString(Key);
+      }
+      if (Value.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(Value);
       }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public int CalculateSize() {
       int size = 0;
-      if (kindCase_ == KindOneofCase.Value) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Value);
-      }
-      if (kindCase_ == KindOneofCase.Key) {
+      if (Key.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Key);
+      }
+      if (Value.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Value);
       }
       return size;
     }
@@ -1557,15 +1527,12 @@ namespace Protocol {
       if (other == null) {
         return;
       }
-      switch (other.KindCase) {
-        case KindOneofCase.Value:
-          Value = other.Value;
-          break;
-        case KindOneofCase.Key:
-          Key = other.Key;
-          break;
+      if (other.Key.Length != 0) {
+        Key = other.Key;
       }
-
+      if (other.Value.Length != 0) {
+        Value = other.Value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -1576,12 +1543,12 @@ namespace Protocol {
           default:
             input.SkipLastField();
             break;
-          case 8: {
-            Value = input.ReadInt32();
+          case 10: {
+            Key = input.ReadString();
             break;
           }
           case 18: {
-            Key = input.ReadString();
+            Value = input.ReadString();
             break;
           }
         }
@@ -2252,151 +2219,6 @@ namespace Protocol {
 
   }
 
-  public sealed partial class SrvGameStarted : pb::IMessage<SrvGameStarted> {
-    private static readonly pb::MessageParser<SrvGameStarted> _parser = new pb::MessageParser<SrvGameStarted>(() => new SrvGameStarted());
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<SrvGameStarted> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[10]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SrvGameStarted() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SrvGameStarted(SrvGameStarted other) : this() {
-      gameId_ = other.gameId_;
-      yourSide_ = other.yourSide_;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public SrvGameStarted Clone() {
-      return new SrvGameStarted(this);
-    }
-
-    /// <summary>Field number for the "game_id" field.</summary>
-    public const int GameIdFieldNumber = 1;
-    private string gameId_ = "";
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public string GameId {
-      get { return gameId_; }
-      set {
-        gameId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-      }
-    }
-
-    /// <summary>Field number for the "your_side" field.</summary>
-    public const int YourSideFieldNumber = 2;
-    private global::Protocol.Side yourSide_ = 0;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Protocol.Side YourSide {
-      get { return yourSide_; }
-      set {
-        yourSide_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as SrvGameStarted);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(SrvGameStarted other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (GameId != other.GameId) return false;
-      if (YourSide != other.YourSide) return false;
-      return true;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (GameId.Length != 0) hash ^= GameId.GetHashCode();
-      if (YourSide != 0) hash ^= YourSide.GetHashCode();
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (GameId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(GameId);
-      }
-      if (YourSide != 0) {
-        output.WriteRawTag(16);
-        output.WriteEnum((int) YourSide);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (GameId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(GameId);
-      }
-      if (YourSide != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) YourSide);
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(SrvGameStarted other) {
-      if (other == null) {
-        return;
-      }
-      if (other.GameId.Length != 0) {
-        GameId = other.GameId;
-      }
-      if (other.YourSide != 0) {
-        YourSide = other.YourSide;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            input.SkipLastField();
-            break;
-          case 10: {
-            GameId = input.ReadString();
-            break;
-          }
-          case 16: {
-            yourSide_ = (global::Protocol.Side) input.ReadEnum();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
   public sealed partial class SrvGameMessage : pb::IMessage<SrvGameMessage> {
     private static readonly pb::MessageParser<SrvGameMessage> _parser = new pb::MessageParser<SrvGameMessage>(() => new SrvGameMessage());
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2404,7 +2226,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[11]; }
+      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[10]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2430,6 +2252,9 @@ namespace Protocol {
           break;
         case PayloadOneofCase.Effect:
           Effect = other.Effect.Clone();
+          break;
+        case PayloadOneofCase.Error:
+          Error = other.Error;
           break;
       }
 
@@ -2490,6 +2315,17 @@ namespace Protocol {
       }
     }
 
+    /// <summary>Field number for the "error" field.</summary>
+    public const int ErrorFieldNumber = 7;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Error {
+      get { return payloadCase_ == PayloadOneofCase.Error ? (string) payload_ : ""; }
+      set {
+        payload_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        payloadCase_ = PayloadOneofCase.Error;
+      }
+    }
+
     /// <summary>Field number for the "your_side" field.</summary>
     public const int YourSideFieldNumber = 6;
     private global::Protocol.Side yourSide_ = 0;
@@ -2507,6 +2343,7 @@ namespace Protocol {
       None = 0,
       Action = 4,
       Effect = 5,
+      Error = 7,
     }
     private PayloadOneofCase payloadCase_ = PayloadOneofCase.None;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2537,6 +2374,7 @@ namespace Protocol {
       if (!object.Equals(State, other.State)) return false;
       if (!object.Equals(Action, other.Action)) return false;
       if (!object.Equals(Effect, other.Effect)) return false;
+      if (Error != other.Error) return false;
       if (YourSide != other.YourSide) return false;
       if (PayloadCase != other.PayloadCase) return false;
       return true;
@@ -2549,6 +2387,7 @@ namespace Protocol {
       if (state_ != null) hash ^= State.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.Action) hash ^= Action.GetHashCode();
       if (payloadCase_ == PayloadOneofCase.Effect) hash ^= Effect.GetHashCode();
+      if (payloadCase_ == PayloadOneofCase.Error) hash ^= Error.GetHashCode();
       if (YourSide != 0) hash ^= YourSide.GetHashCode();
       hash ^= (int) payloadCase_;
       return hash;
@@ -2581,6 +2420,10 @@ namespace Protocol {
         output.WriteRawTag(48);
         output.WriteEnum((int) YourSide);
       }
+      if (payloadCase_ == PayloadOneofCase.Error) {
+        output.WriteRawTag(58);
+        output.WriteString(Error);
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2597,6 +2440,9 @@ namespace Protocol {
       }
       if (payloadCase_ == PayloadOneofCase.Effect) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(Effect);
+      }
+      if (payloadCase_ == PayloadOneofCase.Error) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Error);
       }
       if (YourSide != 0) {
         size += 1 + pb::CodedOutputStream.ComputeEnumSize((int) YourSide);
@@ -2627,6 +2473,9 @@ namespace Protocol {
           break;
         case PayloadOneofCase.Effect:
           Effect = other.Effect;
+          break;
+        case PayloadOneofCase.Error:
+          Error = other.Error;
           break;
       }
 
@@ -2673,6 +2522,10 @@ namespace Protocol {
             yourSide_ = (global::Protocol.Side) input.ReadEnum();
             break;
           }
+          case 58: {
+            Error = input.ReadString();
+            break;
+          }
         }
       }
     }
@@ -2686,7 +2539,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[12]; }
+      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[11]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2831,7 +2684,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[13]; }
+      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[12]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -2976,7 +2829,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[14]; }
+      get { return global::Protocol.ProtocolReflection.Descriptor.MessageTypes[13]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3005,9 +2858,6 @@ namespace Protocol {
           break;
         case BodyOneofCase.GameCreated:
           GameCreated = other.GameCreated.Clone();
-          break;
-        case BodyOneofCase.GameStarted:
-          GameStarted = other.GameStarted.Clone();
           break;
         case BodyOneofCase.GameEnded:
           GameEnded = other.GameEnded.Clone();
@@ -3096,17 +2946,6 @@ namespace Protocol {
       }
     }
 
-    /// <summary>Field number for the "game_started" field.</summary>
-    public const int GameStartedFieldNumber = 7;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Protocol.SrvGameStarted GameStarted {
-      get { return bodyCase_ == BodyOneofCase.GameStarted ? (global::Protocol.SrvGameStarted) body_ : null; }
-      set {
-        body_ = value;
-        bodyCase_ = value == null ? BodyOneofCase.None : BodyOneofCase.GameStarted;
-      }
-    }
-
     /// <summary>Field number for the "game_ended" field.</summary>
     public const int GameEndedFieldNumber = 8;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -3158,7 +2997,6 @@ namespace Protocol {
       Error = 4,
       Hello = 5,
       GameCreated = 6,
-      GameStarted = 7,
       GameEnded = 8,
       Game = 9,
       QueuePrefs = 10,
@@ -3195,7 +3033,6 @@ namespace Protocol {
       if (Error != other.Error) return false;
       if (!object.Equals(Hello, other.Hello)) return false;
       if (!object.Equals(GameCreated, other.GameCreated)) return false;
-      if (!object.Equals(GameStarted, other.GameStarted)) return false;
       if (!object.Equals(GameEnded, other.GameEnded)) return false;
       if (!object.Equals(Game, other.Game)) return false;
       if (!object.Equals(QueuePrefs, other.QueuePrefs)) return false;
@@ -3213,7 +3050,6 @@ namespace Protocol {
       if (bodyCase_ == BodyOneofCase.Error) hash ^= Error.GetHashCode();
       if (bodyCase_ == BodyOneofCase.Hello) hash ^= Hello.GetHashCode();
       if (bodyCase_ == BodyOneofCase.GameCreated) hash ^= GameCreated.GetHashCode();
-      if (bodyCase_ == BodyOneofCase.GameStarted) hash ^= GameStarted.GetHashCode();
       if (bodyCase_ == BodyOneofCase.GameEnded) hash ^= GameEnded.GetHashCode();
       if (bodyCase_ == BodyOneofCase.Game) hash ^= Game.GetHashCode();
       if (bodyCase_ == BodyOneofCase.QueuePrefs) hash ^= QueuePrefs.GetHashCode();
@@ -3252,10 +3088,6 @@ namespace Protocol {
       if (bodyCase_ == BodyOneofCase.GameCreated) {
         output.WriteRawTag(50);
         output.WriteMessage(GameCreated);
-      }
-      if (bodyCase_ == BodyOneofCase.GameStarted) {
-        output.WriteRawTag(58);
-        output.WriteMessage(GameStarted);
       }
       if (bodyCase_ == BodyOneofCase.GameEnded) {
         output.WriteRawTag(66);
@@ -3296,9 +3128,6 @@ namespace Protocol {
       if (bodyCase_ == BodyOneofCase.GameCreated) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GameCreated);
       }
-      if (bodyCase_ == BodyOneofCase.GameStarted) {
-        size += 1 + pb::CodedOutputStream.ComputeMessageSize(GameStarted);
-      }
       if (bodyCase_ == BodyOneofCase.GameEnded) {
         size += 1 + pb::CodedOutputStream.ComputeMessageSize(GameEnded);
       }
@@ -3337,9 +3166,6 @@ namespace Protocol {
           break;
         case BodyOneofCase.GameCreated:
           GameCreated = other.GameCreated;
-          break;
-        case BodyOneofCase.GameStarted:
-          GameStarted = other.GameStarted;
           break;
         case BodyOneofCase.GameEnded:
           GameEnded = other.GameEnded;
@@ -3397,15 +3223,6 @@ namespace Protocol {
             }
             input.ReadMessage(subBuilder);
             GameCreated = subBuilder;
-            break;
-          }
-          case 58: {
-            global::Protocol.SrvGameStarted subBuilder = new global::Protocol.SrvGameStarted();
-            if (bodyCase_ == BodyOneofCase.GameStarted) {
-              subBuilder.MergeFrom(GameStarted);
-            }
-            input.ReadMessage(subBuilder);
-            GameStarted = subBuilder;
             break;
           }
           case 66: {

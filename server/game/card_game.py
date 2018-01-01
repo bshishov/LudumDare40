@@ -43,7 +43,7 @@ class CardGame(GameBase):
     def on_player_message(self, player: Player, message: proto.Message):
         if player is self.player_a:
             self.on_game_message(message, self.player_a_entity)
-        elif player is self.player_a:
+        elif player is self.player_b:
             self.on_game_message(message, self.player_b_entity)
 
     def on_game_message(self, message: proto.Message, player_entity: PlayerEntityState):
@@ -62,21 +62,23 @@ class CardGame(GameBase):
         except GameError as err:
             msg = 'Game error: {0}'.format(err)
             self.logger.warning(msg)
-            self.notify_entity(player_entity, proto.Head.SRV_ERROR, status=msg)
-        finally:
-            self.logger.error(traceback.format_exc())
+            self.notify_player(self.get_player_for_entity(player_entity),
+                               proto.Head.SRV_GAME_ERROR,
+                               status='Game error',
+                               error=msg)
+            self.logger.debug(traceback.format_exc())
 
-    def do_player_action(self, player_entity: PlayerEntityState, action: dict):
-        action_type = PlayerActionType(action['type'])
-        if action_type == PlayerActionType.PLAY_CARD:
-            self.play_card(player_entity, action['card'])
-        elif action_type == PlayerActionType.FIRE_WEAPON:
+    def do_player_action(self, player_entity: PlayerEntityState, action: proto.PlayerAction):
+        action_type = action.action
+        if action_type == proto.PlayerAction.PLAY_CARD:
+            self.play_card(player_entity, action.card)
+        elif action_type == proto.PlayerAction.FIRE_WEAPON:
             self.fire_weapon(player_entity)
-        elif action_type == PlayerActionType.END_TURN:
+        elif action_type == proto.PlayerAction.END_TURN:
             self.player_end_turn(player_entity)
-        elif action_type == PlayerActionType.CHEAT_TAKE_CARD:
+        elif action_type == proto.PlayerAction.CHEAT_GAIN_CARD:
             if self.cheats_enabled:
-                self.effect_handler.gain_card(None, player_entity, action['card'])
+                self.effect_handler.gain_card(None, player_entity, action.card)
             else:
                 raise GameError('Cheating: {0}'.format(action))
         else:
@@ -299,7 +301,7 @@ class CardGame(GameBase):
 
         raise GameError('Unknown target: {0}'.format(target))
 
-    def get_entities_at(self, position: int):
+    def get_entities_at(self, position: int) -> List[EntityState]:
         return filter_position(self.get_all_entities(), position)
 
     def get_all_entities(self) -> List[EntityState]:
@@ -320,13 +322,6 @@ class CardGame(GameBase):
             state.objects.append(entity.get_state())
         return state
 
-    def get_player_state(self, player: Player, hide_hand: bool=False) -> dict:
-        if player == self.player_a:
-            return self.player_a_entity.get_state(hide_hand=hide_hand)
-        if player == self.player_b:
-            return self.player_b_entity.get_state(hide_hand=hide_hand)
-        return {}
-
     def is_player(self, entity: EntityState) -> bool:
         if entity == self.player_a_entity:
             return True
@@ -334,13 +329,9 @@ class CardGame(GameBase):
             return True
         return False
 
-    def notify_entity(self, entity: EntityState, *args, **kwargs):
-        if entity is None:
-            self.notify_players(*args, **kwargs)
-            return
-
+    def get_player_for_entity(self, entity: EntityState) -> Optional[Player]:
         if entity == self.player_a_entity:
-            self.notify_player(self.player_a, *args, **kwargs)
-
+            return self.player_a
         if entity == self.player_b_entity:
-            self.notify_player(self.player_b, *args, **kwargs)
+            return self.player_b
+        return None

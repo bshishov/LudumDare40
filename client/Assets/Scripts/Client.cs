@@ -88,7 +88,7 @@ namespace Assets.Scripts
             Subscribe(Head.SrvGameStarted, message =>
             {
                 IsGameStarted = true;
-                Side = message.GameStarted.YourSide;
+                Side = message.Game.YourSide;
                 Debug.LogFormat("Game begin, side: {0}", Side);
             });
 
@@ -204,7 +204,7 @@ namespace Assets.Scripts
             {
                 Domain = Domain.Lobby,
                 Head = Head.CliQueueStart,
-                QueuePrefs =
+                QueuePrefs = new CliQueuePreferences
                 {
                     Ship = ship,
                     Weapon = weapon

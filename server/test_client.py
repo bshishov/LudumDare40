@@ -1,11 +1,11 @@
 import argparse
 import asyncore
 import logging
-import pprint
 import socket
 import sys
 import threading
 import time
+import enum
 
 from game.rules import *
 from main import DEFAULT_HOST, DEFAULT_PORT
@@ -16,24 +16,22 @@ from utils import set_interval
 
 
 class TestPlayer(object):
+    class Status(enum.Enum):
+        IDLE_IN_LOBBY = 0,
+        IN_QUEUE = 1,
+        IN_GAME = 2
+
     def __init__(self, client):
         self._logger = logging.getLogger('Player')
         self._client = client  # type: ClientChannel
         self._client.on_message.append(self.on_message)
-        self._is_queue = False
-        self._is_in_game = False
+        self._status = TestPlayer.Status.IDLE_IN_LOBBY
         self._game_id = None
         self._side = None
-        self._last_state = None
+        self._last_state = None  # type: GameState
 
     def on_message(self, message):
-        if not self._is_in_game:
-            if message.domain == Domain.LOBBY:
-                self.on_lobby_message(message)
-            else:
-                self._logger.warning('Received non-lobby message while in lobby: {0}'.format(message))
-
-        if self._is_in_game:
+        if self._status == TestPlayer.Status.IN_GAME:
             if message.domain == Domain.GAME:
                 game_id = get_message_body(message).game_id
                 if game_id != self._game_id:
@@ -42,21 +40,27 @@ class TestPlayer(object):
                     self.on_game_message(message)
             else:
                 self._logger.warning('Received non-game message while in game: {0}'.format(message))
-        print(message.status)
+        else:
+            if message.domain == Domain.LOBBY:
+                self.on_lobby_message(message)
+            else:
+                self._logger.warning('Received non-lobby message while in lobby: {0}'.format(message))
+
+        print('Message: {0}'.format(message.status))
 
     def on_lobby_message(self, message):
         if message.head == Head.SRV_QUEUE_STARTED:
-            self._is_queue = True
+            self._status = TestPlayer.Status.IN_QUEUE
             self._logger.info('Queue started')
 
         if message.head == Head.SRV_QUEUE_STOPPED:
-            self._is_queue = False
+            self._status = TestPlayer.Status.IDLE_IN_LOBBY
             self._logger.info('Queue stopped')
 
         if message.head == Head.SRV_QUEUE_GAME_CREATED:
-            self._is_queue = False
-            self._is_in_game = True
+            self._status = TestPlayer.Status.IN_GAME
             self._game_id = get_message_body(message).game_id
+            self._logger.info('Game created: id={0}'.format(self._game_id))
 
     def on_game_message(self, message):
         if message.head == Head.SRV_GAME_STARTED:
@@ -65,8 +69,7 @@ class TestPlayer(object):
                 self._game_id, self._side))
 
         if message.head == Head.SRV_GAME_ENDED:
-            self._is_in_game = False
-            self._game_id = None
+            self._status = TestPlayer.Status.IDLE_IN_LOBBY
             self._logger.info('Game ended')
 
         if message.head == Head.SRV_GAME_ACTION:
@@ -76,7 +79,8 @@ class TestPlayer(object):
             body = get_message_body(message)
             ef_name = body.effect.effect_name
             ef_entity = body.effect.source_entity
-            ef_args = body.effect.arguments
+            ef_args = ' '.join(['{0}:{1}'.format(a.key, a.value) for a in body.effect.arguments])
+
             if ef_name is not None:
                 self._logger.info('Applied [{0}] {2} to entity {1}'.format(
                     ef_name, ef_entity, ef_args))
@@ -96,73 +100,70 @@ class TestPlayer(object):
         self._client.send_message(message)
 
     def do(self, cmd, *args):
-        if cmd == 'queue' or cmd == 'q':
-            if not self._is_queue:
+        if self._status == TestPlayer.Status.IDLE_IN_LOBBY:
+            if cmd == 'queue' or cmd == 'q':
                 if len(args) < 2:
                     logging.warning('Specify <SHIP> <WEAPON>')
                     return
                 self.start_queue(*args)
-            else:
+
+        if self._status == TestPlayer.Status.IN_QUEUE:
+            if cmd == 'queue' or cmd == 'q':
                 logging.info('Stopping search')
                 self.stop_queue()
 
-        if cmd in ['play', 'card', 'p', 'c']:
-            if len(args) < 1:
-                logging.warning('Specify <CARD>')
-                return
-            self.play_card(*args)
+        if self._status == TestPlayer.Status.IN_GAME:
+            if cmd in ['play', 'card', 'p', 'c']:
+                if len(args) < 1:
+                    logging.warning('Specify <CARD>')
+                    return
+                self.do_action(PlayerAction.PLAY_CARD, args[0])
 
-        if cmd in ['fire', 'f', 'shoot']:
-            self.fire()
+            if cmd in ['gain', 'cheat', 'g']:
+                if len(args) < 1:
+                    logging.warning('Specify <CARD>')
+                    return
+                self.do_action(PlayerAction.CHEAT_GAIN_CARD, args[0])
 
-        if cmd in ['end', '\r\n', 'turn', 'skip']:
-            self.end_turn()
+            if cmd in ['fire', 'f', 'shoot']:
+                self.do_action(PlayerAction.FIRE_WEAPON)
 
-        if cmd in ['state', 's']:
-            self.state(print_all=False)
+            if cmd in ['end', '\r\n', 'turn', 'skip']:
+                self.do_action(PlayerAction.END_TURN)
 
-        if cmd in ['all', 'sa', 'a']:
-            self.state(print_all=True)
+            if cmd in ['state', 's']:
+                self.state(print_all=False)
 
-    def play_card(self, card):
-        if self._is_in_game:
-            self.send(game_message(Head.CLI_GAME_ACTION,
-                                  game_id=self._game_id,
-                                  status='action',
-                                  action={'type': PlayerActionType.PLAY_CARD, 'card': card}))
+            if cmd in ['all', 'sa', 'a']:
+                self.state(print_all=True)
 
-    def fire(self):
-        if self._is_in_game:
-            self.send(game_message(Head.CLI_GAME_ACTION,
-                                  game_id=self._game_id,
-                                  status='action',
-                                  action={'type': PlayerActionType.FIRE_WEAPON}))
-
-    def end_turn(self):
-        if self._is_in_game:
-            self.send(game_message(Head.CLI_GAME_ACTION,
-                                   game_id=self._game_id,
-                                   status='action',
-                                   action={'type': PlayerActionType.END_TURN}))
+    def do_action(self, action_type: PlayerAction, card=None):
+        msg = game_message(Head.CLI_GAME_ACTION, game_id=self._game_id, status='action')
+        msg.game.action.action = action_type
+        if card is not None:
+            msg.game.action.card = card
+        self.send(msg)
 
     def state(self, print_all=False):
         if self._last_state is None:
             self._logger.warning('Last state is None')
             return
-        pp = pprint.PrettyPrinter(indent=4)
 
         if print_all:
-            pp.pprint(self._last_state)
+            print(self._last_state)
         else:
-            my_state = self._last_state.get(self._side, None)
+            my_state = self._last_state
+            for o in self._last_state.objects:
+                if o.is_player and o.side == self._side:
+                    my_state = o
+                    break
             if my_state is not None:
-                pp.pprint(my_state)
+                print(my_state)
         print('You play on side: {0}'.format(self._side))
 
     def start_queue(self, ship, weapon):
         self._is_queue = True
-        self.send(lobby_message(Head.CLI_QUEUE_START, status='Start Queue',
-                               ship=ship, weapon=weapon))
+        self.send(lobby_message(Head.CLI_QUEUE_START, status='Start Queue', ship=ship, weapon=weapon))
 
     def stop_queue(self):
         self.send(lobby_message(Head.CLI_QUEUE_STOP, status='Stop queue'))

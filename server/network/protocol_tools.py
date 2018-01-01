@@ -6,7 +6,6 @@ class MessageBody(Enum):
     NONE = None
     HELLO = 'hello'
     GAME_CREATED = 'game_created'
-    GAME_STARTED = 'game_started'
     GAME_ENDED = 'game_ended'
     GAME = 'game'
     QUEUE_PREFS = 'queue_prefs'
@@ -16,14 +15,18 @@ class MessageBody(Enum):
 head_to_body_map = {
     Head.SRV_HELLO: MessageBody.HELLO,
     Head.SRV_ERROR: MessageBody.NONE,
+    Head.SRV_GAME_ERROR: MessageBody.GAME,
     Head.SRV_QUEUE_GAME_CREATED: MessageBody.GAME_CREATED,
     Head.SRV_QUEUE_STARTED: MessageBody.NONE,
     Head.SRV_QUEUE_STOPPED: MessageBody.NONE,
-    Head.SRV_GAME_STARTED: MessageBody.GAME_STARTED,
+    Head.SRV_GAME_STARTED: MessageBody.GAME,
     Head.SRV_GAME_PLAYER_LEFT: MessageBody.PLAYER_LEFT,
     Head.CLI_QUEUE_START: MessageBody.QUEUE_PREFS,
     Head.CLI_QUEUE_STOP: MessageBody.NONE,
-    Head.SRV_GAME_EFFECT: MessageBody.GAME
+    Head.CLI_GAME_ACTION: MessageBody.GAME,
+    Head.SRV_GAME_EFFECT: MessageBody.GAME,
+    Head.SRV_GAME_TURN: MessageBody.GAME,
+    Head.SRV_GAME_ENDED: MessageBody.GAME_ENDED,
 }
 
 
@@ -53,6 +56,8 @@ def game_message(head: Head, status: str='', **kwargs):
 def get_message_body(message: Message, body: MessageBody = MessageBody.NONE):
     if body is MessageBody.NONE:
         body = head_to_body_map[message.head]
+    if body.value is None:
+        return message
     return getattr(message, body.value)
 
 

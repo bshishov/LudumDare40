@@ -12,7 +12,7 @@ namespace Assets.Scripts.UI
         void Start ()
         {
             Client.Instance.Subscribe(Head.SrvGameEffect, EffectHandler);
-            Client.Instance.Subscribe(Head.SrvError, ErrorHandler);
+            Client.Instance.Subscribe(Head.SrvGameError, ErrorHandler);
             Client.Instance.Subscribe(Head.SrvGameTurn, TurnHandler);
         }
 
@@ -27,7 +27,7 @@ namespace Assets.Scripts.UI
 
         private void ErrorHandler(Message message)
         {
-            Show(string.Format("<color=red>{0}</color>", message.Status));
+            Show(string.Format("<color=red>{0}</color>", message.Game.Error));
         }
 
         private void TurnHandler(Message message)

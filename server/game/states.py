@@ -96,7 +96,7 @@ class EntityState(object):
 
 
 class PlayerEntityState(EntityState):
-    def __init__(self, side, prefs: proto.CliQueuePreferences, *args, **kwargs):
+    def __init__(self, side: proto.Side, prefs: proto.CliQueuePreferences, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.side = side
 
