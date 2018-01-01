@@ -1,7 +1,6 @@
 import logging
 import uuid
 import traceback
-import sys
 from typing import List
 
 from network.connection import *
@@ -111,7 +110,6 @@ class GameBase(object):
 
         if message.game.game_id != self.id:
             self.logger.warning('Wrong game id: {0}'.format(message))
-            self.notify_player(player, proto.Head.SRV_ERROR, status='wrong game id')
             return False
         return True
 
@@ -130,8 +128,8 @@ class GameBase(object):
         self.turn = (self.turn + 1) % len(self.players)
         self.notify_players(proto.Head.SRV_GAME_TURN, status='End of turn', turn=self.turn)
 
-    def get_state(self, perspective_player=None) -> proto.GameState:
-        return None
+    def fill_state(self, state: proto.GameEffect, perspective_player: Player = None):
+        pass
 
     def notify_players(self, head, status='', **kwargs):
         for player in self.players:
@@ -139,16 +137,22 @@ class GameBase(object):
 
     def notify_player(self, player, head, status='', **kwargs):
         try:
-            kwargs.update({
-                'game_id': self.id,
-                'state': self.get_state(perspective_player=player),
-                'your_side': proto.get_side(self.players.index(player)),
-            })
-            msg = proto.game_message(head, status=status, **kwargs)
+            msg = self.create_message(player, head, status=status, **kwargs)
+            msg.game.your_side = proto.get_side(self.players.index(player))
+            self.fill_state(msg.game.state, player)
             player.send(msg)
         except Exception as err:
-            self.logger.error(err)
-            traceback.print_exc(file=sys.stderr)
+            self.logger.error('Failed to notify player')
+            self.logger.error(traceback.format_exc())
+
+    def create_message(self, head: proto.Head, status: str, **kwargs) -> proto.Message:
+        msg = proto.game_message(head, status=status, **kwargs)
+        msg.game.game_id = self.id
+        return msg
+
+    def send_players(self, message: proto.Message):
+        for player in self.players:
+            player.send(message)
 
     def end(self, interrupted=False):
         self.logger.info('Game finished, interrupted={0}'.format(interrupted))

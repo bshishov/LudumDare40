@@ -10,10 +10,15 @@ print(dir(m.game))
 m.game.game_id = '123123'
 m.hello.version = '0.0.1'  # this discards game
 
-m.game.effect.source_entity = 10
-m.game.effect.source_entity = 12
-m.game.effect.action.action = proto.PlayerAction.PLAY_CARD
-m.game.effect.action.card = 'some card'
+
+e = proto.GameEffect()
+e.source_entity = 10
+e.source_entity = 12
+e.action.card = 'some card'
+e.action.action = proto.PlayerAction.PLAY_CARD
+
+m.game.effect = e
+
 m.game.state.id = '123123'
 m.game.state.turn = proto.Side.A
 for i in range(3):

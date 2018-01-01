@@ -1,9 +1,7 @@
 import logging
 import threading
 import time
-import sys
 import traceback
-from typing import List
 
 from framework.game import *
 from network import *
@@ -88,7 +86,6 @@ class Lobby(object):
                 player.send(lobby_message(Head.SRV_QUEUE_GAME_CREATED, status='Game created', game_id=g.id))
 
         except Exception as err:
-            traceback.print_exc(file=sys.stderr)
             for player in players:
                 player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))
                 player.send(lobby_message(Head.SRV_ERROR, status='Failed to create a game', error=str(err)))
@@ -97,6 +94,7 @@ class Lobby(object):
                 g.close()
                 self._logger.debug('Closing game')
                 del g
+            self._logger.error(traceback.format_exc())
         if g is not None and g.is_active:
             g.begin()
             self._games.append(g)

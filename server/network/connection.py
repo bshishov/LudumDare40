@@ -2,7 +2,6 @@ import asyncore
 import logging
 import socket
 import struct
-import sys
 import traceback
 
 from network.protocol import Message
@@ -89,7 +88,7 @@ class ClientChannel(asyncore.dispatcher):
                     self.on_message(msg)
                 except Exception as err:
                     self.logger.error('Could not recognize message: {0}\ndata: {1}'.format(err, data))
-                    traceback.print_exc(file=sys.stderr)
+                    self.logger.error(traceback.format_exc())
 
     def send_message(self, message: Message):
         try:

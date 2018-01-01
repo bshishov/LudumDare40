@@ -11,7 +11,7 @@ from game.states import *
 __all__ = ['EffectHandler', ]
 
 
-def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
+def collect_handler(handlers: Dict[EffectType, Tuple[Callable, Tuple]]):
     def effect_handler(effect_type: EffectType, *args_def):
         def decorator(fn: Callable[['EffectHandler', EntityState, EntityState], None]):
             def wrapper(self: 'EffectHandler', source_entity: EntityState, target_entity: EntityState, *args, **kwargs):
@@ -26,7 +26,11 @@ def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
                 # Apply effect
                 fn(self, source_entity, target_entity, *args, **kwargs)
 
-                ef = proto.GameEffect()
+                message = self.game.create_message(
+                    head=proto.Head.SRV_GAME_EFFECT,
+                    status='effect')  # type: proto.Message
+
+                ef = message.game.effect
                 if source_entity is not None:
                     ef.source_entity = source_entity.id
                 ef.target_entity = target_entity.id
@@ -36,10 +40,9 @@ def collect_handler(handlers: Dict[str, Tuple[Callable, Tuple]]):
                     a.key = str(arg)
                     ef.arguments.append(a)
 
-                # Notify players about hte effect
-                self.game.notify_players(proto.Head.SRV_GAME_EFFECT,
-                                         status='effect',
-                                         effect=ef)
+                # Notify players about the effect
+                self.game.send_players(message)
+
             handlers[effect_type] = (wrapper, args_def)
             return wrapper
 

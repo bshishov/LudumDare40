@@ -73,13 +73,13 @@ class TestPlayer(object):
             self._logger.info('Game action')
 
         if message.head == Head.SRV_GAME_EFFECT:
-            ef_name = message.body.get('effect', None)
-            ef_entity = message.body.get('entity', None)
-            ef_args = message.body.get('args', None)
-            ef_kwargs = message.body.get('kwargs', None)
+            body = get_message_body(message)
+            ef_name = body.effect.effect_name
+            ef_entity = body.effect.source_entity
+            ef_args = body.effect.arguments
             if ef_name is not None:
-                self._logger.info('Applied [{0}] {2} to entity {1}  (kwargs: {3})'.format(
-                    ef_name, ef_entity, ef_args, ef_kwargs))
+                self._logger.info('Applied [{0}] {2} to entity {1}'.format(
+                    ef_name, ef_entity, ef_args))
 
         if message.head == Head.SRV_GAME_TURN:
             self._logger.info('Game turn')
@@ -141,9 +141,9 @@ class TestPlayer(object):
     def end_turn(self):
         if self._is_in_game:
             self.send(game_message(Head.CLI_GAME_ACTION,
-                                  game_id=self._game_id,
-                                  status='action',
-                                  action={'type': PlayerActionType.END_TURN}))
+                                   game_id=self._game_id,
+                                   status='action',
+                                   action={'type': PlayerActionType.END_TURN}))
 
     def state(self, print_all=False):
         if self._last_state is None:

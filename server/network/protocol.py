@@ -1,66 +1,117 @@
-from protobuf3.message import Message
 from enum import Enum
-from protobuf3.fields import MessageField, Int32Field, EnumField, StringField, BoolField
+from protobuf3.fields import StringField, Int32Field, BoolField, MessageField, EnumField
+from protobuf3.message import Message
+from typing import List
 
 
 class BuffState(Message):
-    pass
+    name = None  # type: str
+    duration = None  # type: int
 
 
 class CardState(Message):
-    pass
+    name = None  # type: str
+    cost_offense = None  # type: int
+    cost_defense = None  # type: int
 
 
 class EntityState(Message):
-    pass
+    id = None  # type: int
+    name = None  # type: str
+    side = None  # type: Side
+    hp = None  # type: int
+    energy = None  # type: int
+    max_energy = None  # type: int
+    energy_gain = None  # type: int
+    muted = None  # type: bool
+    armed = None  # type: bool
+    locked = None  # type: bool
+    damage_mod = None  # type: int
+    buffable = None  # type: bool
+    is_player = None  # type: bool
+    position = None  # type: int
+    buffs = None  # type: List[BuffState]
+    weapon_name = None  # type: str
+    ship_name = None  # type: str
+    hand_cards = None  # type: int
+    deck_cards = None  # type: int
+    hand = None  # type: List[CardState]
 
 
 class GameState(Message):
-    pass
+    id = None  # type: str
+    turn = None  # type: Side
+    objects = None  # type: List[EntityState]
 
 
 class GameAction(Message):
-    pass
+    action = None  # type: PlayerAction
+    card = None  # type: str
 
 
 class GameEffectArgument(Message):
-    pass
+    value = None  # type: int
+    key = None  # type: str
 
 
 class GameEffect(Message):
-    pass
+    source_entity = None  # type: int
+    target_entity = None  # type: int
+    action = None  # type: GameAction
+    effect_name = None  # type: str
+    arguments = None  # type: List[GameEffectArgument]
 
 
 class SrvHello(Message):
-    pass
+    version = None  # type: str
+    players = None  # type: int
 
 
 class CliQueuePreferences(Message):
-    pass
+    ship = None  # type: str
+    weapon = None  # type: str
 
 
 class SrvQueueGameCreated(Message):
-    pass
+    game_id = None  # type: str
+    side = None  # type: Side
 
 
 class SrvGameStarted(Message):
-    pass
+    game_id = None  # type: str
+    your_side = None  # type: Side
 
 
 class SrvGameMessage(Message):
-    pass
+    game_id = None  # type: str
+    state = None  # type: GameState
+    action = None  # type: GameAction
+    effect = None  # type: GameEffect
+    your_side = None  # type: Side
 
 
 class SrvGameEnded(Message):
-    pass
+    game_id = None  # type: str
+    interrupted = None  # type: bool
 
 
 class SrvPlayerLeft(Message):
-    pass
+    game_id = None  # type: str
+    player_id = None  # type: int
 
 
 class Message(Message):
-    pass
+    domain = None  # type: Domain
+    head = None  # type: Head
+    status = None  # type: str
+    error = None  # type: str
+    hello = None  # type: SrvHello
+    game_created = None  # type: SrvQueueGameCreated
+    game_started = None  # type: SrvGameStarted
+    game_ended = None  # type: SrvGameEnded
+    game = None  # type: SrvGameMessage
+    queue_prefs = None  # type: CliQueuePreferences
+    player_left = None  # type: SrvPlayerLeft
 
 
 class Domain(Enum):
