@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: fab89f7639b75b24c9d7d166aebb9e50
-timeCreated: 1512859300
+timeCreated: 1514826161
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -22,6 +22,21 @@ TextureImporter:
     21300030: icons_atlas_16
     21300032: icons_atlas_17
     21300034: icons_atlas_18
+    21300036: icons_atlas_4
+    21300038: icons_atlas_19
+    21300040: icons_atlas_20
+    21300042: icons_atlas_21
+    21300044: icons_atlas_22
+    21300046: icons_atlas_23
+    21300048: icons_atlas_24
+    21300050: icons_atlas_25
+    21300052: icons_atlas_26
+    21300054: icons_atlas_27
+    21300056: icons_atlas_28
+    21300058: icons_atlas_29
+    21300060: icons_atlas_30
+    21300062: icons_atlas_31
+    21300064: icons_atlas_32
   externalObjects: {}
   serializedVersion: 4
   mipmaps:
@@ -64,7 +79,7 @@ TextureImporter:
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 200
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -83,6 +98,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   - buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -92,6 +108,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   - buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -101,6 +118,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -353,6 +371,216 @@ TextureImporter:
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_4
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 108
+        width: 217
+        height: 93
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_19
+      rect:
+        serializedVersion: 2
+        x: 770
+        y: 8
+        width: 181
+        height: 95
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_20
+      rect:
+        serializedVersion: 2
+        x: 1007
+        y: 10
+        width: 91
+        height: 87
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_21
+      rect:
+        serializedVersion: 2
+        x: 1121
+        y: 9
+        width: 103
+        height: 85
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_22
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 0
+        width: 1940
+        height: 285
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_23
+      rect:
+        serializedVersion: 2
+        x: 2149
+        y: 387
+        width: 435
+        height: 433
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 43, y: 44, z: 48, w: 40}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_24
+      rect:
+        serializedVersion: 2
+        x: 1421
+        y: 499
+        width: 115
+        height: 321
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_25
+      rect:
+        serializedVersion: 2
+        x: 1092
+        y: 289
+        width: 341
+        height: 210
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_26
+      rect:
+        serializedVersion: 2
+        x: 1573
+        y: 490
+        width: 267
+        height: 168
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_27
+      rect:
+        serializedVersion: 2
+        x: 1575
+        y: 320
+        width: 263
+        height: 167
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_28
+      rect:
+        serializedVersion: 2
+        x: 1552
+        y: 690
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_29
+      rect:
+        serializedVersion: 2
+        x: 1687
+        y: 690
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_30
+      rect:
+        serializedVersion: 2
+        x: 1822
+        y: 690
+        width: 130
+        height: 130
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_31
+      rect:
+        serializedVersion: 2
+        x: 1956
+        y: 691
+        width: 130
+        height: 129
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icons_atlas_32
+      rect:
+        serializedVersion: 2
+        x: 2590
+        y: 724
+        width: 356
+        height: 96
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 31, y: 3, z: 32, w: 28}
       outline: []
       physicsShape: []
       tessellationDetail: 0

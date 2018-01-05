@@ -162,12 +162,10 @@ class TestPlayer(object):
         print('You play on side: {0}'.format(self._side))
 
     def start_queue(self, ship, weapon):
-        self._is_queue = True
         self.send(lobby_message(Head.CLI_QUEUE_START, status='Start Queue', ship=ship, weapon=weapon))
 
     def stop_queue(self):
         self.send(lobby_message(Head.CLI_QUEUE_STOP, status='Stop queue'))
-        self._is_queue = False
 
 
 def main(args):
